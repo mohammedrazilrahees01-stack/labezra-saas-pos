@@ -6,10 +6,12 @@ services:
     plan: free
 
     buildCommand: >
-      pip install --upgrade pip setuptools wheel &&
-      pip install -r requirements.txt &&
-      python manage.py collectstatic --noinput &&
-      python manage.py migrate --noinput
+    pip install --upgrade pip &&
+    pip install "setuptools<70" "wheel" &&
+    pip install --no-build-isolation --only-binary=:all: Pillow==9.5.0 &&
+    pip install -r requirements.txt &&
+    python manage.py collectstatic --noinput &&
+    python manage.py migrate --noinput
 
     startCommand: >
       gunicorn core.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120
