@@ -1,0 +1,51 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block page_title %}Warehouse Management{% endblock %}
+{% block page_icon %}<i class="ri-store-line"></i>{% endblock %}
+{% block content %}
+<div style="padding:24px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+    <h2 style="font-size:20px;font-weight:700">Warehouses & Stock Locations</h2>
+    <button class="btn btn-primary" onclick="document.getElementById('addWarehouseModal').style.display='flex'"><i class="ri-add-line"></i> Add Warehouse</button>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
+    {% for branch in branches %}
+    <div class="card" style="padding:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="font-weight:700">{{ branch.name }}</div>
+        <span style="padding:3px 10px;background:rgba(16,185,129,.1);color:#10b981;border-radius:20px;font-size:11px;font-weight:600">Active</span>
+      </div>
+      <div style="font-size:13px;color:var(--text-muted)"><i class="ri-map-pin-line"></i> {{ branch.location|default:"Main Branch" }}</div>
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <a href="/inventory/" class="btn btn-outline" style="flex:1;font-size:12px">View Stock</a>
+        <button class="btn btn-outline" style="font-size:12px"><i class="ri-edit-line"></i></button>
+      </div>
+    </div>
+    {% empty %}
+    <div class="card" style="padding:20px">
+      <div style="font-weight:700;margin-bottom:4px">Main Warehouse</div>
+      <div style="font-size:13px;color:var(--text-muted)"><i class="ri-map-pin-line"></i> Head Office</div>
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <a href="/inventory/" class="btn btn-outline" style="flex:1;font-size:12px">View Stock</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div id="addWarehouseModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9000;align-items:center;justify-content:center">
+  <div class="card" style="padding:24px;width:400px;max-width:90vw">
+    <h3 style="font-size:16px;font-weight:700;margin-bottom:16px">Add Warehouse</h3>
+    <form method="POST" action="">{% csrf_token %}
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <input type="text" name="name" class="form-control" placeholder="Warehouse Name" required>
+        <input type="text" name="location" class="form-control" placeholder="Location / Address">
+        <div style="display:flex;gap:8px;justify-content:flex-end">
+          <button type="button" class="btn btn-outline" onclick="document.getElementById('addWarehouseModal').style.display='none'">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

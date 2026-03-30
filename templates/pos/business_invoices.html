@@ -1,0 +1,145 @@
+{% extends "base/base.html" %}
+
+{% block title %}B2B Business Invoices — Labezra ERP{% endblock %}
+
+{% block page_title %}B2B Business Invoices{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">B2B Business Invoices</h1>
+        <p class="page-subtitle">Formal VAT invoices for business clients</p>
+    </div>
+    <div class="page-header-actions">
+        <a href="/pos/business-invoice/create/" class="btn btn-primary">
+            <i class="ri-add-line"></i> Create Invoice
+        </a>
+    </div>
+</div>
+
+<!-- KPI Row -->
+<div class="kpi-row">
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background: rgba(0,174,239,0.15); color: #00AEEF;">
+            <i class="ri-file-paper-2-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Total B2B Invoices</span>
+            <span class="kpi-value">{{ total_b2b_invoices|default:"0" }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background: rgba(39,174,96,0.15); color: #27AE60;">
+            <i class="ri-money-dollar-circle-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Total Amount (AED)</span>
+            <span class="kpi-value">{{ total_amount|default:"0.00" }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background: rgba(231,76,60,0.15); color: #E74C3C;">
+            <i class="ri-time-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Unpaid Invoices</span>
+            <span class="kpi-value">{{ unpaid_count|default:"0" }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Bar -->
+<div class="card" style="margin-bottom: 1.5rem;">
+    <div class="card-body">
+        <form method="GET" action="">
+            <div style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
+                <div class="form-group" style="margin-bottom:0; min-width:180px;">
+                    <label class="form-label">Filter by Status</label>
+                    <select name="status" class="form-control">
+                        <option value="">All Statuses</option>
+                        <option value="draft" {% if request.GET.status == "draft" %}selected{% endif %}>Draft</option>
+                        <option value="unpaid" {% if request.GET.status == "unpaid" %}selected{% endif %}>Unpaid</option>
+                        <option value="paid" {% if request.GET.status == "paid" %}selected{% endif %}>Paid</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom:0; flex:1; min-width:200px;">
+                    <label class="form-label">Search Client / Invoice #</label>
+                    <input type="text" name="q" class="form-control" placeholder="Client name or invoice number"
+                        value="{{ request.GET.q }}">
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="ri-search-line"></i> Search
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="card">
+    <div class="card-body" style="padding:0;">
+        {% if invoices %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th data-i18n="th_number">Invoice #</th>
+                        <th data-i18n="th_date">Date</th>
+                        <th>Client Name</th>
+                        <th>TRN</th>
+                        <th data-i18n="th_subtotal">Subtotal</th>
+                        <th>VAT (5%)</th>
+                        <th data-i18n="th_total">Total</th>
+                        <th data-i18n="th_status">Status</th>
+                        <th data-i18n="actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inv in invoices %}
+                    <tr>
+                        <td><strong>{{ inv.number }}</strong></td>
+                        <td>{{ inv.created|date:"d M Y" }}</td>
+                        <td>{{ inv.client_name }}</td>
+                        <td><code style="font-size:0.8rem;">{{ inv.client_trn|default:"—" }}</code></td>
+                        <td>AED {{ inv.subtotal|floatformat:2 }}</td>
+                        <td>AED {{ inv.vat_amount|floatformat:2 }}</td>
+                        <td><strong>AED {{ inv.total|floatformat:2 }}</strong></td>
+                        <td>
+                            {% if inv.status == "paid" %}
+                            <span class="badge badge-success" data-i18n="status_paid">Paid</span>
+                            {% elif inv.status == "draft" %}
+                            <span class="badge" style="background: rgba(149,165,166,0.2); color: #95A5A6;">Draft</span>
+                            {% else %}
+                            <span class="badge badge-warning">Unpaid</span>
+                            {% endif %}
+                        </td>
+                        <td style="display:flex; gap:0.4rem;">
+                            <a href="/pos/business-invoice/{{ inv.id }}/" class="btn btn-outline btn-sm">
+                                <i class="ri-eye-line"></i>
+                            </a>
+                            <a href="/pos/business-invoice/{{ inv.id }}/pdf/" class="btn btn-outline btn-sm">
+                                <i class="ri-download-line"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div style="text-align: center; padding: 4rem 2rem;">
+            <i class="ri-file-paper-2-line"
+                style="font-size: 3rem; color: var(--text-muted); display: block; margin-bottom: 1rem;"></i>
+            <h3 style="color: var(--text-secondary); margin-bottom: 0.5rem;">No B2B invoices found</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Create your first business invoice for a
+                corporate client.</p>
+            <a href="/pos/business-invoice/create/" class="btn btn-primary">
+                <i class="ri-add-line"></i> Create Invoice
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

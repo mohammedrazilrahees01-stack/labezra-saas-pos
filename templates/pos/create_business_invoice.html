@@ -1,0 +1,235 @@
+{% extends "base/base.html" %}
+
+{% block title %}Create Business Invoice — Labezra ERP{% endblock %}
+
+{% block page_title %}Create Business Invoice{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Create Business Invoice</h1>
+        <p class="page-subtitle">Issue a formal VAT invoice for a corporate client</p>
+    </div>
+    <div class="page-header-actions">
+        <a href="/pos/business-invoices/" class="btn btn-outline">
+            <i class="ri-arrow-left-line"></i> Back to Invoices
+        </a>
+    </div>
+</div>
+
+<form method="POST" action="" id="businessInvoiceForm">
+    {% csrf_token %}
+
+    <!-- Client Section -->
+    <div class="card" style="margin-bottom: 1.5rem;">
+        <div class="card-header" style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color);">
+            <h3 style="margin:0; font-size: 1rem; display:flex; align-items:center; gap:0.5rem;">
+                <i class="ri-building-line" style="color:#00AEEF;"></i> Client Information
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">Client Name <span style="color:#E74C3C;">*</span></label>
+                    <input type="text" name="client_name" class="form-control" placeholder="Company or individual name"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">TRN (Tax Registration Number)</label>
+                    <input type="text" name="client_trn" class="form-control" placeholder="e.g. 100234567890003">
+                </div>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label class="form-label">Address</label>
+                    <textarea name="client_address" class="form-control" rows="2"
+                        placeholder="Client billing address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="client_email" class="form-control" placeholder="client@company.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="tel" name="client_phone" class="form-control" placeholder="+971 XX XXX XXXX">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Line Items Section -->
+    <div class="card" style="margin-bottom: 1.5rem;">
+        <div class="card-header"
+            style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="margin:0; font-size: 1rem; display:flex; align-items:center; gap:0.5rem;">
+                <i class="ri-list-check" style="color:#00AEEF;"></i> Line Items
+            </h3>
+            <button type="button" class="btn btn-outline btn-sm" id="addItemBtn">
+                <i class="ri-add-line"></i> Add Item
+            </button>
+        </div>
+        <div class="card-body" style="padding:0;">
+            <div class="table-responsive">
+                <table class="table" id="lineItemsTable">
+                    <thead>
+                        <tr>
+                            <th style="width:40%;" data-i18n="th_description">Description</th>
+                            <th style="width:12%;">Qty</th>
+                            <th style="width:15%;">Unit Price (AED)</th>
+                            <th style="width:10%;">VAT %</th>
+                            <th style="width:15%;">Line Total (AED)</th>
+                            <th style="width:8%;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="lineItemsBody">
+                        <!-- Rows rendered by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Totals -->
+        <div style="padding: 1.5rem; border-top: 1px solid var(--border-color);">
+            <div style="max-width: 320px; margin-left: auto;">
+                <div
+                    style="display:flex; justify-content:space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+                    <span style="color: var(--text-secondary);">Subtotal</span>
+                    <span id="summarySubtotal" style="font-weight:600;">AED 0.00</span>
+                </div>
+                <div
+                    style="display:flex; justify-content:space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+                    <span style="color: var(--text-secondary);">VAT</span>
+                    <span id="summaryVat" style="font-weight:600; color:#F39C12;">AED 0.00</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding: 0.75rem 0;">
+                    <span style="font-size:1.1rem; font-weight:700;">Grand Total</span>
+                    <span id="summaryTotal" style="font-size:1.1rem; font-weight:700; color:#00AEEF;">AED 0.00</span>
+                </div>
+                <!-- Hidden inputs -->
+                <input type="hidden" name="subtotal" id="inputSubtotal">
+                <input type="hidden" name="vat_amount" id="inputVat">
+                <input type="hidden" name="total" id="inputTotal">
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="card" style="margin-bottom: 1.5rem;">
+        <div class="card-header" style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color);">
+            <h3 style="margin:0; font-size: 1rem; display:flex; align-items:center; gap:0.5rem;">
+                <i class="ri-file-text-line" style="color:#00AEEF;"></i> Additional Details
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">Payment Terms</label>
+                    <select name="payment_terms" class="form-control">
+                        <option value="immediate">Immediate</option>
+                        <option value="15_days">15 Days</option>
+                        <option value="30_days">30 Days</option>
+                        <option value="60_days">60 Days</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Invoice Date</label>
+                    <input type="date" name="invoice_date" class="form-control" value="{% now 'Y-m-d' %}">
+                </div>
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label class="form-label">Notes</label>
+                    <textarea name="notes" class="form-control" rows="3"
+                        placeholder="Additional notes, payment instructions, or special terms..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Buttons -->
+    <div style="display:flex; gap:1rem; justify-content:flex-end; padding-bottom: 2rem;">
+        <a href="/pos/business-invoices/" class="btn btn-outline">Cancel</a>
+        <button type="submit" name="action" value="save" class="btn btn-primary">
+            <i class="ri-save-line"></i> Save Invoice
+        </button>
+        <button type="submit" name="action" value="save_send" class="btn btn-success">
+            <i class="ri-send-plane-line"></i> Save &amp; Send
+        </button>
+    </div>
+</form>
+
+<script>
+    (function () {
+        let rowCount = 0;
+
+        function createRow(index) {
+            const tr = document.createElement('tr');
+            tr.className = 'line-item-row';
+            tr.dataset.index = index;
+            tr.innerHTML = `
+      <td>
+        <input type="text" name="items[${index}][description]" class="form-control" placeholder="Product or service description" required>
+      </td>
+      <td>
+        <input type="number" name="items[${index}][qty]" class="form-control item-qty" placeholder="1" min="0.001" step="0.001" value="1" required>
+      </td>
+      <td>
+        <input type="number" name="items[${index}][unit_price]" class="form-control item-price" placeholder="0.00" min="0" step="0.01" value="0.00" required>
+      </td>
+      <td>
+        <input type="number" name="items[${index}][vat_pct]" class="form-control item-vat" placeholder="5" min="0" max="100" step="0.01" value="5">
+      </td>
+      <td>
+        <input type="text" name="items[${index}][line_total]" class="form-control item-total" readonly style="background: var(--bg-secondary); font-weight:600; color:#00AEEF;">
+      </td>
+      <td style="text-align:center;">
+        <button type="button" class="btn btn-danger btn-sm remove-row-btn" title="Remove row">
+          <i class="ri-delete-bin-line"></i>
+        </button>
+      </td>
+    `;
+            return tr;
+        }
+
+        function recalculate() {
+            let subtotal = 0;
+            let totalVat = 0;
+
+            document.querySelectorAll('.line-item-row').forEach(row => {
+                const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+                const price = parseFloat(row.querySelector('.item-price').value) || 0;
+                const vatPct = parseFloat(row.querySelector('.item-vat').value) || 0;
+                const lineTotal = qty * price;
+                const lineVat = lineTotal * (vatPct / 100);
+                row.querySelector('.item-total').value = lineTotal.toFixed(2);
+                subtotal += lineTotal;
+                totalVat += lineVat;
+            });
+
+            const grandTotal = subtotal + totalVat;
+            document.getElementById('summarySubtotal').textContent = 'AED ' + subtotal.toFixed(2);
+            document.getElementById('summaryVat').textContent = 'AED ' + totalVat.toFixed(2);
+            document.getElementById('summaryTotal').textContent = 'AED ' + grandTotal.toFixed(2);
+            document.getElementById('inputSubtotal').value = subtotal.toFixed(2);
+            document.getElementById('inputVat').value = totalVat.toFixed(2);
+            document.getElementById('inputTotal').value = grandTotal.toFixed(2);
+        }
+
+        function addRow() {
+            const tbody = document.getElementById('lineItemsBody');
+            const row = createRow(rowCount++);
+            tbody.appendChild(row);
+            row.querySelector('.item-qty').addEventListener('input', recalculate);
+            row.querySelector('.item-price').addEventListener('input', recalculate);
+            row.querySelector('.item-vat').addEventListener('input', recalculate);
+            row.querySelector('.remove-row-btn').addEventListener('click', function () {
+                if (document.querySelectorAll('.line-item-row').length > 1) {
+                    row.remove();
+                    recalculate();
+                }
+            });
+            recalculate();
+        }
+
+        // Initialize with 3 rows
+        for (let i = 0; i < 3; i++) addRow();
+
+        document.getElementById('addItemBtn').addEventListener('click', addRow);
+    })();
+</script>
+{% endblock %}

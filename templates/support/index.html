@@ -1,0 +1,40 @@
+{% extends "base/base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% block page_title %}Support Center{% endblock %}
+{% block page_icon %}<i class="ri-customer-service-2-line"></i>{% endblock %}
+{% block content %}
+<div style="padding:24px;max-width:900px;margin:0 auto">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:24px">
+    <a href="https://wa.me/971569956676" target="_blank" class="card" style="padding:24px;text-align:center;text-decoration:none;transition:.2s" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+      <div style="width:56px;height:56px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#fff;font-size:26px"><i class="ri-whatsapp-line"></i></div>
+      <div style="font-weight:700;font-size:15px;color:var(--text-primary)">WhatsApp Support</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-top:4px">+971 56 995 6676</div>
+      <div style="margin-top:12px;padding:8px 16px;background:#25D366;color:#fff;border-radius:8px;font-size:13px;font-weight:600">Chat Now</div>
+    </a>
+    <div class="card" style="padding:24px;text-align:center">
+      <div style="width:56px;height:56px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#fff;font-size:26px"><i class="ri-book-open-line"></i></div>
+      <div style="font-weight:700;font-size:15px">Documentation</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-top:4px">Step-by-step guides</div>
+      <a href="/guidelines/" class="btn btn-primary" style="margin-top:12px;display:inline-flex">View Guidelines</a>
+    </div>
+    <div class="card" style="padding:24px;text-align:center">
+      <div style="width:56px;height:56px;background:#8b5cf6;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#fff;font-size:26px"><i class="ri-robot-2-line"></i></div>
+      <div style="font-weight:700;font-size:15px">AI Assistant</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-top:4px">Instant answers 24/7</div>
+      <button class="btn btn-primary" style="margin-top:12px" onclick="document.getElementById('chatbotBtn').click()">Ask AI</button>
+    </div>
+  </div>
+  <div class="card" style="padding:24px">
+    <h3 style="font-size:16px;font-weight:700;margin-bottom:16px"><i class="ri-question-line" style="color:var(--primary)"></i> Frequently Asked Questions</h3>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      {% for faq in "How do I add a product to inventory?|How do I process a POS sale?|How do I generate a VAT report?|How do I add an employee?|Does the system work offline?"|split:"|" %}
+      <details style="border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer">
+        <summary style="font-weight:600;font-size:13px;list-style:none">{{ faq }}</summary>
+        <p style="margin-top:10px;font-size:13px;color:var(--text-muted);line-height:1.6">Please refer to the <a href="/guidelines/" style="color:var(--primary)">Guidelines page</a> for detailed step-by-step instructions, or chat with our AI Assistant for instant help.</p>
+      </details>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

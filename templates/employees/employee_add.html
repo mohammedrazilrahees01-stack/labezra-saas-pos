@@ -1,0 +1,186 @@
+{% extends "base/base.html" %}
+
+{% block title %}Add Employee — Labezra{% endblock %}
+{% block page_title %}Add Employee{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="/dashboard/">Home</a>
+    <i class="ri-arrow-right-s-line"></i>
+    <a href="/employees/">Employees</a>
+    <i class="ri-arrow-right-s-line"></i>
+    <span>Add Employee</span>
+</nav>
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Add Employee</h1>
+        <p class="page-subtitle">Fill in the details to add a new employee</p>
+    </div>
+    <div class="page-actions">
+        <a href="/employees/" class="btn btn-secondary">
+            <i class="ri-arrow-left-line"></i> Back to Employees
+        </a>
+    </div>
+</div>
+
+<form method="POST" action="">
+    {% csrf_token %}
+
+    <!-- Personal Information -->
+    <div class="card" style="margin-bottom:20px;">
+        <div class="card-header">
+            <h3 class="card-title"><i class="ri-user-line" style="color:var(--primary);margin-right:8px;"></i>Personal
+                Information</h3>
+        </div>
+        <div class="card-body">
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">First Name <span class="required">*</span></label>
+                    <input type="text" name="first_name" class="form-control" placeholder="Enter first name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Last Name <span class="required">*</span></label>
+                    <input type="text" name="last_name" class="form-control" placeholder="Enter last name" required>
+                </div>
+            </div>
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" name="email" class="form-control" placeholder="employee@company.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" name="phone" class="form-control" placeholder="+971 50 000 0000">
+                </div>
+            </div>
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">Date of Birth</label>
+                    <input type="date" name="date_of_birth" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">National ID</label>
+                    <input type="text" name="national_id" class="form-control" placeholder="784-XXXX-XXXXXXX-X">
+                </div>
+            </div>
+            <div class="form-group" style="max-width:300px;">
+                <label class="form-label">Nationality</label>
+                <select name="nationality" class="form-control">
+                    <option value="">Select nationality</option>
+                    <option value="UAE">UAE</option>
+                    <option value="Saudi">Saudi Arabian</option>
+                    <option value="Egyptian">Egyptian</option>
+                    <option value="Indian">Indian</option>
+                    <option value="Pakistani">Pakistani</option>
+                    <option value="Filipino">Filipino</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Job Details -->
+    <div class="card" style="margin-bottom:20px;">
+        <div class="card-header">
+            <h3 class="card-title"><i class="ri-briefcase-line" style="color:var(--primary);margin-right:8px;"></i>Job
+                Details</h3>
+        </div>
+        <div class="card-body">
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">Position <span class="required">*</span></label>
+                    <input type="text" name="position" class="form-control" placeholder="e.g. Sales Manager" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Department</label>
+                    <select name="department" class="form-control">
+                        <option value="">Select department</option>
+                        <option value="Management">Management</option>
+                        <option value="Sales">Sales</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Operations">Operations</option>
+                        <option value="IT">IT</option>
+                        <option value="HR">HR</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">Employment Type</label>
+                    <select name="employment_type" class="form-control">
+                        <option value="full_time">Full-time</option>
+                        <option value="part_time">Part-time</option>
+                        <option value="contract">Contract</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Join Date</label>
+                    <input type="date" name="join_date" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Compensation -->
+    <div class="card" style="margin-bottom:20px;">
+        <div class="card-header">
+            <h3 class="card-title"><i class="ri-money-dollar-circle-line"
+                    style="color:var(--primary);margin-right:8px;"></i>Compensation</h3>
+        </div>
+        <div class="card-body">
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">Monthly Salary</label>
+                    <input type="number" name="salary" class="form-control" placeholder="0.00" step="0.01" min="0">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Currency</label>
+                    <select name="currency" class="form-control">
+                        <option value="AED">AED — UAE Dirham</option>
+                        <option value="SAR">SAR — Saudi Riyal</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">Bank Account Number</label>
+                    <input type="text" name="bank_account" class="form-control" placeholder="Account number">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">IBAN</label>
+                    <input type="text" name="iban" class="form-control" placeholder="AE00 0000 0000 0000 0000 000">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Emergency Contact -->
+    <div class="card" style="margin-bottom:24px;">
+        <div class="card-header">
+            <h3 class="card-title"><i class="ri-phone-line" style="color:var(--primary);margin-right:8px;"></i>Emergency
+                Contact</h3>
+        </div>
+        <div class="card-body">
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">Contact Name</label>
+                    <input type="text" name="emergency_name" class="form-control" placeholder="Full name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Contact Phone</label>
+                    <input type="tel" name="emergency_phone" class="form-control" placeholder="+971 50 000 0000">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div style="display:flex;gap:12px;align-items:center;">
+        <button type="submit" class="btn btn-primary btn-lg">
+            <i class="ri-save-line"></i> Add Employee
+        </button>
+        <a href="/employees/" class="btn btn-secondary btn-lg">Cancel</a>
+    </div>
+</form>
+{% endblock %}

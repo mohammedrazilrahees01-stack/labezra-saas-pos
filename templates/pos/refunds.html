@@ -1,0 +1,99 @@
+{% extends "base/base.html" %}
+
+{% block title %}Refunds — Labezra ERP{% endblock %}
+
+{% block page_title %}Refunds{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Refunds</h1>
+        <p class="page-subtitle">Manage processed customer refunds</p>
+    </div>
+</div>
+
+<!-- KPI Row -->
+<div class="kpi-row">
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background: rgba(0,174,239,0.15); color: #00AEEF;">
+            <i class="ri-arrow-go-back-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Total Refunds</span>
+            <span class="kpi-value">{{ total_refunds|default:"0" }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background: rgba(231,76,60,0.15); color: #E74C3C;">
+            <i class="ri-money-dollar-circle-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Total Refunded (AED)</span>
+            <span class="kpi-value">{{ total_refunded_amount|default:"0.00" }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background: rgba(243,156,18,0.15); color: #F39C12;">
+            <i class="ri-calendar-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Today's Refunds</span>
+            <span class="kpi-value">{{ today_refunds|default:"0" }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- Refunds Table -->
+<div class="card">
+    <div class="card-body" style="padding:0;">
+        {% if refunds %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Refund #</th>
+                        <th>Original Invoice #</th>
+                        <th data-i18n="th_date">Date</th>
+                        <th data-i18n="th_customer">Customer</th>
+                        <th>Amount (AED)</th>
+                        <th>Reason</th>
+                        <th>Processed By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for refund in refunds %}
+                    <tr>
+                        <td><strong>{{ refund.number }}</strong></td>
+                        <td>
+                            <a href="/pos/receipt/{{ refund.original_invoice.id }}/" style="color: #00AEEF;">
+                                {{ refund.original_invoice.number }}
+                            </a>
+                        </td>
+                        <td>{{ refund.created|date:"d M Y H:i" }}</td>
+                        <td>
+                            {% if refund.customer %}
+                            {{ refund.customer.name }}
+                            {% else %}
+                            <span style="color: var(--text-muted);">Walk-in</span>
+                            {% endif %}
+                        </td>
+                        <td><strong style="color: #E74C3C;">AED {{ refund.amount|floatformat:2 }}</strong></td>
+                        <td>{{ refund.reason|default:"—"|truncatechars:50 }}</td>
+                        <td>{{ refund.processed_by.get_full_name|default:refund.processed_by.username }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <!-- Empty State -->
+        <div style="text-align: center; padding: 4rem 2rem;">
+            <i class="ri-arrow-go-back-line"
+                style="font-size: 3rem; color: var(--text-muted); display: block; margin-bottom: 1rem;"></i>
+            <h3 style="color: var(--text-secondary); margin-bottom: 0.5rem;">No refunds recorded</h3>
+            <p style="color: var(--text-muted);">Refunds processed through the POS system will appear here.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

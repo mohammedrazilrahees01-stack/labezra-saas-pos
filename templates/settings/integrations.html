@@ -1,0 +1,30 @@
+{% extends "base/base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% block page_title %}Integrations{% endblock %}
+{% block page_icon %}<i class="ri-plug-line"></i>{% endblock %}
+{% block content %}
+<div style="padding:24px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">
+    {% for app in integrations %}
+    <div class="card" style="padding:20px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        <div style="width:44px;height:44px;border-radius:10px;background:{{ app.color }};display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px"><i class="{{ app.icon }}"></i></div>
+        <div><div style="font-weight:700;font-size:14px">{{ app.name }}</div><div style="font-size:12px;color:var(--text-muted)">{{ app.desc }}</div></div>
+      </div>
+      <button class="btn btn-outline" style="width:100%;font-size:12px">Connect</button>
+    </div>
+    {% empty %}
+    {% for name,icon,color,desc in "WhatsApp Business,ri-whatsapp-line,#25D366,Send receipts and alerts|Shopify,ri-store-3-line,#96bf48,Sync online products|WooCommerce,ri-shopping-cart-line,#7f54b3,WordPress e-commerce|Talabat,ri-bike-line,#FF6B35,Delivery orders|Noon,ri-sun-line,#FEEE00,Marketplace orders|Google Analytics,ri-google-line,#E37400,Website traffic|Mailchimp,ri-mail-line,#FFE01B,Email campaigns|QuickBooks,ri-calculator-line,#2CA01C,Accounting sync"|split:"|" %}
+    <div class="card" style="padding:20px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+        <div style="width:44px;height:44px;border-radius:10px;background:{% cycle '#25D366' '#96bf48' '#7f54b3' '#FF6B35' '#FFE01B' '#E37400' '#FFE01B' '#2CA01C' %};display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px"><i class="{% cycle 'ri-whatsapp-line' 'ri-store-3-line' 'ri-shopping-cart-line' 'ri-bike-line' 'ri-sun-line' 'ri-google-line' 'ri-mail-line' 'ri-calculator-line' %}"></i></div>
+        <div><div style="font-weight:700;font-size:14px">{{ name|cut:',icon'|cut:',color'|cut:',desc' }}</div><div style="font-size:12px;color:var(--text-muted)">Click to connect</div></div>
+      </div>
+      <button class="btn btn-outline" style="width:100%;font-size:12px">Connect</button>
+    </div>
+    {% endfor %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

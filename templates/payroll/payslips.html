@@ -1,0 +1,32 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Payslips - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-money-cny-circle-line"></i>{% endblock %}
+{% block page_title %}Payslips{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div><h2 class="page-heading">Payslips</h2><p class="page-subheading">Employee salary statements</p></div>
+    <div class="header-actions"><button class="btn btn-outline"><i class="ri-printer-line"></i> Print All</button> <button class="btn btn-primary"><i class="ri-add-line"></i> Generate Payslips</button></div>
+  </div>
+  <div class="card" style="padding:16px;margin-bottom:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+    <select class="form-control" style="max-width:140px;"><option>March 2026</option><option>February 2026</option><option>January 2026</option></select>
+    <select class="form-control" style="max-width:200px;"><option>All Employees</option><option>Ahmed Ali</option><option>Sara Mohammed</option></select>
+    <button class="btn btn-outline"><i class="ri-filter-line"></i> Filter</button>
+    <button class="btn btn-outline" style="margin-left:auto;"><i class="ri-download-line"></i> Export All</button>
+  </div>
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table">
+        <thead><tr><th>Employee</th><th>Role</th><th>Month</th><th>Basic</th><th>Allowances</th><th>Deductions</th><th>Net Salary</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Ahmed Ali</strong></td><td>Store Manager</td><td>March 2026</td><td>AED 8,000</td><td>AED 1,500</td><td>AED 500</td><td><strong>AED 9,000</strong></td><td><span class="badge badge-success">Paid</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a> <a href="#" class="btn btn-sm btn-outline"><i class="ri-printer-line"></i></a></td></tr>
+          <tr><td><strong>Sara Mohammed</strong></td><td>Cashier</td><td>March 2026</td><td>AED 4,500</td><td>AED 800</td><td>AED 200</td><td><strong>AED 5,100</strong></td><td><span class="badge badge-success">Paid</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a> <a href="#" class="btn btn-sm btn-outline"><i class="ri-printer-line"></i></a></td></tr>
+          <tr><td><strong>Khalid Hassan</strong></td><td>Sales Associate</td><td>March 2026</td><td>AED 5,000</td><td>AED 1,000</td><td>AED 300</td><td><strong>AED 5,700</strong></td><td><span class="badge badge-warning">Processing</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a></td></tr>
+          <tr><td><strong>Nour Al Rashidi</strong></td><td>Cashier</td><td>March 2026</td><td>AED 4,200</td><td>AED 600</td><td>AED 150</td><td><strong>AED 4,650</strong></td><td><span class="badge badge-warning">Processing</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

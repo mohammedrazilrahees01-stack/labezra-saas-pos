@@ -1,0 +1,19 @@
+{
+"app_title":"लाबेज़रा ERP",
+"login":"लॉगिन",
+"logout":"लॉगआउट",
+"dashboard":"डैशबोर्ड",
+"invoices":"इनवॉइस",
+"customers":"ग्राहक",
+"employees":"कर्मचारी",
+"expenses":"खर्च",
+"inventory":"इन्वेंटरी",
+"save":"सेव",
+"delete":"डिलीट",
+"edit":"एडिट",
+"cancel":"रद्द करें",
+"actions":"एक्शन",
+"date":"तारीख",
+"total":"कुल",
+"refund":"रिफंड"
+}

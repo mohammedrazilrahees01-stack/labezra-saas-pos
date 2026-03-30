@@ -1,0 +1,50 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Attendance - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-time-line"></i>{% endblock %}
+{% block page_title %}Attendance Tracking{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div><h2 class="page-heading">Attendance Tracking</h2><p class="page-subheading">Monitor employee check-in and check-out times</p></div>
+    <div class="header-actions"><button class="btn btn-outline"><i class="ri-download-line"></i> Export</button> <button class="btn btn-primary"><i class="ri-add-line"></i> Mark Attendance</button></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px;">
+    <div class="card" style="padding:20px;text-align:center;">
+      <div style="font-size:32px;font-weight:700;color:var(--success);">8</div>
+      <div style="color:var(--text-muted);">Present Today</div>
+    </div>
+    <div class="card" style="padding:20px;text-align:center;">
+      <div style="font-size:32px;font-weight:700;color:var(--danger);">2</div>
+      <div style="color:var(--text-muted);">Absent</div>
+    </div>
+    <div class="card" style="padding:20px;text-align:center;">
+      <div style="font-size:32px;font-weight:700;color:var(--warning);">1</div>
+      <div style="color:var(--text-muted);">Late</div>
+    </div>
+    <div class="card" style="padding:20px;text-align:center;">
+      <div style="font-size:32px;font-weight:700;color:var(--primary);">3</div>
+      <div style="color:var(--text-muted);">On Leave</div>
+    </div>
+  </div>
+  <div class="card" style="padding:16px;margin-bottom:20px;display:flex;gap:12px;align-items:center;">
+    <input type="date" class="form-control" style="max-width:160px;">
+    <select class="form-control" style="max-width:200px;"><option>All Employees</option><option>Ahmed Ali</option><option>Sara Mohammed</option></select>
+    <button class="btn btn-outline"><i class="ri-filter-line"></i> Filter</button>
+  </div>
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table">
+        <thead><tr><th>Employee</th><th>Role</th><th>Check In</th><th>Check Out</th><th>Hours</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Ahmed Ali</strong></td><td>Store Manager</td><td>08:55 AM</td><td>06:02 PM</td><td>9h 7m</td><td><span class="badge badge-success">Present</span></td></tr>
+          <tr><td><strong>Sara Mohammed</strong></td><td>Cashier</td><td>09:12 AM</td><td>05:45 PM</td><td>8h 33m</td><td><span class="badge badge-warning">Late</span></td></tr>
+          <tr><td><strong>Khalid Hassan</strong></td><td>Sales</td><td>--</td><td>--</td><td>--</td><td><span class="badge badge-danger">Absent</span></td></tr>
+          <tr><td><strong>Nour Al Rashidi</strong></td><td>Cashier</td><td>09:01 AM</td><td>05:58 PM</td><td>8h 57m</td><td><span class="badge badge-success">Present</span></td></tr>
+          <tr><td><strong>Farid Othman</strong></td><td>Inventory</td><td>--</td><td>--</td><td>--</td><td><span class="badge badge-info">On Leave</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

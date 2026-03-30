@@ -1,0 +1,90 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block page_title %}Quotations{% endblock %}
+{% block page_icon %}<i class="ri-file-paper-line"></i>{% endblock %}
+
+{% block breadcrumb %}
+<nav style="padding:10px 24px;font-size:13px;color:#6b7280;background:#f8fafc;border-bottom:1px solid #e5e7eb;">
+    <a href="/dashboard/" style="color:#00AEEF;text-decoration:none;">Dashboard</a>
+    <span style="margin:0 6px;">/</span>
+    <span style="color:#374151;">Sales</span>
+    <span style="margin:0 6px;">/</span>
+    <span style="color:#1A1D27;font-weight:600;">Quotations</span>
+</nav>
+{% endblock %}
+
+{% block content %}
+{% if messages %}
+{% for msg in messages %}<div class="alert alert-{{ msg.tags }}" style="margin-bottom:16px;">{{ msg }}</div>{% endfor %}
+{% endif %}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Quotations</h1>
+        <p class="page-subtitle">Manage customer quotations and proposals</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border,#e5e7eb);">
+        <h3 style="margin:0;font-size:15px;font-weight:700;">All Quotations</h3>
+        <button class="btn btn-primary" onclick="document.getElementById('addQuotationModal').style.display='flex'">
+            <i class="ri-add-line"></i> Create Quotation
+        </button>
+    </div>
+    <div class="card-body" style="padding:0;">
+        <div class="empty-state">
+            <div class="empty-icon"><i class="ri-file-paper-line"></i></div>
+            <h3>No quotations yet</h3>
+            <p>Create your first quotation to get started.</p>
+            <button class="btn btn-primary" onclick="document.getElementById('addQuotationModal').style.display='flex'">
+                <i class="ri-add-line"></i> Create Quotation
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Create Quotation Modal -->
+<div id="addQuotationModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9000;align-items:center;justify-content:center;padding:20px;">
+    <div style="background:#fff;border-radius:16px;padding:28px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,.25);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+            <h3 style="margin:0;font-size:1.1rem;font-weight:700;"><i class="ri-file-paper-line" style="color:#00AEEF;margin-right:8px;"></i>Create Quotation</h3>
+            <button onclick="document.getElementById('addQuotationModal').style.display='none'" style="background:none;border:none;font-size:20px;cursor:pointer;color:#64748b;">&times;</button>
+        </div>
+        <form method="POST" action="/sales/quotations/create/">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label">Customer Name <span style="color:red;">*</span></label>
+                <input type="text" name="customer_name" class="form-control" placeholder="Customer or company name" required>
+            </div>
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">Valid Until</label>
+                    <input type="date" name="valid_until" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Currency</label>
+                    <select name="currency" class="form-control">
+                        <option value="AED">AED — UAE Dirham</option>
+                        <option value="USD">USD — US Dollar</option>
+                        <option value="SAR">SAR — Saudi Riyal</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Notes</label>
+                <textarea name="notes" class="form-control" rows="3" placeholder="Additional notes..."></textarea>
+            </div>
+            <div style="background:rgba(0,174,239,.05);border:1px solid rgba(0,174,239,.2);border-radius:8px;padding:12px;margin-bottom:16px;font-size:13px;color:var(--text-muted);">
+                <i class="ri-information-line" style="color:#00AEEF;"></i>
+                After creating the quotation, you can add line items, apply VAT (5%), and send it to the customer.
+            </div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;">
+                <button type="button" class="btn btn-outline" onclick="document.getElementById('addQuotationModal').style.display='none'">Cancel</button>
+                <button type="submit" class="btn btn-primary"><i class="ri-save-line"></i> Create Quotation</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

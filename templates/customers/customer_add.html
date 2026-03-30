@@ -1,0 +1,90 @@
+{% extends "base/base.html" %}
+
+{% block title %}Add Customer — Labezra{% endblock %}
+{% block page_title %}Add Customer{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="/dashboard/">Home</a>
+    <i class="ri-arrow-right-s-line"></i>
+    <a href="/customers/">Customers</a>
+    <i class="ri-arrow-right-s-line"></i>
+    <span>Add Customer</span>
+</nav>
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Add Customer</h1>
+        <p class="page-subtitle">Add a new customer to your database</p>
+    </div>
+    <div class="page-actions">
+        <a href="/customers/" class="btn btn-secondary">
+            <i class="ri-arrow-left-line"></i> Back
+        </a>
+    </div>
+</div>
+
+<form method="POST" action="" style="max-width:760px;margin:0 auto;">
+    {% csrf_token %}
+
+    <!-- Contact Details -->
+    <div class="card" style="margin-bottom:20px;max-width:760px;margin-left:auto;margin-right:auto;">
+        <div class="card-header">
+            <h3 class="card-title"><i class="ri-contacts-line"
+                    style="color:var(--primary);margin-right:8px;"></i>Contact Details</h3>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label class="form-label">Full Name <span class="required">*</span></label>
+                <input type="text" name="name" class="form-control" placeholder="Customer's full name" required>
+            </div>
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="tel" name="phone" class="form-control" placeholder="+971 50 000 0000">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" placeholder="customer@email.com">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Address</label>
+                <textarea name="address" class="form-control" rows="3"
+                    placeholder="Street address, city, country..."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tax Information -->
+    <div class="card" style="margin-bottom:24px;max-width:760px;margin-left:auto;margin-right:auto;">
+        <div class="card-header">
+            <h3 class="card-title"><i class="ri-file-text-line" style="color:var(--primary);margin-right:8px;"></i>Tax
+                Information</h3>
+        </div>
+        <div class="card-body">
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">
+                <i class="ri-information-line"></i> TRN (Tax Registration Number) is required for B2B VAT invoices.
+            </p>
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">TRN <span style="color:var(--text-muted);font-weight:400;">(Optional —
+                            B2B)</span></label>
+                    <input type="text" name="trn" class="form-control" placeholder="100XXXXXXXXX3">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Company Name</label>
+                    <input type="text" name="company_name" class="form-control" placeholder="Company or trade name">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display:flex;gap:12px;">
+        <button type="submit" class="btn btn-primary btn-lg">
+            <i class="ri-user-add-line"></i> Add Customer
+        </button>
+        <a href="/customers/" class="btn btn-secondary btn-lg">Cancel</a>
+    </div>
+</form>
+{% endblock %}

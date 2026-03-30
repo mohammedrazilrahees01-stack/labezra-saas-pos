@@ -1,0 +1,30 @@
+{% extends "base/base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% block page_title %}Admin Panel{% endblock %}
+{% block page_icon %}<i class="ri-shield-star-line"></i>{% endblock %}
+{% block content %}
+<div style="padding:24px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px">
+    {% for item in "Django Admin,ri-settings-4-line,#6366f1,/admin/|User Management,ri-user-settings-line,#00AEEF,/admin/auth/user/|Company Settings,ri-building-line,#10b981,/company/|Subscription Plans,ri-vip-crown-line,#f59e0b,/company/subscription/|Activity Log,ri-history-line,#8b5cf6,/activity/|Branches,ri-map-2-line,#06b6d4,/company/branches/|Roles & Permissions,ri-shield-user-line,#ef4444,/settings/roles/|Reports,ri-bar-chart-line,#ec4899,/reports/"|split:"|" %}
+    {% with parts=item|cut:""|split:"," %}
+    <a href="{{ item|cut:item|default:'#' }}" class="card" style="padding:20px;text-align:center;text-decoration:none;transition:.2s" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+      <div style="width:48px;height:48px;border-radius:12px;background:rgba(0,174,239,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;color:var(--primary);font-size:22px"><i class="ri-settings-line"></i></div>
+      <div style="font-weight:600;font-size:13px;color:var(--text-primary)">{{ item|truncatechars:20 }}</div>
+    </a>
+    {% endwith %}
+    {% endfor %}
+  </div>
+  <div class="card" style="padding:20px;margin-top:20px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <h3 style="font-size:15px;font-weight:700">Quick Access</h3>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <a href="/admin/" target="_blank" class="btn btn-primary"><i class="ri-external-link-line"></i> Open Django Admin</a>
+      <a href="/activity/" class="btn btn-outline"><i class="ri-history-line"></i> Activity Log</a>
+      <a href="/company/branches/" class="btn btn-outline"><i class="ri-building-line"></i> Manage Branches</a>
+      <a href="/settings/roles/" class="btn btn-outline"><i class="ri-shield-user-line"></i> Roles & Permissions</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

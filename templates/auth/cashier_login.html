@@ -1,0 +1,29 @@
+{% extends "base/base_auth.html" %}
+{% block title %}Cashier Login — Labezra ERP{% endblock %}
+
+{% block auth_content %}
+<div class="auth-form-title">Cashier Login</div>
+<div class="auth-form-sub">Enter your cashier PIN to start your shift</div>
+
+<form method="POST" action="">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Cashier username" required autofocus>
+    </div>
+
+    <div class="form-group">
+        <label>PIN / Password</label>
+        <input type="password" name="password" placeholder="Enter PIN" required>
+    </div>
+
+    <button type="submit" class="btn-auth" style="background:#1A1D27;">
+        <i class="ri-user-star-line" style="margin-right:6px;"></i> Start Shift
+    </button>
+</form>
+
+<div class="auth-link">
+    Manager? <a href="/login/">Admin Login</a>
+</div>
+{% endblock %}

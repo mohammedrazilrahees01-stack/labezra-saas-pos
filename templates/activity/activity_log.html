@@ -1,0 +1,91 @@
+{% extends "base/base.html" %}
+{% block title %}Activity Log — Labezra ERP{% endblock %}
+{% block page_title %}Activity Log{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2 class="page-title"><i class="ri-pulse-line" style="color:var(--primary);margin-right:8px;"></i>Activity Log</h2>
+        <p class="page-subtitle">All system actions for your company — {{ total_count }} total entries</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <span class="card-title"><i class="ri-history-line" style="margin-right:6px;color:var(--primary);"></i>Recent Activity</span>
+        <span class="badge badge-primary">{{ total_count }} Records</span>
+    </div>
+    <div class="card-body" style="padding:0;">
+        {% if page_obj %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th data-i18n="th_user">User</th>
+                        <th data-i18n="th_action">Action</th>
+                        <th>Date &amp; Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in page_obj %}
+                    <tr>
+                        <td style="color:var(--text-light);font-size:12px;">{{ forloop.counter|add:page_obj.start_index|add:"-1" }}</td>
+                        <td>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <div style="width:30px;height:30px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;">
+                                    {{ log.user.username|first|upper|default:"?" }}
+                                </div>
+                                <div>
+                                    <div style="font-weight:600;font-size:13px;">{{ log.user.get_full_name|default:log.user.username|default:"System" }}</div>
+                                    <div style="font-size:11px;color:var(--text-light);">{{ log.user.username|default:"-" }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span style="font-size:13.5px;color:var(--text-med);">
+                                <i class="ri-arrow-right-s-line" style="color:var(--primary);"></i>
+                                {{ log.action }}
+                            </span>
+                        </td>
+                        <td style="white-space:nowrap;">
+                            <div style="font-size:13px;font-weight:500;">{{ log.created|date:"d M Y" }}</div>
+                            <div style="font-size:11px;color:var(--text-light);">{{ log.created|time:"H:i" }}</div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+        <div style="padding:16px 20px;display:flex;align-items:center;justify-content:between;gap:10px;border-top:1px solid var(--border);">
+            <span style="font-size:13px;color:var(--text-light);">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+            <div style="display:flex;gap:6px;margin-left:auto;">
+                {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-secondary btn-sm">
+                    <i class="ri-arrow-left-s-line"></i> Previous
+                </a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="btn btn-primary btn-sm">
+                    Next <i class="ri-arrow-right-s-line"></i>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="empty-state" style="padding:60px 20px;">
+            <i class="ri-pulse-line"></i>
+            <p>No activity recorded yet.</p>
+            <p style="font-size:12px;margin-top:6px;">Actions like creating invoices, adding products, and running payroll will appear here.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

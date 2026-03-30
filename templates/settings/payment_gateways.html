@@ -1,0 +1,44 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Payment Gateways - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-bank-card-line"></i>{% endblock %}
+{% block page_title %}Payment Gateways{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div><h2 class="page-heading">Payment Gateways</h2><p class="page-subheading">Configure payment methods for your business</p></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;">
+    <div class="card" style="padding:20px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><div style="width:48px;height:48px;background:#f0fdf4;border-radius:8px;display:flex;align-items:center;justify-content:center;"><i class="ri-money-dollar-circle-line" style="font-size:24px;color:#16a34a;"></i></div><div><strong>Cash</strong><div style="font-size:13px;color:var(--text-muted);">Built-in payment method</div></div><div style="margin-left:auto;"><span class="badge badge-success">Enabled</span></div></div>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">Accept cash payments at your POS. Automatically tracks cash drawer balance.</p>
+      <button class="btn btn-outline" style="width:100%;"><i class="ri-settings-line"></i> Configure</button>
+    </div>
+    <div class="card" style="padding:20px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><div style="width:48px;height:48px;background:#f0f9ff;border-radius:8px;display:flex;align-items:center;justify-content:center;"><i class="ri-visa-line" style="font-size:24px;color:#0061f2;"></i></div><div><strong>Stripe</strong><div style="font-size:13px;color:var(--text-muted);">Online card payments</div></div><div style="margin-left:auto;"><span class="badge badge-secondary">Disabled</span></div></div>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">Accept Visa, Mastercard, and Amex through Stripe's secure payment gateway.</p>
+      <button class="btn btn-primary" style="width:100%;"><i class="ri-settings-line"></i> Connect Stripe</button>
+    </div>
+    <div class="card" style="padding:20px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><div style="width:48px;height:48px;background:#fff7ed;border-radius:8px;display:flex;align-items:center;justify-content:center;"><i class="ri-secure-payment-line" style="font-size:24px;color:#ea580c;"></i></div><div><strong>PayTabs</strong><div style="font-size:13px;color:var(--text-muted);">UAE/MENA payment gateway</div></div><div style="margin-left:auto;"><span class="badge badge-success">Enabled</span></div></div>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">PayTabs is a leading payment gateway in the UAE. Supports local cards and currencies.</p>
+      <button class="btn btn-outline" style="width:100%;"><i class="ri-settings-line"></i> Configure</button>
+    </div>
+    <div class="card" style="padding:20px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><div style="width:48px;height:48px;background:#fdf4ff;border-radius:8px;display:flex;align-items:center;justify-content:center;"><i class="ri-bank-card-2-line" style="font-size:24px;color:#9333ea;"></i></div><div><strong>Tap Payments</strong><div style="font-size:13px;color:var(--text-muted);">GCC payment solution</div></div><div style="margin-left:auto;"><span class="badge badge-secondary">Disabled</span></div></div>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">Tap Payments supports 10+ payment methods across UAE, KSA, Kuwait, and more.</p>
+      <button class="btn btn-primary" style="width:100%;"><i class="ri-settings-line"></i> Connect Tap</button>
+    </div>
+    <div class="card" style="padding:20px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><div style="width:48px;height:48px;background:#f0fdf4;border-radius:8px;display:flex;align-items:center;justify-content:center;"><i class="ri-apple-line" style="font-size:24px;color:#1d1d1f;"></i></div><div><strong>Apple Pay</strong><div style="font-size:13px;color:var(--text-muted);">Contactless payment</div></div><div style="margin-left:auto;"><span class="badge badge-secondary">Disabled</span></div></div>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">Enable Apple Pay for fast contactless payments via iPhone and Apple Watch.</p>
+      <button class="btn btn-primary" style="width:100%;"><i class="ri-settings-line"></i> Enable</button>
+    </div>
+    <div class="card" style="padding:20px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><div style="width:48px;height:48px;background:#fff7ed;border-radius:8px;display:flex;align-items:center;justify-content:center;"><i class="ri-google-line" style="font-size:24px;color:#4285f4;"></i></div><div><strong>Google Pay</strong><div style="font-size:13px;color:var(--text-muted);">Android payments</div></div><div style="margin-left:auto;"><span class="badge badge-secondary">Disabled</span></div></div>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">Accept Google Pay from Android devices for fast secure checkout.</p>
+      <button class="btn btn-primary" style="width:100%;"><i class="ri-settings-line"></i> Enable</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

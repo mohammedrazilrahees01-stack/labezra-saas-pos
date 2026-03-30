@@ -1,0 +1,386 @@
+{% extends "base/base.html" %}
+{% block title %}Dashboard — Labezra{% endblock %}
+{% block page_icon %}<i class="ri-home-4-line"></i>{% endblock %}
+{% block page_title %}<span data-i18n="nav_dashboard">Dashboard</span>{% endblock %}
+
+{% block content %}
+
+<!-- ── Dashboard Filters ── -->
+<div class="dashboard-filters animate-fade-in">
+    <a href="?range=today" class="filter-pill {% if request.GET.range == 'today' or not request.GET.range %}active{% endif %}" data-i18n="filter_today">Today</a>
+    <a href="?range=7days" class="filter-pill {% if request.GET.range == '7days' %}active{% endif %}" data-i18n="filter_7days">7 Days</a>
+    <a href="?range=30days" class="filter-pill {% if request.GET.range == '30days' %}active{% endif %}" data-i18n="filter_30days">30 Days</a>
+    <a href="?range=1year" class="filter-pill {% if request.GET.range == '1year' %}active{% endif %}" data-i18n="filter_1year">1 Year</a>
+</div>
+
+<!-- ══════════════════════════════════════════
+     KPI ROW — All 8 cards in one responsive row
+════════════════════════════════════════════ -->
+<div class="kpi-row kpi-row-full animate-slide-up" style="animation-delay:0.05s;">
+    <div class="kpi-card" data-counter data-value="{{ today_sales|default:'0' }}">
+        <div class="kpi-icon blue"><i class="ri-money-dollar-circle-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-label" data-i18n="lbl_todays_sales">Today's Sales</span>
+            <span class="kpi-value">AED <span class="counter-val">{{ today_sales|default:"0.00" }}</span></span>
+        </div>
+    </div>
+    <div class="kpi-card" data-counter data-value="{{ revenue|default:'0' }}">
+        <div class="kpi-icon teal"><i class="ri-bar-chart-2-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-label" data-i18n="lbl_revenue">Revenue</span>
+            <span class="kpi-value">AED <span class="counter-val">{{ revenue|default:"0.00" }}</span></span>
+        </div>
+    </div>
+    <div class="kpi-card" data-counter data-value="{{ orders|default:'0' }}">
+        <div class="kpi-icon green"><i class="ri-shopping-bag-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-label" data-i18n="lbl_orders">Orders</span>
+            <span class="kpi-value counter-val">{{ orders|default:"0" }}</span>
+        </div>
+    </div>
+    <div class="kpi-card" data-counter data-value="{{ profit|default:'0' }}">
+        <div class="kpi-icon purple"><i class="ri-line-chart-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-label" data-i18n="lbl_profit">Profit</span>
+            <span class="kpi-value">AED <span class="counter-val">{{ profit|default:"0.00" }}</span></span>
+        </div>
+    </div>
+    <div class="kpi-card" data-counter data-value="{{ total_products|default:'0' }}">
+        <div class="kpi-icon indigo"><i class="ri-box-3-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-label" data-i18n="lbl_total_products">Products</span>
+            <span class="kpi-value counter-val">{{ total_products|default:"0" }}</span>
+        </div>
+    </div>
+    <div class="kpi-card" data-counter data-value="{{ total_customers|default:'0' }}">
+        <div class="kpi-icon cyan"><i class="ri-group-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-label" data-i18n="lbl_customers">Customers</span>
+            <span class="kpi-value counter-val">{{ total_customers|default:"0" }}</span>
+        </div>
+    </div>
+    <div class="kpi-card" data-counter data-value="{{ total_employees|default:'0' }}">
+        <div class="kpi-icon orange"><i class="ri-team-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-label" data-i18n="lbl_employees">Employees</span>
+            <span class="kpi-value counter-val">{{ total_employees|default:"0" }}</span>
+        </div>
+    </div>
+    <div class="kpi-card" data-counter data-value="{{ total_expenses|default:'0' }}">
+        <div class="kpi-icon red"><i class="ri-bill-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-label" data-i18n="lbl_expenses">Expenses</span>
+            <span class="kpi-value">AED <span class="counter-val">{{ total_expenses|default:"0.00" }}</span></span>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     QUICK ACTIONS STRIP
+════════════════════════════════════════════ -->
+<div class="quick-actions-section animate-slide-up" style="animation-delay:0.1s;">
+    <div class="section-title">
+        <i class="ri-flashlight-line"></i>
+        <span data-i18n="lbl_quick_actions">Quick Actions</span>
+    </div>
+    <div class="quick-actions-grid">
+        <a href="/pos/" class="qa-btn qa-primary">
+            <div class="qa-icon"><i class="ri-computer-line"></i></div>
+            <span data-i18n="qa_open_pos">Open POS</span>
+        </a>
+        <a href="/sales/invoices/create/" class="qa-btn">
+            <div class="qa-icon"><i class="ri-file-add-line"></i></div>
+            <span data-i18n="qa_new_invoice">New Invoice</span>
+        </a>
+        <a href="/inventory/add/" class="qa-btn">
+            <div class="qa-icon"><i class="ri-box-3-line"></i></div>
+            <span data-i18n="qa_add_product">Add Product</span>
+        </a>
+        <a href="/customers/add/" class="qa-btn">
+            <div class="qa-icon"><i class="ri-user-add-line"></i></div>
+            <span data-i18n="qa_add_customer">Add Customer</span>
+        </a>
+        <a href="/pos/daily-report/" class="qa-btn">
+            <div class="qa-icon"><i class="ri-calendar-check-line"></i></div>
+            <span data-i18n="qa_daily_report">Daily Report</span>
+        </a>
+        <a href="/inventory/" class="qa-btn">
+            <div class="qa-icon"><i class="ri-stack-line"></i></div>
+            <span data-i18n="qa_inventory">Inventory</span>
+        </a>
+        <a href="/expenses/" class="qa-btn">
+            <div class="qa-icon"><i class="ri-money-dollar-circle-line"></i></div>
+            <span data-i18n="qa_add_expense">Expenses</span>
+        </a>
+        <a href="/payroll/" class="qa-btn">
+            <div class="qa-icon"><i class="ri-bank-card-line"></i></div>
+            <span data-i18n="qa_payroll">Payroll</span>
+        </a>
+        <a href="/cashiers/" class="qa-btn">
+            <div class="qa-icon"><i class="ri-user-star-line"></i></div>
+            <span data-i18n="qa_cashiers">Cashiers</span>
+        </a>
+        <a href="/reports/" class="qa-btn">
+            <div class="qa-icon"><i class="ri-bar-chart-2-line"></i></div>
+            <span data-i18n="qa_reports">Reports</span>
+        </a>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     CHARTS GRID
+════════════════════════════════════════════ -->
+<div class="analytics-grid animate-slide-up" style="animation-delay:0.15s;">
+    <div class="chart-card">
+        <div class="chart-header">
+            <span class="card-title" data-i18n="lbl_weekly_sales">Weekly Sales</span>
+        </div>
+        <div class="chart-wrap" style="height:220px;">
+            <canvas id="salesChart"></canvas>
+        </div>
+    </div>
+    <div class="chart-card">
+        <div class="chart-header">
+            <span class="card-title" data-i18n="lbl_inventory_status">Inventory Status</span>
+        </div>
+        <div class="chart-wrap" style="height:220px;">
+            <canvas id="inventoryChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="analytics-grid animate-slide-up" style="animation-delay:0.2s;">
+    <div class="chart-card">
+        <div class="chart-header">
+            <span class="card-title" data-i18n="lbl_monthly_revenue">Monthly Revenue</span>
+        </div>
+        <div class="chart-wrap" style="height:220px;">
+            <canvas id="monthlyChart"></canvas>
+        </div>
+    </div>
+    <div class="chart-card">
+        <div class="chart-header">
+            <span class="card-title" data-i18n="lbl_top_products">Top Products</span>
+        </div>
+        <div class="chart-wrap" style="height:220px;">
+            <canvas id="productsChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     DATA TABLES
+════════════════════════════════════════════ -->
+<div class="analytics-grid animate-slide-up" style="animation-delay:0.25s;">
+    <!-- Recent Invoices -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title" data-i18n="lbl_recent_invoices">Recent Invoices</span>
+            <a href="/sales/invoices/" class="btn btn-sm btn-outline" data-i18n="btn_view_all">View All</a>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th data-i18n="th_number">Invoice #</th>
+                    <th data-i18n="th_customer">Customer</th>
+                    <th data-i18n="th_date">Date</th>
+                    <th data-i18n="th_amount">Amount</th>
+                    <th data-i18n="th_status">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for invoice in recent_invoices %}
+                <tr class="table-row-animate">
+                    <td><a href="/sales/invoices/{{ invoice.id }}/" class="text-primary">#{{ invoice.id }}</a></td>
+                    <td>{{ invoice.customer }}</td>
+                    <td>{{ invoice.date }}</td>
+                    <td>AED {{ invoice.total }}</td>
+                    <td>
+                        {% if invoice.status == 'paid' %}
+                        <span class="badge badge-success" data-i18n="status_paid">Paid</span>
+                        {% elif invoice.status == 'pending' %}
+                        <span class="badge badge-warning" data-i18n="status_pending">Pending</span>
+                        {% else %}
+                        <span class="badge badge-danger" data-i18n="status_overdue">Overdue</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="table-empty" data-i18n="msg_no_invoices">No recent invoices</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Low Stock Alerts -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title" data-i18n="lbl_low_stock_alerts">Low Stock Alerts</span>
+            <a href="/inventory/" class="btn btn-sm btn-outline" data-i18n="btn_view_all">View All</a>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th data-i18n="th_product">Product</th>
+                    <th data-i18n="th_category">Category</th>
+                    <th data-i18n="th_stock">Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in low_stock_products %}
+                <tr class="table-row-animate">
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.category }}</td>
+                    <td><span class="badge badge-danger">{{ item.stock }}</span></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="3" class="table-empty" data-i18n="msg_no_low_stock">No low stock alerts</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="card data-card animate-slide-up" style="animation-delay:0.3s;">
+    <div class="card-header">
+        <span class="card-title" data-i18n="lbl_recent_activity">Recent Activity</span>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th data-i18n="th_time">Time</th>
+                <th data-i18n="th_user">User</th>
+                <th data-i18n="th_action">Action</th>
+                <th data-i18n="th_details">Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr class="table-row-animate">
+                <td>{{ log.timestamp }}</td>
+                <td>{{ log.user }}</td>
+                <td>{{ log.action }}</td>
+                <td>{{ log.details }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4" class="table-empty" data-i18n="msg_no_activity">No recent activity</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- ══════════════════════════════════════════
+     CHARTS JAVASCRIPT
+════════════════════════════════════════════ -->
+{% block extra_js %}
+<script>
+(function () {
+    // ── Parse Django context safely ──
+    function safeParse(raw, fallback) {
+        try { var v = JSON.parse(raw); return (Array.isArray(v) && v.length) ? v : fallback; }
+        catch (e) { return fallback; }
+    }
+
+    var salesLabels = safeParse('{{ sales_labels|escapejs }}', ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']);
+    var salesData   = safeParse('{{ sales_data|escapejs }}',   [0,0,0,0,0,0,0]);
+    var invLabels   = safeParse('{{ inv_labels|escapejs }}',   ['In Stock','Low Stock','Out of Stock']);
+    var invData     = safeParse('{{ inv_data|escapejs }}',     [0,0,0]);
+    var monthLabels = safeParse('{{ month_labels|escapejs }}', ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']);
+    var monthData   = safeParse('{{ month_data|escapejs }}',   Array(12).fill(0));
+    var prodLabels  = safeParse('{{ prod_labels|escapejs }}',  ['No data']);
+    var prodData    = safeParse('{{ prod_data|escapejs }}',    [0]);
+
+    // Weekly Sales Line Chart
+    new Chart(document.getElementById('salesChart'), {
+        type: 'line',
+        data: {
+            labels: salesLabels,
+            datasets: [{
+                label: 'Sales (AED)',
+                data: salesData,
+                borderColor: '#00AEEF',
+                backgroundColor: 'rgba(0,174,239,0.12)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#00AEEF',
+                pointRadius: 4
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } } }
+        }
+    });
+
+    // Inventory Doughnut
+    new Chart(document.getElementById('inventoryChart'), {
+        type: 'doughnut',
+        data: {
+            labels: invLabels,
+            datasets: [{ data: invData, backgroundColor: ['#00AEEF','#D97706','#DC2626'], borderWidth: 2 }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom', labels: { padding: 16 } } }
+        }
+    });
+
+    // Monthly Revenue Bar
+    new Chart(document.getElementById('monthlyChart'), {
+        type: 'bar',
+        data: {
+            labels: monthLabels,
+            datasets: [{ label: 'Revenue (AED)', data: monthData, backgroundColor: '#00AEEF', borderRadius: 4 }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } } }
+        }
+    });
+
+    // Top Products Horizontal Bar
+    new Chart(document.getElementById('productsChart'), {
+        type: 'bar',
+        data: {
+            labels: prodLabels,
+            datasets: [{ label: 'Units Sold', data: prodData, backgroundColor: '#16A34A', borderRadius: 4 }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { x: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } } }
+        }
+    });
+
+    // ── Counter animation ──
+    function animateCounter(el, target, isFloat) {
+        var start = 0;
+        var duration = 1200;
+        var startTime = null;
+        var num = parseFloat(target) || 0;
+        function step(ts) {
+            if (!startTime) startTime = ts;
+            var progress = Math.min((ts - startTime) / duration, 1);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            var current = eased * num;
+            el.textContent = isFloat ? current.toFixed(2) : Math.round(current).toLocaleString();
+            if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+    }
+
+    document.querySelectorAll('.counter-val').forEach(function(el) {
+        var raw = el.textContent.replace(/[^0-9.]/g, '');
+        var isFloat = raw.indexOf('.') >= 0;
+        animateCounter(el, raw, isFloat);
+    });
+})();
+</script>
+{% endblock %}
+
+{% endblock %}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 — Server Error — Labezra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F0F4F8;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            padding: 56px 48px;
+            text-align: center;
+            max-width: 480px;
+            width: 100%;
+        }
+
+        .error-code {
+            font-size: 80px;
+            font-weight: 800;
+            color: #00AEEF;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .error-icon {
+            font-size: 48px;
+            color: #DC2626;
+            margin-bottom: 16px;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 15px;
+            color: #6B7280;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #00AEEF;
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #0090C7;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #6B7280;
+            border: 1px solid #D1D5DB;
+            margin-left: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: #F9FAFB;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1A1D27;
+            margin-bottom: 32px;
+        }
+
+        .logo span {
+            color: #00AEEF;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <div class="logo">Lab<span>ezra</span></div>
+        <div class="error-code">500</div>
+        <div class="error-icon"><i class="ri-server-line"></i></div>
+        <h2>Server Error</h2>
+        <p>Something went wrong on our end. Our team has been notified. Please try again in a few moments.</p>
+        <div>
+            <a href="/dashboard/" class="btn">
+                <i class="ri-home-line"></i> Go Home
+            </a>
+            <a href="javascript:location.reload()" class="btn btn-secondary">
+                <i class="ri-refresh-line"></i> Retry
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

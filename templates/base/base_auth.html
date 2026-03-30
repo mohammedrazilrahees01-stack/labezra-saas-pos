@@ -1,0 +1,332 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Labezra ERP{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, 'Segoe UI', Roboto, sans-serif;
+            background: #F0F4F8;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Auth container */
+        .auth-wrap {
+            display: flex;
+            width: 100%;
+            max-width: 960px;
+            min-height: 580px;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.14);
+            margin: 24px;
+        }
+
+        /* ── LEFT PANEL ── */
+        .auth-brand {
+            flex: 0 0 44%;
+            background: #1A1D27;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-brand::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(0, 174, 239, 0.18) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .auth-brand::after {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            left: -60px;
+            width: 260px;
+            height: 260px;
+            background: radial-gradient(circle, rgba(0, 174, 239, 0.10) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .auth-logo {
+            width: 140px;
+            margin-bottom: 28px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-brand-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .auth-brand-sub {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+            line-height: 1.6;
+            max-width: 260px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-features {
+            margin-top: 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+        }
+
+        .auth-feature-item i {
+            font-size: 18px;
+            color: #00AEEF;
+            flex-shrink: 0;
+        }
+
+        .auth-powered {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.25);
+            z-index: 1;
+        }
+
+        .auth-powered span {
+            color: #00AEEF;
+        }
+
+        /* ── RIGHT PANEL ── */
+        .auth-form-panel {
+            flex: 1;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 48px 48px;
+            overflow-y: auto;
+        }
+
+        .auth-form-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 6px;
+        }
+
+        .auth-form-sub {
+            font-size: 13.5px;
+            color: #64748B;
+            margin-bottom: 28px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #374151;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 10px 14px;
+            border: 1.5px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #00AEEF;
+            box-shadow: 0 0 0 3px rgba(0, 174, 239, 0.12);
+        }
+
+        .btn-auth {
+            width: 100%;
+            padding: 12px;
+            background: #00AEEF;
+            color: #fff;
+            border: none;
+            border-radius: 9px;
+            font-size: 14.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            margin-top: 4px;
+        }
+
+        .btn-auth:hover {
+            background: #0090C7;
+            transform: translateY(-1px);
+        }
+
+        .btn-auth:active {
+            transform: none;
+        }
+
+        .auth-link {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #64748B;
+            text-align: center;
+        }
+
+        .auth-link a {
+            color: #00AEEF;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .auth-link a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        .alert-danger {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-success {
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .alert-warning {
+            background: #fffbeb;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+
+        @media(max-width: 680px) {
+            .auth-brand {
+                display: none;
+            }
+
+            .auth-form-panel {
+                padding: 32px 24px;
+            }
+
+            .auth-wrap {
+                margin: 0;
+                border-radius: 0;
+                min-height: 100vh;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="auth-wrap">
+
+        <!-- LEFT brand panel -->
+        <div class="auth-brand">
+            <img src="{% static 'images/labezra-logo-white.png' %}" class="auth-logo" alt="Labezra"
+                onerror="this.style.display='none'">
+            <div class="auth-brand-title">Labezra ERP</div>
+            <div class="auth-brand-sub">Enterprise POS &amp; SAAS for UAE &amp; Saudi Arabia</div>
+
+            <div class="auth-features">
+                <div class="auth-feature-item">
+                    <i class="ri-shield-check-line"></i>
+                    <span>FTA &amp; ZATCA Compliant</span>
+                </div>
+                <div class="auth-feature-item">
+                    <i class="ri-file-text-line"></i>
+                    <span>VAT Invoicing &amp; QR Codes</span>
+                </div>
+                <div class="auth-feature-item">
+                    <i class="ri-bar-chart-2-line"></i>
+                    <span>Real-time Analytics</span>
+                </div>
+                <div class="auth-feature-item">
+                    <i class="ri-translate-2"></i>
+                    <span>Arabic &amp; English Support</span>
+                </div>
+            </div>
+
+            <div class="auth-powered">Powered by <span>Labezra</span></div>
+        </div>
+
+        <!-- RIGHT form panel -->
+        <div class="auth-form-panel">
+
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">
+                <i class="ri-alert-line"></i> {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            {% block auth_content %}{% endblock %}
+
+        </div>
+    </div>
+
+</body>
+
+</html>

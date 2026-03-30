@@ -1,0 +1,26 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}User Management - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-user-settings-line"></i>{% endblock %}
+{% block page_title %}User Management{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div><h2 class="page-heading">User Management</h2><p class="page-subheading">Manage team members and access roles</p></div>
+    <div class="header-actions"><button class="btn btn-primary"><i class="ri-user-add-line"></i> Invite User</button></div>
+  </div>
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table">
+        <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Branch</th><th>Last Login</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr><td><div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;">A</div><strong>Ahmed Ali</strong></div></td><td>ahmed@business.ae</td><td><select class="form-control" style="max-width:120px;"><option>Manager</option><option>Owner</option><option>Cashier</option></select></td><td>Main Branch</td><td>Today, 9:30 AM</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-sm btn-outline"><i class="ri-edit-line"></i></button> <button class="btn btn-sm btn-danger">Remove</button></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;background:#f59e0b;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;">S</div><strong>Sara Mohammed</strong></div></td><td>sara@business.ae</td><td><select class="form-control" style="max-width:120px;"><option>Cashier</option><option selected>Cashier</option></select></td><td>JLT Branch</td><td>Today, 8:55 AM</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-sm btn-outline"><i class="ri-edit-line"></i></button> <button class="btn btn-sm btn-danger">Remove</button></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;background:#10b981;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;">K</div><strong>Khalid Hassan</strong></div></td><td>khalid@business.ae</td><td><select class="form-control" style="max-width:120px;"><option>Manager</option><option selected>Manager</option></select></td><td>Sharjah Branch</td><td>Yesterday, 5:20 PM</td><td><span class="badge badge-success">Active</span></td><td><button class="btn btn-sm btn-outline"><i class="ri-edit-line"></i></button> <button class="btn btn-sm btn-danger">Remove</button></td></tr>
+          <tr><td><div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;background:#94a3b8;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;">N</div><strong>Nour Al Rashidi</strong></div></td><td>nour@business.ae</td><td><select class="form-control" style="max-width:120px;"><option>Cashier</option></select></td><td>Main Branch</td><td>3 days ago</td><td><span class="badge badge-secondary">Inactive</span></td><td><button class="btn btn-sm btn-outline"><i class="ri-edit-line"></i></button> <button class="btn btn-sm btn-danger">Remove</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

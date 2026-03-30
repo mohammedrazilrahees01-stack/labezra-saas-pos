@@ -1,0 +1,26 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Supplier Quotes - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-price-tag-3-line"></i>{% endblock %}
+{% block page_title %}Supplier Quotes{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div><h2 class="page-heading">Supplier Quotes</h2><p class="page-subheading">Request and manage quotes from suppliers</p></div>
+    <div class="header-actions"><button class="btn btn-primary"><i class="ri-add-line"></i> Request Quote</button></div>
+  </div>
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table">
+        <thead><tr><th>Quote #</th><th>Supplier</th><th>Date</th><th>Items</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr><td><strong>#SQ-025</strong></td><td>Al Futtaim Supplies</td><td>17 Mar 2026</td><td>5 items</td><td>AED 22,500.00</td><td><span class="badge badge-warning">Pending</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a> <button class="btn btn-sm btn-primary">Convert to PO</button></td></tr>
+          <tr><td><strong>#SQ-024</strong></td><td>Gulf Electronics Dist</td><td>14 Mar 2026</td><td>8 items</td><td>AED 45,000.00</td><td><span class="badge badge-success">Received</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a> <button class="btn btn-sm btn-primary">Convert to PO</button></td></tr>
+          <tr><td><strong>#SQ-023</strong></td><td>Samsung UAE Partner</td><td>10 Mar 2026</td><td>3 items</td><td>AED 98,000.00</td><td><span class="badge badge-danger">Rejected</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a></td></tr>
+          <tr><td><strong>#SQ-022</strong></td><td>Apple Premium Reseller</td><td>05 Mar 2026</td><td>10 items</td><td>AED 175,000.00</td><td><span class="badge badge-success">Received</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a> <button class="btn btn-sm btn-primary">Convert to PO</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

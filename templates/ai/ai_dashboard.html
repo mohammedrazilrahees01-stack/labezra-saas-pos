@@ -1,0 +1,296 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}AI Intelligence — Labezra ERP{% endblock %}
+{% block page_icon %}<i class="ri-robot-line"></i>{% endblock %}
+{% block page_title %}AI Intelligence Center{% endblock %}
+
+{% block content %}
+<div class="ai-hero">
+    <div class="ai-hero-content">
+        <div class="ai-badge"><i class="ri-robot-line"></i> Powered by Labezra AI</div>
+        <h2>AI Business Intelligence</h2>
+        <p>Your store, on autopilot. Real-time predictions, smart automation, and actionable insights.</p>
+    </div>
+    <div class="ai-hero-visual">🤖</div>
+</div>
+
+<div class="ai-grid">
+    <!-- Sales Forecast -->
+    <div class="ai-card">
+        <div class="ai-card-header">
+            <div class="ai-card-icon" style="background:rgba(0,174,239,.1);color:#00AEEF;"><i class="ri-line-chart-line"></i></div>
+            <div>
+                <div class="ai-card-title">Sales Forecast</div>
+                <div class="ai-card-sub">Next 7 days prediction</div>
+            </div>
+            <span class="ai-badge-small">AI</span>
+        </div>
+        <div class="ai-forecast-bars" id="forecastBars"></div>
+        <div class="ai-insight">📈 Revenue expected to increase <strong>+18%</strong> this weekend based on historical patterns.</div>
+    </div>
+
+    <!-- Heatmap -->
+    <div class="ai-card">
+        <div class="ai-card-header">
+            <div class="ai-card-icon" style="background:rgba(245,158,11,.1);color:#f59e0b;"><i class="ri-fire-line"></i></div>
+            <div>
+                <div class="ai-card-title">Revenue Heatmap</div>
+                <div class="ai-card-sub">Best hours to generate revenue</div>
+            </div>
+            <span class="ai-badge-small">AI</span>
+        </div>
+        <div class="heatmap-grid" id="heatmapGrid"></div>
+        <div class="ai-insight">🔥 Peak hours are <strong>12-2pm</strong> and <strong>7-9pm</strong>. Staff accordingly.</div>
+    </div>
+
+    <!-- CLV Tracker -->
+    <div class="ai-card">
+        <div class="ai-card-header">
+            <div class="ai-card-icon" style="background:rgba(139,92,246,.1);color:#8b5cf6;"><i class="ri-user-star-line"></i></div>
+            <div>
+                <div class="ai-card-title">Customer Lifetime Value</div>
+                <div class="ai-card-sub">Top customers by total spend</div>
+            </div>
+        </div>
+        <div class="clv-list">
+            <div class="clv-item"><div class="clv-rank gold">1</div><div class="clv-info"><span>Ahmed Al-Rashidi</span><small>42 visits • AED 8,420</small></div><div class="clv-bar"><div class="clv-fill" style="width:100%;background:#f59e0b;"></div></div></div>
+            <div class="clv-item"><div class="clv-rank silver">2</div><div class="clv-info"><span>Sara Mohammed</span><small>38 visits • AED 7,100</small></div><div class="clv-bar"><div class="clv-fill" style="width:84%;background:#94a3b8;"></div></div></div>
+            <div class="clv-item"><div class="clv-rank bronze">3</div><div class="clv-info"><span>Khalid Al-Mansoori</span><small>31 visits • AED 5,890</small></div><div class="clv-bar"><div class="clv-fill" style="width:70%;background:#cd7f32;"></div></div></div>
+            <div class="clv-item"><div class="clv-rank">4</div><div class="clv-info"><span>Fatima Al-Zaabi</span><small>28 visits • AED 4,320</small></div><div class="clv-bar"><div class="clv-fill" style="width:51%;"></div></div></div>
+            <div class="clv-item"><div class="clv-rank">5</div><div class="clv-info"><span>Omar Hassan</span><small>22 visits • AED 3,100</small></div><div class="clv-bar"><div class="clv-fill" style="width:37%;"></div></div></div>
+        </div>
+    </div>
+
+    <!-- Loss Detection -->
+    <div class="ai-card">
+        <div class="ai-card-header">
+            <div class="ai-card-icon" style="background:rgba(239,68,68,.1);color:#ef4444;"><i class="ri-shield-cross-line"></i></div>
+            <div>
+                <div class="ai-card-title">Loss & Theft Detection</div>
+                <div class="ai-card-sub">Unusual activity alerts</div>
+            </div>
+            <span class="ai-badge-small danger">Alert</span>
+        </div>
+        <div class="loss-alerts">
+            <div class="loss-item yellow"><i class="ri-alert-line"></i><div><strong>Unusual refund pattern</strong><small>Cashier John: 5 refunds in 1 hour — Review needed</small></div></div>
+            <div class="loss-item green"><i class="ri-checkbox-circle-line"></i><div><strong>No stock discrepancies</strong><small>All inventory counts match POS records</small></div></div>
+        </div>
+    </div>
+
+    <!-- AI Restocking -->
+    <div class="ai-card">
+        <div class="ai-card-header">
+            <div class="ai-card-icon" style="background:rgba(16,185,129,.1);color:#10b981;"><i class="ri-refresh-line"></i></div>
+            <div>
+                <div class="ai-card-title">AI Restocking Engine</div>
+                <div class="ai-card-sub">Smart purchase order suggestions</div>
+            </div>
+            <span class="ai-badge-small success">Auto</span>
+        </div>
+        <div class="restock-list">
+            <div class="restock-item"><div class="restock-info"><span>🥤 Fresh Juice</span><small>5 left • Sells 12/day → Restock in 10h</small></div><button class="btn btn-sm btn-primary">Order Now</button></div>
+            <div class="restock-item"><div class="restock-info"><span>🥐 Croissant</span><small>8 left • Sells 20/day → Restock in 9h</small></div><button class="btn btn-sm btn-primary">Order Now</button></div>
+            <div class="restock-item"><div class="restock-info"><span>☕ Coffee Beans</span><small>200g left • Sells 500g/day → Restock Now!</small></div><button class="btn btn-sm btn-danger">Urgent!</button></div>
+        </div>
+    </div>
+
+    <!-- Smart Discount Engine -->
+    <div class="ai-card">
+        <div class="ai-card-header">
+            <div class="ai-card-icon" style="background:rgba(249,115,22,.1);color:#f97316;"><i class="ri-price-tag-3-line"></i></div>
+            <div>
+                <div class="ai-card-title">Smart Discount Engine</div>
+                <div class="ai-card-sub">Churn prevention campaigns</div>
+            </div>
+        </div>
+        <div class="churn-list">
+            <div class="churn-item"><div><strong>Ahmed Hassan</strong><small>Last visit: 32 days ago</small></div><button class="btn btn-sm btn-outline" onclick="if(window.showToast)showToast('Offer sent via WhatsApp! 📱','success')"><i class="ri-whatsapp-line"></i> Send 15% Off</button></div>
+            <div class="churn-item"><div><strong>Maryam Al-Ali</strong><small>Last visit: 28 days ago</small></div><button class="btn btn-sm btn-outline" onclick="if(window.showToast)showToast('Offer sent via WhatsApp! 📱','success')"><i class="ri-whatsapp-line"></i> Send 10% Off</button></div>
+            <div class="churn-item"><div><strong>Zayed Ibrahim</strong><small>Last visit: 25 days ago</small></div><button class="btn btn-sm btn-outline" onclick="if(window.showToast)showToast('Offer sent via WhatsApp! 📱','success')"><i class="ri-whatsapp-line"></i> Send 10% Off</button></div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Commerce -->
+    <div class="ai-card wide">
+        <div class="ai-card-header">
+            <div class="ai-card-icon" style="background:rgba(37,211,102,.1);color:#25D366;"><i class="ri-whatsapp-line"></i></div>
+            <div>
+                <div class="ai-card-title">WhatsApp Commerce POS</div>
+                <div class="ai-card-sub">Customer orders via WhatsApp → Auto-processed by AI</div>
+            </div>
+            <span class="ai-badge-small" style="background:rgba(37,211,102,.1);color:#25D366;">Live</span>
+        </div>
+        <div class="wa-flow">
+            <div class="wa-step"><div class="wa-step-icon">💬</div><div>Customer sends WhatsApp order</div><div class="wa-step-ex">"Hi, 2 shawarma + 1 juice please"</div></div>
+            <div class="wa-arrow">→</div>
+            <div class="wa-step"><div class="wa-step-icon">🤖</div><div>AI reads & processes</div><div class="wa-step-ex">Detects items, quantities, customer</div></div>
+            <div class="wa-arrow">→</div>
+            <div class="wa-step"><div class="wa-step-icon">🧾</div><div>POS creates order</div><div class="wa-step-ex">Invoice + payment link generated</div></div>
+            <div class="wa-arrow">→</div>
+            <div class="wa-step"><div class="wa-step-icon">🖨️</div><div>Kitchen receives print</div><div class="wa-step-ex">KDS + receipt printer fire automatically</div></div>
+            <div class="wa-arrow">→</div>
+            <div class="wa-step"><div class="wa-step-icon">📦</div><div>Inventory updated</div><div class="wa-step-ex">Stock deducted in real-time</div></div>
+        </div>
+        <div style="text-align:center;margin-top:16px;">
+            <a href="https://wa.me/971569956676" target="_blank" class="btn btn-primary"><i class="ri-whatsapp-line"></i> Enable WhatsApp Commerce — Contact Sales</a>
+        </div>
+    </div>
+
+    <!-- Employee Performance AI -->
+    <div class="ai-card">
+        <div class="ai-card-header">
+            <div class="ai-card-icon" style="background:rgba(0,174,239,.1);color:#00AEEF;"><i class="ri-user-chart-line"></i></div>
+            <div>
+                <div class="ai-card-title">Employee Performance AI</div>
+                <div class="ai-card-sub">Sales efficiency ranking</div>
+            </div>
+        </div>
+        <div class="emp-perf-list">
+            <div class="emp-perf-item"><div class="emp-rank">🥇</div><div class="emp-info"><strong>Sarah (Cashier 1)</strong><small>AED 12,400 sales • 98% accuracy</small></div><div class="emp-score high">98</div></div>
+            <div class="emp-perf-item"><div class="emp-rank">🥈</div><div class="emp-info"><strong>Ahmed (Cashier 2)</strong><small>AED 9,800 sales • 94% accuracy</small></div><div class="emp-score high">94</div></div>
+            <div class="emp-perf-item"><div class="emp-rank">🥉</div><div class="emp-info"><strong>Omar (Cashier 3)</strong><small>AED 7,200 sales • 87% accuracy</small></div><div class="emp-score med">87</div></div>
+        </div>
+    </div>
+
+    <!-- Merchant Loan -->
+    <div class="ai-card">
+        <div class="ai-card-header">
+            <div class="ai-card-icon" style="background:rgba(16,185,129,.1);color:#10b981;"><i class="ri-bank-line"></i></div>
+            <div>
+                <div class="ai-card-title">Business Finance</div>
+                <div class="ai-card-sub">Instant capital for growth</div>
+            </div>
+            <span class="ai-badge-small success">New</span>
+        </div>
+        <div class="loan-box">
+            <div class="loan-eligible">You're eligible for</div>
+            <div class="loan-amount">AED 25,000</div>
+            <div class="loan-sub">Based on your last 3 months of sales</div>
+            <div class="loan-terms">
+                <div class="loan-term"><strong>Rate</strong><span>1.5%/month</span></div>
+                <div class="loan-term"><strong>Repayment</strong><span>Auto from daily sales</span></div>
+                <div class="loan-term"><strong>Approval</strong><span>24 hours</span></div>
+            </div>
+            <a href="https://wa.me/971569956676" target="_blank" class="btn btn-primary btn-sm" style="width:100%;margin-top:12px;justify-content:center;">Apply Now</a>
+        </div>
+    </div>
+</div>
+
+<style>
+.ai-hero { background: linear-gradient(135deg, #0f1929, #1a2d4a); border-radius: 20px; padding: 32px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.ai-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,174,239,.15); border: 1px solid rgba(0,174,239,.3); color: #00AEEF; border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 600; margin-bottom: 10px; }
+.ai-hero h2 { color: #fff; font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+.ai-hero p { color: rgba(255,255,255,.6); font-size: 13px; }
+.ai-hero-visual { font-size: 72px; }
+.ai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.ai-card { background: var(--card-bg,#fff); border-radius: 16px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+.ai-card.wide { grid-column: span 2; }
+.ai-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.ai-card-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.ai-card-title { font-size: 14px; font-weight: 700; color: #1e293b; }
+.ai-card-sub { font-size: 11px; color: #94a3b8; }
+.ai-badge-small { margin-left: auto; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; background: rgba(0,174,239,.1); color: #00AEEF; white-space:nowrap; }
+.ai-badge-small.danger { background: rgba(239,68,68,.1); color: #ef4444; }
+.ai-badge-small.success { background: rgba(16,185,129,.1); color: #10b981; }
+.ai-insight { background: #f8fafc; border-radius: 8px; padding: 8px 12px; font-size: 12px; color: #64748b; margin-top: 12px; }
+.ai-forecast-bars { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
+.forecast-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.forecast-bar { width: 100%; border-radius: 4px 4px 0 0; background: linear-gradient(180deg,#00AEEF,#0070B8); transition: height .5s; }
+.forecast-label { font-size: 10px; color: #94a3b8; }
+.heatmap-grid { display: grid; grid-template-columns: repeat(12,1fr); gap: 3px; }
+.heatmap-cell { aspect-ratio:1; border-radius: 3px; transition: opacity .2s; cursor: pointer; }
+.heatmap-cell:hover { opacity: .7; }
+.clv-list { display: flex; flex-direction: column; gap: 10px; }
+.clv-item { display: flex; align-items: center; gap: 10px; }
+.clv-rank { width: 24px; height: 24px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+.clv-rank.gold { background: #fef3c7; color: #d97706; }
+.clv-rank.silver { background: #f1f5f9; color: #64748b; }
+.clv-rank.bronze { background: #fef2f2; color: #9a3412; }
+.clv-info { flex: 1; }
+.clv-info span { font-size: 13px; font-weight: 600; color: #1e293b; display: block; }
+.clv-info small { font-size: 11px; color: #94a3b8; }
+.clv-bar { width: 80px; height: 6px; background: #f1f5f9; border-radius: 3px; overflow: hidden; }
+.clv-fill { height: 100%; background: #00AEEF; border-radius: 3px; }
+.loss-alerts { display: flex; flex-direction: column; gap: 10px; }
+.loss-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px; border-radius: 8px; font-size: 13px; }
+.loss-item.yellow { background: rgba(245,158,11,.08); color: #92400e; }
+.loss-item.green { background: rgba(16,185,129,.08); color: #065f46; }
+.loss-item i { margin-top: 2px; flex-shrink: 0; }
+.loss-item strong { display: block; font-size: 13px; }
+.loss-item small { font-size: 11px; opacity: .7; }
+.restock-list { display: flex; flex-direction: column; gap: 10px; }
+.restock-item { display: flex; justify-content: space-between; align-items: center; }
+.restock-info span { font-size: 13px; font-weight: 600; color: #1e293b; display: block; }
+.restock-info small { font-size: 11px; color: #94a3b8; }
+.churn-list { display: flex; flex-direction: column; gap: 10px; }
+.churn-item { display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #f8fafc; border-radius: 8px; }
+.churn-item strong { font-size: 13px; color: #1e293b; display: block; }
+.churn-item small { font-size: 11px; color: #94a3b8; }
+.wa-flow { display: flex; align-items: center; gap: 8px; overflow-x: auto; padding: 10px 0; }
+.wa-step { background: #f8fafc; border-radius: 12px; padding: 12px; text-align: center; min-width: 120px; font-size: 12px; font-weight: 600; color: #1e293b; }
+.wa-step-icon { font-size: 24px; margin-bottom: 6px; }
+.wa-step-ex { font-size: 10px; color: #94a3b8; font-weight: 400; margin-top: 4px; }
+.wa-arrow { font-size: 20px; color: #94a3b8; flex-shrink: 0; }
+.emp-perf-list { display: flex; flex-direction: column; gap: 10px; }
+.emp-perf-item { display: flex; align-items: center; gap: 10px; }
+.emp-rank { font-size: 20px; flex-shrink: 0; }
+.emp-info { flex: 1; }
+.emp-info strong { font-size: 13px; color: #1e293b; display: block; }
+.emp-info small { font-size: 11px; color: #94a3b8; }
+.emp-score { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; }
+.emp-score.high { background: #10b981; }
+.emp-score.med { background: #f59e0b; }
+.loan-box { text-align: center; }
+.loan-eligible { font-size: 12px; color: #64748b; }
+.loan-amount { font-size: 32px; font-weight: 800; color: #10b981; margin: 4px 0; }
+.loan-sub { font-size: 11px; color: #94a3b8; margin-bottom: 12px; }
+.loan-terms { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; background: #f8fafc; border-radius: 10px; padding: 10px; }
+.loan-term { text-align: center; }
+.loan-term strong { display: block; font-size: 10px; color: #94a3b8; }
+.loan-term span { font-size: 12px; font-weight: 700; color: #1e293b; }
+@media (max-width:900px) { .ai-grid { grid-template-columns: 1fr; } .ai-card.wide { grid-column: span 1; } }
+</style>
+
+<script>
+(function() {
+    var days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    var vals = [65, 72, 58, 80, 88, 95, 70];
+    var container = document.getElementById('forecastBars');
+    if (container) {
+        days.forEach(function(d, i) {
+            var wrap = document.createElement('div');
+            wrap.className = 'forecast-bar-wrap';
+            var bar = document.createElement('div');
+            bar.className = 'forecast-bar';
+            bar.style.height = vals[i] + '%';
+            bar.title = 'AED ' + (vals[i] * 120) + ' forecast';
+            var lbl = document.createElement('div');
+            lbl.className = 'forecast-label';
+            lbl.textContent = d;
+            wrap.appendChild(bar);
+            wrap.appendChild(lbl);
+            container.appendChild(wrap);
+        });
+    }
+
+    var grid = document.getElementById('heatmapGrid');
+    if (grid) {
+        for (var h = 0; h < 24; h++) {
+            var intensity = 0.05;
+            if (h >= 6 && h < 9) intensity = 0.25;
+            if (h >= 9 && h < 12) intensity = 0.5;
+            if (h >= 12 && h < 14) intensity = 1.0;
+            if (h >= 14 && h < 17) intensity = 0.45;
+            if (h >= 17 && h < 19) intensity = 0.6;
+            if (h >= 19 && h < 21) intensity = 0.9;
+            if (h >= 21 && h < 23) intensity = 0.4;
+            var cell = document.createElement('div');
+            cell.className = 'heatmap-cell';
+            cell.style.background = 'rgba(0,174,239,' + (0.1 + intensity * 0.9) + ')';
+            cell.title = h + ':00 — ' + Math.round(intensity * 100) + '% peak';
+            grid.appendChild(cell);
+        }
+    }
+})();
+</script>
+{% endblock %}

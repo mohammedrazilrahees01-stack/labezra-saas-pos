@@ -1,0 +1,56 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Chart of Accounts - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-bar-chart-grouped-line"></i>{% endblock %}
+{% block page_title %}Chart of Accounts{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div><h2 class="page-heading">Chart of Accounts</h2><p class="page-subheading">Your complete financial account structure</p></div>
+    <div class="header-actions"><button class="btn btn-outline"><i class="ri-download-line"></i> Export</button> <button class="btn btn-primary"><i class="ri-add-line"></i> Add Account</button></div>
+  </div>
+  {% for category, accounts in account_data.items %}
+  {% endfor %}
+  <div style="display:flex;flex-direction:column;gap:16px;">
+    <div class="card">
+      <div style="padding:16px 20px;background:var(--primary);color:#fff;border-radius:8px 8px 0 0;display:flex;align-items:center;gap:10px;"><i class="ri-bank-line"></i><strong>1000 - Assets</strong></div>
+      <table class="table"><thead><tr><th>Code</th><th>Account Name</th><th>Type</th><th>Balance</th></tr></thead>
+      <tbody>
+        <tr><td>1100</td><td style="padding-left:20px;">Cash on Hand</td><td>Current Asset</td><td style="color:var(--success);">AED 45,200.00</td></tr>
+        <tr><td>1200</td><td style="padding-left:20px;">Bank Account</td><td>Current Asset</td><td style="color:var(--success);">AED 182,500.00</td></tr>
+        <tr><td>1300</td><td style="padding-left:20px;">Accounts Receivable</td><td>Current Asset</td><td style="color:var(--success);">AED 67,800.00</td></tr>
+        <tr><td>1400</td><td style="padding-left:20px;">Inventory</td><td>Current Asset</td><td style="color:var(--success);">AED 320,000.00</td></tr>
+        <tr><td>1500</td><td style="padding-left:20px;">Fixed Assets</td><td>Non-Current Asset</td><td style="color:var(--success);">AED 50,000.00</td></tr>
+      </tbody></table>
+    </div>
+    <div class="card">
+      <div style="padding:16px 20px;background:#ef4444;color:#fff;border-radius:8px 8px 0 0;display:flex;align-items:center;gap:10px;"><i class="ri-hand-coin-line"></i><strong>2000 - Liabilities</strong></div>
+      <table class="table"><thead><tr><th>Code</th><th>Account Name</th><th>Type</th><th>Balance</th></tr></thead>
+      <tbody>
+        <tr><td>2100</td><td style="padding-left:20px;">Accounts Payable</td><td>Current Liability</td><td style="color:var(--danger);">AED 38,400.00</td></tr>
+        <tr><td>2200</td><td style="padding-left:20px;">VAT Payable</td><td>Tax Liability</td><td style="color:var(--danger);">AED 12,150.00</td></tr>
+        <tr><td>2300</td><td style="padding-left:20px;">Loans Payable</td><td>Non-Current Liability</td><td style="color:var(--danger);">AED 100,000.00</td></tr>
+      </tbody></table>
+    </div>
+    <div class="card">
+      <div style="padding:16px 20px;background:#10b981;color:#fff;border-radius:8px 8px 0 0;display:flex;align-items:center;gap:10px;"><i class="ri-line-chart-line"></i><strong>4000 - Revenue</strong></div>
+      <table class="table"><thead><tr><th>Code</th><th>Account Name</th><th>Type</th><th>This Month</th></tr></thead>
+      <tbody>
+        <tr><td>4100</td><td style="padding-left:20px;">Sales Revenue</td><td>Revenue</td><td style="color:var(--success);">AED 98,500.00</td></tr>
+        <tr><td>4200</td><td style="padding-left:20px;">Service Revenue</td><td>Revenue</td><td style="color:var(--success);">AED 12,300.00</td></tr>
+        <tr><td>4300</td><td style="padding-left:20px;">Other Income</td><td>Revenue</td><td style="color:var(--success);">AED 2,100.00</td></tr>
+      </tbody></table>
+    </div>
+    <div class="card">
+      <div style="padding:16px 20px;background:#f59e0b;color:#fff;border-radius:8px 8px 0 0;display:flex;align-items:center;gap:10px;"><i class="ri-money-dollar-circle-line"></i><strong>5000 - Expenses</strong></div>
+      <table class="table"><thead><tr><th>Code</th><th>Account Name</th><th>Type</th><th>This Month</th></tr></thead>
+      <tbody>
+        <tr><td>5100</td><td style="padding-left:20px;">Cost of Goods Sold</td><td>COGS</td><td style="color:var(--danger);">AED 52,000.00</td></tr>
+        <tr><td>5200</td><td style="padding-left:20px;">Salaries & Wages</td><td>Operating Expense</td><td style="color:var(--danger);">AED 18,500.00</td></tr>
+        <tr><td>5300</td><td style="padding-left:20px;">Rent & Utilities</td><td>Operating Expense</td><td style="color:var(--danger);">AED 8,200.00</td></tr>
+        <tr><td>5400</td><td style="padding-left:20px;">Marketing</td><td>Operating Expense</td><td style="color:var(--danger);">AED 3,500.00</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+</div>
+{% endblock %}

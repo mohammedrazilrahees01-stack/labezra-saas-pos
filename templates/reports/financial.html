@@ -1,0 +1,55 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Financial Report - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-funds-line"></i>{% endblock %}
+{% block page_title %}Financial Report{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div><h2 class="page-heading">Financial Report</h2><p class="page-subheading">Profit & Loss, Balance Sheet, and Cash Flow</p></div>
+    <div class="header-actions">
+      <select class="form-control" style="max-width:160px;"><option>March 2026</option><option>February 2026</option><option>Q1 2026</option><option>2025 Full Year</option></select>
+      <button class="btn btn-outline"><i class="ri-download-line"></i> Export PDF</button>
+      <button class="btn btn-outline"><i class="ri-file-excel-line"></i> Export Excel</button>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px;">
+    <div class="card" style="padding:20px;"><div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">Total Revenue</div><div style="font-size:24px;font-weight:700;color:var(--success);">AED 112,900</div><div style="font-size:12px;color:var(--success);">+12.5% vs last month</div></div>
+    <div class="card" style="padding:20px;"><div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">Total Expenses</div><div style="font-size:24px;font-weight:700;color:var(--danger);">AED 82,200</div><div style="font-size:12px;color:var(--danger);">+5.3% vs last month</div></div>
+    <div class="card" style="padding:20px;"><div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">Net Profit</div><div style="font-size:24px;font-weight:700;color:var(--primary);">AED 30,700</div><div style="font-size:12px;color:var(--success);">+28.1% vs last month</div></div>
+    <div class="card" style="padding:20px;"><div style="font-size:12px;color:var(--text-muted);margin-bottom:4px;">Profit Margin</div><div style="font-size:24px;font-weight:700;">27.2%</div><div style="font-size:12px;color:var(--success);">Healthy margin</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div class="card" style="padding:20px;">
+      <h4 style="margin-bottom:16px;">Profit & Loss Summary</h4>
+      <table class="table">
+        <tbody>
+          <tr style="background:var(--bg-secondary);"><td colspan="2"><strong>Revenue</strong></td></tr>
+          <tr><td style="padding-left:16px;">Sales Revenue</td><td style="text-align:right;">AED 98,500</td></tr>
+          <tr><td style="padding-left:16px;">Service Revenue</td><td style="text-align:right;">AED 12,300</td></tr>
+          <tr><td style="padding-left:16px;">Other Income</td><td style="text-align:right;">AED 2,100</td></tr>
+          <tr style="font-weight:700;"><td>Total Revenue</td><td style="text-align:right;color:var(--success);">AED 112,900</td></tr>
+          <tr style="background:var(--bg-secondary);"><td colspan="2"><strong>Expenses</strong></td></tr>
+          <tr><td style="padding-left:16px;">COGS</td><td style="text-align:right;">AED 52,000</td></tr>
+          <tr><td style="padding-left:16px;">Salaries</td><td style="text-align:right;">AED 18,500</td></tr>
+          <tr><td style="padding-left:16px;">Rent & Utilities</td><td style="text-align:right;">AED 8,200</td></tr>
+          <tr><td style="padding-left:16px;">Marketing</td><td style="text-align:right;">AED 3,500</td></tr>
+          <tr style="font-weight:700;"><td>Total Expenses</td><td style="text-align:right;color:var(--danger);">AED 82,200</td></tr>
+          <tr style="font-weight:700;font-size:16px;border-top:2px solid var(--border-color);"><td>Net Profit</td><td style="text-align:right;color:var(--primary);">AED 30,700</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card" style="padding:20px;">
+      <h4 style="margin-bottom:16px;">Revenue vs Expenses (6 Months)</h4>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span>Oct 2025</span><span>Rev: AED 89k | Exp: AED 71k</span></div><div style="display:flex;gap:4px;"><div style="flex:89;background:var(--success);height:16px;border-radius:4px;"></div><div style="flex:71;background:var(--danger);height:16px;border-radius:4px;opacity:0.7;"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span>Nov 2025</span><span>Rev: AED 95k | Exp: AED 74k</span></div><div style="display:flex;gap:4px;"><div style="flex:95;background:var(--success);height:16px;border-radius:4px;"></div><div style="flex:74;background:var(--danger);height:16px;border-radius:4px;opacity:0.7;"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span>Dec 2025</span><span>Rev: AED 130k | Exp: AED 88k</span></div><div style="display:flex;gap:4px;"><div style="flex:130;background:var(--success);height:16px;border-radius:4px;"></div><div style="flex:88;background:var(--danger);height:16px;border-radius:4px;opacity:0.7;"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span>Jan 2026</span><span>Rev: AED 98k | Exp: AED 76k</span></div><div style="display:flex;gap:4px;"><div style="flex:98;background:var(--success);height:16px;border-radius:4px;"></div><div style="flex:76;background:var(--danger);height:16px;border-radius:4px;opacity:0.7;"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span>Feb 2026</span><span>Rev: AED 100k | Exp: AED 78k</span></div><div style="display:flex;gap:4px;"><div style="flex:100;background:var(--success);height:16px;border-radius:4px;"></div><div style="flex:78;background:var(--danger);height:16px;border-radius:4px;opacity:0.7;"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span>Mar 2026</span><span>Rev: AED 113k | Exp: AED 82k</span></div><div style="display:flex;gap:4px;"><div style="flex:113;background:var(--success);height:16px;border-radius:4px;"></div><div style="flex:82;background:var(--danger);height:16px;border-radius:4px;opacity:0.7;"></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Product Variants - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-layout-grid-line"></i>{% endblock %}
+{% block page_title %}Product Variants{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div><h2 class="page-heading">Product Variants</h2><p class="page-subheading">Manage product sizes, colors, and configurations</p></div>
+    <div class="header-actions"><button class="btn btn-primary"><i class="ri-add-line"></i> Add Variant</button></div>
+  </div>
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table">
+        <thead><tr><th>Product</th><th>Variant Type</th><th>Options</th><th>Total Stock</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Nike Air Max</strong></td>
+            <td>Size + Color</td>
+            <td>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <span class="badge badge-info">US 8</span>
+                <span class="badge badge-info">US 9</span>
+                <span class="badge badge-info">US 10</span>
+                <span class="badge" style="background:#1d1d1f;color:#fff;">Black</span>
+                <span class="badge" style="background:#fff;color:#1d1d1f;border:1px solid #ccc;">White</span>
+              </div>
+            </td>
+            <td>45 units</td>
+            <td><span class="badge badge-success">In Stock</span></td>
+            <td><button class="btn btn-sm btn-outline"><i class="ri-edit-line"></i> Manage</button></td>
+          </tr>
+          <tr>
+            <td><strong>Samsung S24</strong></td>
+            <td>Storage + Color</td>
+            <td>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <span class="badge badge-info">128GB</span>
+                <span class="badge badge-info">256GB</span>
+                <span class="badge" style="background:#1d1d1f;color:#fff;">Black</span>
+                <span class="badge" style="background:#c0c0c0;color:#1d1d1f;">Silver</span>
+              </div>
+            </td>
+            <td>28 units</td>
+            <td><span class="badge badge-success">In Stock</span></td>
+            <td><button class="btn btn-sm btn-outline"><i class="ri-edit-line"></i> Manage</button></td>
+          </tr>
+          <tr>
+            <td><strong>Polo Shirt</strong></td>
+            <td>Size + Color</td>
+            <td>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <span class="badge badge-info">S</span>
+                <span class="badge badge-info">M</span>
+                <span class="badge badge-info">L</span>
+                <span class="badge badge-info">XL</span>
+                <span class="badge" style="background:#3b82f6;color:#fff;">Blue</span>
+                <span class="badge" style="background:#ef4444;color:#fff;">Red</span>
+              </div>
+            </td>
+            <td>120 units</td>
+            <td><span class="badge badge-success">In Stock</span></td>
+            <td><button class="btn btn-sm btn-outline"><i class="ri-edit-line"></i> Manage</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,134 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}Stock Transfers - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-exchange-line"></i>{% endblock %}
+{% block page_title %}Stock Transfers{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+
+    <div class="page-header">
+        <div>
+            <h2 class="page-heading">Stock Transfers</h2>
+            <p class="page-subheading">Transfer inventory between branches and warehouses</p>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-primary" onclick="document.getElementById('newTransferModal').style.display='flex'">
+                <i class="ri-add-line"></i> New Transfer
+            </button>
+        </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;">
+        <div class="stat-card card"><div class="stat-icon" style="background:rgba(0,174,239,.1);color:#00AEEF;"><i class="ri-exchange-line"></i></div><div class="stat-info"><span class="stat-value">12</span><span class="stat-label">Pending Transfers</span></div></div>
+        <div class="stat-card card"><div class="stat-icon" style="background:rgba(16,185,129,.1);color:#10b981;"><i class="ri-checkbox-circle-line"></i></div><div class="stat-info"><span class="stat-value">48</span><span class="stat-label">Completed This Month</span></div></div>
+        <div class="stat-card card"><div class="stat-icon" style="background:rgba(245,158,11,.1);color:#f59e0b;"><i class="ri-time-line"></i></div><div class="stat-info"><span class="stat-value">3</span><span class="stat-label">In Transit</span></div></div>
+        <div class="stat-card card"><div class="stat-icon" style="background:rgba(239,68,68,.1);color:#ef4444;"><i class="ri-close-circle-line"></i></div><div class="stat-info"><span class="stat-value">1</span><span class="stat-label">Cancelled</span></div></div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="card" style="padding:16px;margin-bottom:20px;">
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+            <input type="text" class="form-control" placeholder="Search transfers..." style="max-width:220px;">
+            <select class="form-control" style="max-width:160px;">
+                <option>All Status</option>
+                <option>Pending</option>
+                <option>In Transit</option>
+                <option>Completed</option>
+                <option>Cancelled</option>
+            </select>
+            <select class="form-control" style="max-width:160px;">
+                <option>All Branches</option>
+                <option>Main Branch</option>
+                <option>Branch 2</option>
+            </select>
+            <button class="btn btn-outline"><i class="ri-filter-line"></i> Filter</button>
+            <button class="btn btn-outline" style="margin-left:auto;"><i class="ri-download-line"></i> Export</button>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Transfer #</th>
+                        <th>From Branch</th>
+                        <th>To Branch</th>
+                        <th>Items</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>#TRF-0024</strong></td>
+                        <td>Main Branch</td>
+                        <td>Branch 2</td>
+                        <td>5 items</td>
+                        <td>17 Mar 2026</td>
+                        <td><span class="badge badge-warning">In Transit</span></td>
+                        <td><button class="btn btn-sm btn-outline"><i class="ri-eye-line"></i> View</button></td>
+                    </tr>
+                    <tr>
+                        <td><strong>#TRF-0023</strong></td>
+                        <td>Branch 2</td>
+                        <td>Main Branch</td>
+                        <td>12 items</td>
+                        <td>16 Mar 2026</td>
+                        <td><span class="badge badge-success">Completed</span></td>
+                        <td><button class="btn btn-sm btn-outline"><i class="ri-eye-line"></i> View</button></td>
+                    </tr>
+                    <tr>
+                        <td><strong>#TRF-0022</strong></td>
+                        <td>Main Branch</td>
+                        <td>Warehouse A</td>
+                        <td>8 items</td>
+                        <td>15 Mar 2026</td>
+                        <td><span class="badge badge-info">Pending</span></td>
+                        <td><button class="btn btn-sm btn-outline"><i class="ri-eye-line"></i> View</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- New Transfer Modal -->
+<div id="newTransferModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center;">
+    <div class="card" style="width:100%;max-width:500px;padding:24px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <h3 style="margin:0;font-size:18px;">New Stock Transfer</h3>
+            <button onclick="document.getElementById('newTransferModal').style.display='none'" style="background:none;border:none;cursor:pointer;font-size:20px;">&times;</button>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group" style="margin-bottom:16px;">
+                <label class="form-label">From Branch</label>
+                <select class="form-control"><option>Main Branch</option><option>Branch 2</option></select>
+            </div>
+            <div class="form-group" style="margin-bottom:16px;">
+                <label class="form-label">To Branch / Warehouse</label>
+                <select class="form-control"><option>Branch 2</option><option>Warehouse A</option></select>
+            </div>
+            <div class="form-group" style="margin-bottom:16px;">
+                <label class="form-label">Products to Transfer</label>
+                <input type="text" class="form-control" placeholder="Search and add products...">
+            </div>
+            <div class="form-group" style="margin-bottom:20px;">
+                <label class="form-label">Notes</label>
+                <textarea class="form-control" rows="3" placeholder="Transfer reason or notes..."></textarea>
+            </div>
+            <div style="display:flex;gap:12px;justify-content:flex-end;">
+                <button type="button" class="btn btn-outline" onclick="document.getElementById('newTransferModal').style.display='none'">Cancel</button>
+                <button type="submit" class="btn btn-primary"><i class="ri-send-plane-line"></i> Create Transfer</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

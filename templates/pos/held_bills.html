@@ -1,0 +1,93 @@
+{% extends "base/base.html" %}
+
+{% block title %}Held Bills / Drafts — Labezra ERP{% endblock %}
+
+{% block page_title %}Held Bills / Drafts{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Held Bills / Drafts</h1>
+        <p class="page-subtitle">Bills saved for later. Recall to continue processing.</p>
+    </div>
+</div>
+
+<!-- Info Banner -->
+<div
+    style="background: rgba(0,174,239,0.08); border: 1px solid rgba(0,174,239,0.3); border-radius: 8px; padding: 0.875rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
+    <i class="ri-information-line" style="color: #00AEEF; font-size: 1.25rem;"></i>
+    <span style="color: var(--text-secondary); font-size: 0.9rem;">
+        These bills have been saved and are waiting to be recalled. Click <strong>Recall</strong> on any bill to
+        continue where you left off.
+    </span>
+</div>
+
+<!-- Held Bills Table -->
+<div class="card">
+    <div class="card-body" style="padding:0;">
+        {% if held_bills %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th data-i18n="th_customer">Customer</th>
+                        <th>Items</th>
+                        <th>Subtotal (AED)</th>
+                        <th>Created</th>
+                        <th data-i18n="actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for bill in held_bills %}
+                    <tr>
+                        <td><strong>{{ forloop.counter }}</strong></td>
+                        <td>
+                            {% if bill.customer %}
+                            <div style="display:flex; align-items:center; gap:0.5rem;">
+                                <i class="ri-user-line" style="color: #00AEEF;"></i>
+                                {{ bill.customer.name }}
+                            </div>
+                            {% else %}
+                            <span style="color: var(--text-muted);">Walk-in</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="badge badge-primary">{{ bill.items_count }} item{{ bill.items_count|pluralize
+                                }}</span>
+                        </td>
+                        <td><strong>AED {{ bill.subtotal|floatformat:2 }}</strong></td>
+                        <td>{{ bill.created|date:"d M Y H:i" }}</td>
+                        <td style="display:flex; gap:0.5rem;">
+                            <a href="/pos/?held={{ bill.id }}" class="btn btn-primary btn-sm">
+                                <i class="ri-play-circle-line"></i> Recall
+                            </a>
+                            <form method="POST" action="/pos/held/{{ bill.id }}/delete/" style="display:inline;"
+                                onsubmit="return confirm('Delete this held bill?');">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="ri-delete-bin-line"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <!-- Empty State -->
+        <div style="text-align: center; padding: 4rem 2rem;">
+            <i class="ri-pause-circle-line"
+                style="font-size: 3rem; color: var(--text-muted); display: block; margin-bottom: 1rem;"></i>
+            <h3 style="color: var(--text-secondary); margin-bottom: 0.5rem;">No held bills</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">You haven't saved any bills for later. Use the
+                POS to hold a bill.</p>
+            <a href="/pos/" class="btn btn-primary">
+                <i class="ri-store-line"></i> Go to POS
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

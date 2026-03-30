@@ -1,0 +1,238 @@
+{% extends "base/base.html" %}
+
+{% block title %}Expenses — Labezra{% endblock %}
+{% block page_title %}Expenses{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Expenses</h1>
+        <p class="page-subtitle">Track and manage business expenses</p>
+    </div>
+    <div class="page-actions">
+        <button type="button" class="btn btn-primary" onclick="toggleAddForm()">
+            <i class="ri-add-line"></i> Add Expense
+        </button>
+    </div>
+</div>
+
+<!-- KPI Row -->
+<div class="kpi-row">
+    <div class="kpi-card">
+        <div class="kpi-icon red"><i class="ri-money-dollar-circle-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-value">AED {{ total_expenses|floatformat:2|default:"0.00" }}</span>
+            <span class="kpi-label">Total Expenses</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon orange"><i class="ri-calendar-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-value">AED {{ this_month|floatformat:2|default:"0.00" }}</span>
+            <span class="kpi-label">This Month</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon blue"><i class="ri-bar-chart-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-value">AED {{ this_year|floatformat:2|default:"0.00" }}</span>
+            <span class="kpi-label">This Year</span>
+        </div>
+    </div>
+</div>
+
+<!-- Add Expense Inline Form -->
+<div class="card" id="addExpenseCard" style="margin-bottom:20px;display:none;border:2px solid var(--primary);">
+    <div class="card-header">
+        <h3 class="card-title"><i class="ri-add-circle-line" style="color:var(--primary);margin-right:8px;"></i>Add New
+            Expense</h3>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="toggleAddForm()">
+            <i class="ri-close-line"></i> Cancel
+        </button>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="add_expense">
+            <div class="form-grid-3">
+                <div class="form-group">
+                    <label class="form-label">Date <span class="required">*</span></label>
+                    <input type="date" name="date" class="form-control" id="expenseDate" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category <span class="required">*</span></label>
+                    <select name="category" class="form-control" required>
+                        <option value="">Select category</option>
+                        <option value="Office">Office</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Salaries">Salaries</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Food">Food</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Amount (AED) <span class="required">*</span></label>
+                    <input type="number" name="amount" class="form-control" placeholder="0.00" step="0.01" min="0"
+                        required>
+                </div>
+            </div>
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <input type="text" name="description" class="form-control"
+                        placeholder="Brief description of expense">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Paid By</label>
+                    <input type="text" name="paid_by" class="form-control" placeholder="Name or department">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Receipt <span
+                        style="color:var(--text-muted);font-weight:400;">(Optional)</span></label>
+                <input type="file" name="receipt" class="form-control" accept="image/*,.pdf">
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="ri-save-line"></i> Save Expense
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Filter Bar -->
+<div class="card" style="margin-bottom:20px;">
+    <div class="card-body" style="padding:16px 20px;">
+        <form method="GET" action="" style="display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap;">
+            <div class="form-group" style="margin:0;">
+                <label class="form-label">From</label>
+                <input type="date" name="date_from" class="form-control" value="{{ request.GET.date_from }}"
+                    style="min-width:150px;">
+            </div>
+            <div class="form-group" style="margin:0;">
+                <label class="form-label">To</label>
+                <input type="date" name="date_to" class="form-control" value="{{ request.GET.date_to }}"
+                    style="min-width:150px;">
+            </div>
+            <div class="form-group" style="margin:0;">
+                <label class="form-label">Category</label>
+                <select name="category" class="form-control" style="min-width:160px;">
+                    <option value="">All Categories</option>
+                    <option value="Office" {% if request.GET.category == "Office" %}selected{% endif %}>Office</option>
+                    <option value="Utilities" {% if request.GET.category == "Utilities" %}selected{% endif %}>Utilities
+                    </option>
+                    <option value="Salaries" {% if request.GET.category == "Salaries" %}selected{% endif %}>Salaries
+                    </option>
+                    <option value="Transport" {% if request.GET.category == "Transport" %}selected{% endif %}>Transport
+                    </option>
+                    <option value="Food" {% if request.GET.category == "Food" %}selected{% endif %}>Food</option>
+                    <option value="Marketing" {% if request.GET.category == "Marketing" %}selected{% endif %}>Marketing
+                    </option>
+                    <option value="Other" {% if request.GET.category == "Other" %}selected{% endif %}>Other</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="ri-filter-line"></i> Filter
+            </button>
+            {% if request.GET.date_from or request.GET.date_to or request.GET.category %}
+            <a href="/expenses/" class="btn btn-secondary"><i class="ri-close-line"></i> Clear</a>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+<!-- Expenses Table -->
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Expense Records</h3>
+        <span style="color:var(--text-muted);font-size:14px;">{{ expenses|length }} record(s)</span>
+    </div>
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th data-i18n="th_date">Date</th>
+                    <th data-i18n="th_category">Category</th>
+                    <th data-i18n="th_description">Description</th>
+                    <th>Amount (AED)</th>
+                    <th>Paid By</th>
+                    <th>Receipt</th>
+                    <th data-i18n="actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in expenses %}
+                <tr>
+                    <td>{{ expense.date|date:"d M Y" }}</td>
+                    <td>
+                        {% if expense.category == "Office" %}<span class="badge badge-info">{{ expense.category
+                            }}</span>
+                        {% elif expense.category == "Utilities" %}<span class="badge badge-primary">{{ expense.category
+                            }}</span>
+                        {% elif expense.category == "Salaries" %}<span class="badge badge-success">{{ expense.category
+                            }}</span>
+                        {% elif expense.category == "Transport" %}<span class="badge badge-warning">{{ expense.category
+                            }}</span>
+                        {% elif expense.category == "Marketing" %}<span class="badge badge-primary">{{ expense.category
+                            }}</span>
+                        {% else %}<span class="badge badge-gray">{{ expense.category }}</span>{% endif %}
+                    </td>
+                    <td>{{ expense.description|default:"—" }}</td>
+                    <td style="font-weight:600;">{{ expense.amount|floatformat:2 }}</td>
+                    <td>{{ expense.paid_by|default:"—" }}</td>
+                    <td>
+                        {% if expense.receipt %}
+                        <a href="{{ expense.receipt.url }}" target="_blank" class="btn btn-outline btn-sm">
+                            <i class="ri-attachment-line"></i> View
+                        </a>
+                        {% else %}
+                        <span style="color:var(--text-muted);">—</span>
+                        {% endif %}
+                    </td>
+                    <td class="table-actions">
+                        <form method="POST" action="" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="delete_expense">
+                            <input type="hidden" name="expense_id" value="{{ expense.id }}">
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Delete this expense? This cannot be undone.')">
+                                <i class="ri-delete-bin-line"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">
+                        <div class="table-empty">
+                            <i class="ri-money-dollar-circle-line"
+                                style="font-size:48px;color:var(--text-muted);margin-bottom:12px;"></i>
+                            <h4>No expenses recorded</h4>
+                            <p>Start tracking your business expenses.</p>
+                            <button type="button" class="btn btn-primary" style="margin-top:12px;"
+                                onclick="toggleAddForm()">
+                                <i class="ri-add-line"></i> Add Expense
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Set today's date as default
+    document.getElementById('expenseDate').valueAsDate = new Date();
+
+    function toggleAddForm() {
+        const card = document.getElementById('addExpenseCard');
+        card.style.display = card.style.display === 'none' ? 'block' : 'none';
+        if (card.style.display === 'block') {
+            card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+</script>
+{% endblock %}

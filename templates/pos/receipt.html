@@ -1,0 +1,348 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt #{{ invoice.number }}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            background: #fff;
+            color: #000;
+            width: 80mm;
+            margin: 0 auto;
+            padding: 4mm;
+        }
+        .center { text-align: center; }
+        .right  { text-align: right; }
+        .left   { text-align: left; }
+        .bold   { font-weight: bold; }
+        .small  { font-size: 10px; }
+        .large  { font-size: 15px; }
+        .xlarge { font-size: 18px; }
+
+        hr { border: none; border-top: 1px dashed #000; margin: 5px 0; }
+        .hr-solid { border: none; border-top: 1px solid #000; margin: 5px 0; }
+
+        table { width: 100%; border-collapse: collapse; }
+        table th, table td { padding: 2px 3px; vertical-align: top; }
+
+        .items-table th {
+            border-bottom: 1px solid #000;
+            font-size: 10px;
+            padding: 2px 3px 3px;
+        }
+        .items-table td { font-size: 11px; }
+
+        .totals-table td { padding: 2px 3px; }
+        .grand-row td {
+            font-weight: bold;
+            font-size: 14px;
+            border-top: 1px solid #000;
+            padding-top: 4px;
+        }
+
+        /* Bilingual label (English + Arabic) */
+        .bil {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 4px;
+        }
+        .bil .ar {
+            direction: rtl;
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+            color: #333;
+        }
+
+        .qr-section { text-align: center; margin: 6px 0; }
+        .stamp-paid {
+            border: 2px solid #000;
+            display: inline-block;
+            padding: 2px 10px;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin: 4px 0;
+        }
+
+        @media print {
+            body { margin: 0; padding: 2mm; width: 80mm; }
+            @page { size: 80mm auto; margin: 0; }
+            .no-print { display: none !important; }
+        }
+        @media screen {
+            body { background: #f0f0f0; padding: 20px; width: 100%; }
+            .receipt-wrapper {
+                max-width: 80mm;
+                margin: 0 auto;
+                background: #fff;
+                padding: 10px 12px;
+                border: 1px solid #ccc;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            }
+            .print-btn {
+                display: block;
+                width: 80mm;
+                max-width: 100%;
+                margin: 0 auto 12px;
+                padding: 10px;
+                background: #1A1D27;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+                font-size: 13px;
+                text-align: center;
+                border-radius: 6px;
+            }
+            .print-btn:hover { background: #00AEEF; }
+        }
+    </style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">&#128424; Print Receipt / طباعة الإيصال</button>
+
+<div class="receipt-wrapper">
+
+    <!-- ===== COMPANY HEADER ===== -->
+    <div class="center">
+        {% if invoice.company.logo %}
+        <img src="{{ invoice.company.logo.url }}" style="max-height:50px;max-width:100%;margin-bottom:4px;" alt="Logo">
+        {% endif %}
+        <div class="xlarge bold">{{ invoice.company.name }}</div>
+        <hr>
+        {% if invoice.company.vat_number %}
+        <div class="small">VAT No / الرقم الضريبي: <strong>{{ invoice.company.vat_number }}</strong></div>
+        {% endif %}
+        {% if invoice.company.address %}
+        <div class="small">{{ invoice.company.address }}</div>
+        {% endif %}
+        {% if invoice.company.phone %}
+        <div class="small">Tel: {{ invoice.company.phone }}</div>
+        {% endif %}
+        {% if invoice.company.email %}
+        <div class="small">{{ invoice.company.email }}</div>
+        {% endif %}
+    </div>
+
+    <hr>
+
+    <!-- ===== INVOICE TYPE HEADER ===== -->
+    <div class="center bold" style="font-size:13px;margin:3px 0;">
+        TAX INVOICE &nbsp;|&nbsp; فاتورة ضريبية
+    </div>
+
+    <hr>
+
+    <!-- ===== META: Invoice No, Date, Time, Cashier, Branch ===== -->
+    <table style="margin-bottom:4px;">
+        <tr>
+            <td>Invoice # / رقم الفاتورة:</td>
+            <td class="right bold">{{ invoice.number }}</td>
+        </tr>
+        <tr>
+            <td>Date / التاريخ:</td>
+            <td class="right">{{ invoice.created|date:"d M Y" }}</td>
+        </tr>
+        <tr>
+            <td>Time / الوقت:</td>
+            <td class="right">{{ invoice.created|date:"H:i" }}</td>
+        </tr>
+        <tr>
+            <td>Cashier / الكاشير:</td>
+            <td class="right">
+                {% if invoice.cashier %}
+                    {% if invoice.cashier.get_full_name %}{{ invoice.cashier.get_full_name }}{% else %}{{ invoice.cashier.username }}{% endif %}
+                {% else %}—{% endif %}
+            </td>
+        </tr>
+        {% if invoice.branch %}
+        <tr>
+            <td>Branch / الفرع:</td>
+            <td class="right">{{ invoice.branch.name }}</td>
+        </tr>
+        {% endif %}
+    </table>
+
+    <!-- ===== CUSTOMER (if linked) ===== -->
+    {% if invoice.customer %}
+    <hr>
+    <table style="margin-bottom:4px;">
+        <tr><td colspan="2" class="bold small">Customer / العميل</td></tr>
+        <tr>
+            <td>{{ invoice.customer.name }}</td>
+            {% if invoice.customer.phone %}
+            <td class="right small">{{ invoice.customer.phone }}</td>
+            {% endif %}
+        </tr>
+    </table>
+    {% endif %}
+
+    <hr>
+
+    <!-- ===== LINE ITEMS ===== -->
+    <table class="items-table">
+        <thead>
+            <tr>
+                <th style="width:4%;">#</th>
+                <th style="width:46%;">
+                    Description<br>
+                    <span style="font-family:Arial,sans-serif;direction:rtl;font-size:9px;">الوصف</span>
+                </th>
+                <th style="width:10%;text-align:center;">
+                    Qty<br>
+                    <span style="font-family:Arial,sans-serif;direction:rtl;font-size:9px;">الكمية</span>
+                </th>
+                <th style="width:18%;text-align:right;">
+                    Price<br>
+                    <span style="font-family:Arial,sans-serif;direction:rtl;font-size:9px;">السعر</span>
+                </th>
+                <th style="width:22%;text-align:right;">
+                    Total<br>
+                    <span style="font-family:Arial,sans-serif;direction:rtl;font-size:9px;">الإجمالي</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ item.name }}</td>
+                <td style="text-align:center;">{{ item.quantity }}</td>
+                <td style="text-align:right;">{{ item.price|floatformat:2 }}</td>
+                <td style="text-align:right;">{{ item.total|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="center small" style="padding:6px 0;">No items</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <hr>
+
+    <!-- ===== TOTALS ===== -->
+    <table class="totals-table">
+        <tr>
+            <td>
+                <span class="bil">
+                    <span>Subtotal</span>
+                    <span class="ar">المجموع الفرعي</span>
+                </span>
+            </td>
+            <td class="right">AED {{ invoice.subtotal|floatformat:2 }}</td>
+        </tr>
+
+        {% if invoice.discount %}
+        <tr>
+            <td>
+                <span class="bil">
+                    <span>Discount</span>
+                    <span class="ar">الخصم</span>
+                </span>
+            </td>
+            <td class="right">- AED {{ invoice.discount|floatformat:2 }}</td>
+        </tr>
+        {% endif %}
+
+        {% if invoice.vat %}
+        <tr>
+            <td>
+                <span class="bil">
+                    <span>VAT (5%)</span>
+                    <span class="ar">ضريبة القيمة المضافة</span>
+                </span>
+            </td>
+            <td class="right">AED {{ invoice.vat|floatformat:2 }}</td>
+        </tr>
+        {% endif %}
+
+        <tr class="grand-row">
+            <td>
+                <span class="bil">
+                    <span>TOTAL</span>
+                    <span class="ar">الإجمالي النهائي</span>
+                </span>
+            </td>
+            <td class="right">AED {{ invoice.total|floatformat:2 }}</td>
+        </tr>
+    </table>
+
+    <hr>
+
+    <!-- ===== PAYMENT INFO ===== -->
+    <table style="margin-bottom:4px;">
+        <tr>
+            <td>Payment / طريقة الدفع:</td>
+            <td class="right bold">{{ invoice.get_payment_method_display }}</td>
+        </tr>
+        {% if invoice.payment_method == 'CASH' %}
+        {% if invoice.cash_received %}
+        <tr>
+            <td>Cash / نقدي:</td>
+            <td class="right">AED {{ invoice.cash_received|floatformat:2 }}</td>
+        </tr>
+        {% endif %}
+        {% if invoice.balance_returned %}
+        <tr>
+            <td>Change / الباقي:</td>
+            <td class="right">AED {{ invoice.balance_returned|floatformat:2 }}</td>
+        </tr>
+        {% endif %}
+        {% endif %}
+    </table>
+
+    <!-- ===== PAID STAMP ===== -->
+    <div class="center" style="margin:6px 0;">
+        {% if invoice.is_refunded %}
+        <span class="stamp-paid" style="border-color:#dc2626;color:#dc2626;">REFUNDED / مسترد</span>
+        {% elif invoice.is_voided %}
+        <span class="stamp-paid" style="border-color:#6b7280;color:#6b7280;">VOIDED / ملغي</span>
+        {% else %}
+        <span class="stamp-paid">PAID / مدفوع</span>
+        {% endif %}
+    </div>
+
+    <hr>
+
+    <!-- ===== QR CODE (FTA ZATCA) ===== -->
+    <div class="qr-section">
+        {% if qr_code_b64 %}
+        <img src="data:image/png;base64,{{ qr_code_b64 }}" style="width:80px;height:80px;" alt="FTA QR">
+        {% else %}
+        <div style="border:1px dashed #999;padding:10px;display:inline-block;font-size:10px;">
+            [FTA QR Code]<br>Scan to verify
+        </div>
+        {% endif %}
+        <div class="small" style="margin-top:3px;">
+            Scan to verify with FTA / امسح للتحقق
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="center">
+        <div class="bold" style="margin-bottom:2px;">Thank you for your business!</div>
+        <div style="font-family:Arial,sans-serif;margin-bottom:5px;">شكراً لتعاملكم معنا</div>
+        <div class="small" style="margin-top:6px;color:#555;">— Powered by Labezra ERP —</div>
+    </div>
+
+</div><!-- /receipt-wrapper -->
+
+<script>
+    // Auto-print only when opened directly (not in iframe)
+    if (window.self === window.top) {
+        window.onload = function () {
+            setTimeout(function () { window.print(); }, 600);
+        };
+    }
+</script>
+</body>
+</html>

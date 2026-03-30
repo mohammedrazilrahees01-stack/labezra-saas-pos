@@ -1,0 +1,53 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Barcodes & QR - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-barcode-line"></i>{% endblock %}
+{% block page_title %}Barcodes & QR Codes{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div><h2 class="page-heading">Barcodes & QR Codes</h2><p class="page-subheading">Print product barcodes and QR labels</p></div>
+    <div class="header-actions">
+      <button class="btn btn-outline"><i class="ri-printer-line"></i> Batch Print</button>
+      <button class="btn btn-primary"><i class="ri-add-line"></i> Generate Barcode</button>
+    </div>
+  </div>
+  <div class="card" style="padding:16px;margin-bottom:20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+    <input type="text" class="form-control" placeholder="Search products..." style="max-width:220px;">
+    <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+      <label class="form-label" style="margin:0;">Test barcode scanner:</label>
+      <input type="text" class="form-control" placeholder="Scan barcode here..." style="max-width:200px;">
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;">
+    <div class="card" style="padding:16px;text-align:center;">
+      <div style="font-weight:600;margin-bottom:8px;">iPhone 15 Pro</div>
+      <div style="font-family:monospace;font-size:11px;background:var(--bg-secondary);padding:6px;border-radius:4px;margin-bottom:8px;letter-spacing:2px;">6901210198928</div>
+      <div style="background:#1d1d1f;color:#fff;padding:4px 8px;border-radius:4px;font-family:monospace;font-size:10px;margin-bottom:12px;display:inline-block;">||||| |||| |||||</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">AED 3,500 | Stock: 12</div>
+      <button class="btn btn-sm btn-outline" style="width:100%;"><i class="ri-printer-line"></i> Print Label</button>
+    </div>
+    <div class="card" style="padding:16px;text-align:center;">
+      <div style="font-weight:600;margin-bottom:8px;">Samsung S24 Ultra</div>
+      <div style="font-family:monospace;font-size:11px;background:var(--bg-secondary);padding:6px;border-radius:4px;margin-bottom:8px;letter-spacing:2px;">8806095047652</div>
+      <div style="background:#1d1d1f;color:#fff;padding:4px 8px;border-radius:4px;font-family:monospace;font-size:10px;margin-bottom:12px;display:inline-block;">|||| ||||| |||||</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">AED 4,200 | Stock: 8</div>
+      <button class="btn btn-sm btn-outline" style="width:100%;"><i class="ri-printer-line"></i> Print Label</button>
+    </div>
+    <div class="card" style="padding:16px;text-align:center;">
+      <div style="font-weight:600;margin-bottom:8px;">AirPods Pro 2</div>
+      <div style="font-family:monospace;font-size:11px;background:var(--bg-secondary);padding:6px;border-radius:4px;margin-bottom:8px;letter-spacing:2px;">0195949036057</div>
+      <div style="background:#1d1d1f;color:#fff;padding:4px 8px;border-radius:4px;font-family:monospace;font-size:10px;margin-bottom:12px;display:inline-block;">||||| || ||| ||||</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">AED 850 | Stock: 25</div>
+      <button class="btn btn-sm btn-outline" style="width:100%;"><i class="ri-printer-line"></i> Print Label</button>
+    </div>
+    <div class="card" style="padding:16px;text-align:center;">
+      <div style="font-weight:600;margin-bottom:8px;">Nike Air Max 270</div>
+      <div style="font-family:monospace;font-size:11px;background:var(--bg-secondary);padding:6px;border-radius:4px;margin-bottom:8px;letter-spacing:2px;">0885179234567</div>
+      <div style="background:#1d1d1f;color:#fff;padding:4px 8px;border-radius:4px;font-family:monospace;font-size:10px;margin-bottom:12px;display:inline-block;">|| |||||| ||| |||</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">AED 650 | Stock: 45</div>
+      <button class="btn btn-sm btn-outline" style="width:100%;"><i class="ri-printer-line"></i> Print Label</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends "base/base.html" %}
+{% block title %}Products — Labezra{% endblock %}
+{% block page_title %}Products{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+    <h2>Products</h2>
+    <a href="/inventory/add/" class="btn btn-primary"><i class="ri-add-line"></i> Add Product</a>
+</div>
+
+<!-- KPI Row -->
+<div class="kpi-row">
+    <div class="kpi-card">
+        <div class="kpi-icon blue"><i class="ri-box-3-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-label">Total Products</span>
+            <span class="kpi-value">{{ total_products|default:products|length }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon orange"><i class="ri-error-warning-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-label">Low Stock</span>
+            <span class="kpi-value">{{ low_stock_count|default:"0" }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon red"><i class="ri-close-circle-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-label">Out of Stock</span>
+            <span class="kpi-value">{{ out_of_stock_count|default:"0" }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- Table Card -->
+<div class="card">
+    <div class="card-header">
+        <span class="card-title">All Products</span>
+    </div>
+    <div class="table-toolbar">
+        <div class="search-box">
+            <i class="ri-search-line"></i>
+            <input type="text" id="productSearch" placeholder="Search products...">
+        </div>
+        <span class="text-muted" style="font-size:0.875rem;">{{ products|length }} product{{ products|length|pluralize
+            }}</span>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th data-i18n="th_name">Name</th>
+                <th data-i18n="th_category">Category</th>
+                <th data-i18n="th_price">Price</th>
+                <th data-i18n="th_stock">Stock</th>
+                <th>Barcode</th>
+                <th data-i18n="actions">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in products %}
+            <tr class="product-row">
+                <td>
+                    <div class="product-cell">
+                        {% if p.image %}
+                        <img src="{{ p.image.url }}" alt="{{ p.name }}" class="product-img">
+                        {% else %}
+                        <div class="product-img-placeholder"><i class="ri-image-line"></i></div>
+                        {% endif %}
+                    </div>
+                </td>
+                <td class="product-name">{{ p.name }}</td>
+                <td>{{ p.category }}</td>
+                <td>AED {{ p.price }}</td>
+                <td>
+                    {% if p.stock <= 5 %} <span class="stock-low">{{ p.stock }}</span>
+                        {% else %}
+                        {{ p.stock }}
+                        {% endif %}
+                </td>
+                <td>{{ p.barcode|default:"—" }}</td>
+                <td class="table-actions">
+                    <a href="/inventory/edit/{{ p.id }}/" class="btn btn-warning btn-sm"><i class="ri-edit-line"></i>
+                        Edit</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">
+                    <div class="empty-state">
+                        <i class="ri-box-3-line"></i>
+                        <h3>No products found</h3>
+                        <p>Start by adding your first product.</p>
+                        <a href="/inventory/add/" class="btn btn-primary">Add Product</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        if (typeof initTableSearch === 'function') {
+            initTableSearch('productSearch', '.product-row', '.product-name');
+        } else {
+            // Fallback inline search
+            const input = document.getElementById('productSearch');
+            if (input) {
+                input.addEventListener('input', function () {
+                    const q = this.value.toLowerCase();
+                    document.querySelectorAll('.product-row').forEach(function (row) {
+                        const name = row.querySelector('.product-name');
+                        row.style.display = (name && name.textContent.toLowerCase().includes(q)) ? '' : 'none';
+                    });
+                });
+            }
+        }
+    });
+</script>
+{% endblock %}

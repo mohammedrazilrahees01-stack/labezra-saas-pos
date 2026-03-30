@@ -1,0 +1,1043 @@
+{% load static %}
+
+<style>
+    /* =====================================================
+   SIDEBAR — Labezra Professional (UAE/KSA Gov Grade)
+   Theme: Dark Navy #1A1D27 + Cyan #00AEEF  (matches auth page)
+   ===================================================== */
+
+    :root {
+        --sb-bg: #ffffff;
+        --sb-header: #1A1D27;
+        --sb-header-dark: #13151E;
+        --sb-accent: #00AEEF;
+        --sb-accent-dark: #0090C7;
+        --sb-accent-light: rgba(0, 174, 239, 0.10);
+        --sb-accent-hover: rgba(0, 174, 239, 0.06);
+        --sb-text: #374151;
+        --sb-muted: #6b7280;
+        --sb-hover-bg: rgba(0, 174, 239, 0.06);
+        --sb-active-bg: rgba(0, 174, 239, 0.10);
+        --sb-width: 252px;
+        --sb-collapsed: 64px;
+        --sb-transition: 0.25s ease;
+    }
+
+    .sidebar {
+        width: var(--sb-width);
+        min-height: 100vh;
+        background: var(--sb-bg);
+        border-right: 1px solid #e5e7eb;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        z-index: 1000;
+        transition: width var(--sb-transition);
+        box-shadow: 2px 0 16px rgba(0, 0, 0, .08);
+    }
+
+    /* Scrollbar styling */
+    .sidebar::-webkit-scrollbar { width: 3px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+
+    /* ===== HEADER ===== */
+    .sb-header {
+        background: var(--sb-header);
+        padding: 0 16px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-shrink: 0;
+        overflow: hidden;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    /* Cyan glow accent on header (matches auth page) */
+    .sb-header::before {
+        content: '';
+        position: absolute;
+        top: -30px; right: -30px;
+        width: 120px; height: 120px;
+        background: radial-gradient(circle, rgba(0,174,239,0.18) 0%, transparent 70%);
+        pointer-events: none;
+    }
+
+    .sb-toggle {
+        background: none;
+        border: none;
+        color: rgba(255,255,255,0.85);
+        font-size: 20px;
+        cursor: pointer;
+        padding: 6px;
+        border-radius: 6px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background .15s;
+        line-height: 1;
+        position: relative;
+        z-index: 1;
+    }
+
+    .sb-toggle:hover { background: rgba(255,255,255,.15); }
+
+    .sb-title {
+        color: white;
+        font-size: 15px;
+        font-weight: 700;
+        white-space: nowrap;
+        overflow: hidden;
+        opacity: 1;
+        transition: opacity var(--sb-transition), width var(--sb-transition);
+        flex: 1;
+        letter-spacing: 0.01em;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* ===== BODY ===== */
+    .sb-body {
+        flex: 1;
+        padding: 8px 0 4px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    /* Scrollbar for sb-body */
+    .sb-body::-webkit-scrollbar { width: 3px; }
+    .sb-body::-webkit-scrollbar-track { background: transparent; }
+    .sb-body::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+
+    /* ===== SECTION LABEL ===== */
+    .sb-section-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: .09em;
+        color: var(--sb-muted);
+        text-transform: uppercase;
+        padding: 14px 16px 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        opacity: 1;
+        transition: opacity var(--sb-transition);
+    }
+
+    /* ===== DIRECT LINK ===== */
+    .sb-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 16px;
+        color: var(--sb-text);
+        text-decoration: none;
+        font-size: 13.5px;
+        font-weight: 500;
+        transition: background .15s, color .15s;
+        white-space: nowrap;
+        overflow: hidden;
+        border-left: 3px solid transparent;
+    }
+
+    .sb-link i {
+        font-size: 17px;
+        flex-shrink: 0;
+        width: 20px;
+        text-align: center;
+        color: #9ca3af;
+        transition: color .15s;
+    }
+
+    .sb-link span {
+        opacity: 1;
+        transition: opacity var(--sb-transition);
+    }
+
+    .sb-link:hover {
+        background: var(--sb-hover-bg);
+        color: var(--sb-accent);
+    }
+
+    .sb-link:hover i { color: var(--sb-accent); }
+
+    .sb-link.active {
+        background: var(--sb-active-bg);
+        color: var(--sb-accent);
+        border-left-color: var(--sb-accent);
+        font-weight: 600;
+    }
+
+    .sb-link.active i { color: var(--sb-accent); }
+
+    /* ===== DROPDOWN PARENT ===== */
+    .sb-dropdown { border-left: 3px solid transparent; }
+
+    .sb-dropdown-toggle {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 16px;
+        cursor: pointer;
+        user-select: none;
+        color: var(--sb-text);
+        font-size: 13.5px;
+        font-weight: 500;
+        transition: background .15s, color .15s;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .sb-dropdown-toggle i.sb-icon {
+        font-size: 17px;
+        flex-shrink: 0;
+        width: 20px;
+        text-align: center;
+        color: #9ca3af;
+        transition: color .15s;
+    }
+
+    .sb-dropdown-toggle .sb-label {
+        flex: 1;
+        opacity: 1;
+        transition: opacity var(--sb-transition);
+    }
+
+    .sb-dropdown-toggle .sb-chevron {
+        font-size: 16px;
+        color: #9ca3af;
+        transition: transform .2s, opacity var(--sb-transition);
+        flex-shrink: 0;
+    }
+
+    .sb-dropdown-toggle:hover {
+        background: var(--sb-hover-bg);
+        color: var(--sb-accent);
+    }
+
+    .sb-dropdown-toggle:hover i.sb-icon { color: var(--sb-accent); }
+
+    /* Active parent */
+    .sb-dropdown.open > .sb-dropdown-toggle,
+    .sb-dropdown.has-active > .sb-dropdown-toggle {
+        color: var(--sb-accent);
+        background: var(--sb-active-bg);
+        border-left: 3px solid var(--sb-accent);
+    }
+
+    .sb-dropdown.open > .sb-dropdown-toggle i.sb-icon,
+    .sb-dropdown.has-active > .sb-dropdown-toggle i.sb-icon { color: var(--sb-accent); }
+
+    .sb-dropdown.open > .sb-dropdown-toggle .sb-chevron { transform: rotate(180deg); }
+
+    /* ===== SUB-MENU ===== */
+    .sb-submenu {
+        display: none;
+        padding: 2px 0;
+        background: #f9fafb;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .sb-dropdown.open > .sb-submenu { display: block; }
+
+    .sb-submenu a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 7px 16px 7px 44px;
+        color: #4b5563;
+        text-decoration: none;
+        font-size: 13px;
+        transition: background .15s, color .15s;
+        white-space: nowrap;
+        overflow: hidden;
+        border-left: 3px solid transparent;
+    }
+
+    .sb-submenu a i {
+        font-size: 14px;
+        width: 16px;
+        text-align: center;
+        flex-shrink: 0;
+        color: #9ca3af;
+    }
+
+    .sb-submenu a span { opacity: 1; transition: opacity var(--sb-transition); }
+
+    .sb-submenu a:hover { background: var(--sb-hover-bg); color: var(--sb-accent); }
+    .sb-submenu a:hover i { color: var(--sb-accent); }
+
+    .sb-submenu a.active {
+        color: var(--sb-accent);
+        font-weight: 600;
+        background: var(--sb-active-bg);
+        border-left-color: var(--sb-accent);
+    }
+
+    .sb-submenu a.active i { color: var(--sb-accent); }
+
+    /* ===== FOOTER ===== */
+    .sb-footer {
+        padding: 8px 0;
+        border-top: 1px solid #f3f4f6;
+        flex-shrink: 0;
+        position: sticky;
+        bottom: 0;
+        background: var(--sb-bg);
+    }
+
+    .sb-footer a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 16px;
+        color: #6b7280;
+        text-decoration: none;
+        font-size: 13px;
+        transition: background .15s, color .15s;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .sb-footer a i {
+        font-size: 17px;
+        flex-shrink: 0;
+        width: 20px;
+        text-align: center;
+    }
+
+    .sb-footer a span { opacity: 1; transition: opacity var(--sb-transition); }
+    .sb-footer a:hover { background: var(--sb-hover-bg); color: var(--sb-accent); }
+    .sb-footer .sb-logout { color: #ef4444; }
+    .sb-footer .sb-logout:hover { background: #fef2f2; color: #dc2626; }
+
+    /* ===== COLLAPSED STATE ===== */
+    .sidebar.collapsed { width: var(--sb-collapsed); }
+
+    /* Hide text labels, section titles, chevrons completely */
+    .sidebar.collapsed .sb-title,
+    .sidebar.collapsed .sb-section-label { display: none !important; }
+
+    .sidebar.collapsed .sb-link span,
+    .sidebar.collapsed .sb-dropdown-toggle .sb-label,
+    .sidebar.collapsed .sb-dropdown-toggle .sb-chevron,
+    .sidebar.collapsed .sb-submenu a span,
+    .sidebar.collapsed .sb-footer a span { display: none !important; }
+
+    .sidebar.collapsed .sb-submenu { display: none !important; }
+
+    /* ── Row container: relative + fixed height so icon can be absolutely centred ── */
+    .sidebar.collapsed .sb-link,
+    .sidebar.collapsed .sb-dropdown-toggle,
+    .sidebar.collapsed .sb-footer a {
+        position: relative !important;
+        display: block !important;
+        width: 100% !important;
+        height: 46px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border-left: none !important;
+        background-clip: padding-box !important;
+        overflow: visible !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Active indicator — left accent bar */
+    .sidebar.collapsed .sb-link.active,
+    .sidebar.collapsed .sb-dropdown.has-active > .sb-dropdown-toggle {
+        background: var(--sb-active-bg) !important;
+    }
+    .sidebar.collapsed .sb-link.active::before,
+    .sidebar.collapsed .sb-dropdown.has-active > .sb-dropdown-toggle::before {
+        content: '';
+        position: absolute;
+        left: 0; top: 20%; height: 60%; width: 3px;
+        background: var(--sb-accent);
+        border-radius: 0 2px 2px 0;
+    }
+
+    /* ── Icon: absolute centred in the 64px row ── */
+    .sidebar.collapsed .sb-link > i,
+    .sidebar.collapsed .sb-dropdown-toggle > i.sb-icon,
+    .sidebar.collapsed .sb-footer a > i {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        font-size: 18px !important;
+        line-height: 1 !important;
+        width: auto !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        text-align: center !important;
+    }
+
+    /* ===== MAIN CONTENT SHIFTS ===== */
+    .main {
+        margin-left: var(--sb-width);
+        transition: margin-left var(--sb-transition);
+    }
+
+    /* Use ~ (general sibling) so the <script> tag between sidebar and main doesn't break it */
+    .sidebar.collapsed ~ .main,
+    body.sidebar-collapsed .main,
+    .main.sb-expanded {
+        margin-left: var(--sb-collapsed);
+    }
+
+    /* ===== MOBILE OVERLAY ===== */
+    @media (max-width: 768px) {
+        .sidebar {
+            transform: translateX(-100%);
+            width: var(--sb-width) !important;
+            transition: transform var(--sb-transition);
+        }
+
+        .sidebar.mobile-open { transform: translateX(0); }
+
+        .main { margin-left: 0 !important; }
+
+        .sb-mobile-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            z-index: 999;
+        }
+
+        .sb-mobile-overlay.active { display: block; }
+    }
+
+    @media (min-width: 769px) {
+        .sb-mobile-overlay { display: none !important; }
+    }
+
+    /* Dark mode sidebar */
+    body.dark-mode .sidebar { background: #1e2535; border-color: #2d3748; }
+    body.dark-mode .sb-footer { background: #1e2535; border-color: #2d3748; }
+    body.dark-mode .sb-section-label { color: #64748b; }
+    body.dark-mode .sb-link { color: #cbd5e1; }
+    body.dark-mode .sb-dropdown-toggle { color: #cbd5e1; }
+    body.dark-mode .sb-submenu { background: #172031; border-color: #2d3748; }
+    body.dark-mode .sb-submenu a { color: #94a3b8; }
+    body.dark-mode .sb-footer a { color: #94a3b8; }
+</style>
+
+
+<!-- Mobile overlay -->
+<div class="sb-mobile-overlay" id="sbMobileOverlay"></div>
+
+<nav class="sidebar" id="mainSidebar">
+
+    <!-- HEADER -->
+    <div class="sb-header">
+        <button class="sb-toggle" id="sidebarToggle" title="Toggle Sidebar">
+            <i class="ri-menu-line"></i>
+        </button>
+        <span class="sb-title">
+            {% if request.user.is_authenticated and request.user.company %}
+            {{ request.user.company.name }}
+            {% else %}
+            Labezra
+            {% endif %}
+        </span>
+    </div>
+
+    <div class="sb-body">
+
+        <!-- ===== OVERVIEW ===== -->
+        <div class="sb-section-label">Overview</div>
+
+        <a href="/dashboard/" class="sb-link {% if request.path == '/dashboard/' %}active{% endif %}">
+            <i class="ri-home-4-line"></i>
+            <span data-i18n="nav_dashboard">Dashboard</span>
+        </a>
+
+        <a href="/activity/" class="sb-link {% if '/activity/' in request.path %}active{% endif %}">
+            <i class="ri-pulse-line"></i>
+            <span data-i18n="nav_activity_log">Activity Log</span>
+        </a>
+
+        <a href="/analytics/" class="sb-link {% if '/analytics/' in request.path %}active{% endif %}">
+            <i class="ri-line-chart-line"></i>
+            <span>Analytics &amp; BI</span>
+        </a>
+
+        <a href="/calendar/" class="sb-link {% if '/calendar/' in request.path %}active{% endif %}">
+            <i class="ri-calendar-2-line"></i>
+            <span>Calendar</span>
+        </a>
+
+        <a href="/ai/" class="sb-link {% if '/ai/' in request.path %}active{% endif %}">
+            <i class="ri-robot-line"></i>
+            <span>AI Intelligence</span>
+        </a>
+
+        <a href="/guidelines/" class="sb-link {% if '/guidelines/' in request.path %}active{% endif %}">
+            <i class="ri-book-open-line"></i>
+            <span>Guidelines</span>
+        </a>
+
+        <!-- ===== POS & BILLING ===== -->
+        <div class="sb-section-label" data-i18n="nav_pos">POS &amp; Billing</div>
+
+        <div class="sb-dropdown {% if '/pos/' in request.path %}open has-active{% endif %}" id="ddBilling">
+            <div class="sb-dropdown-toggle" onclick="sbToggle('ddBilling')">
+                <i class="ri-shopping-cart-2-line sb-icon"></i>
+                <span class="sb-label" data-i18n="nav_billing_desk">Billing Desk (POS)</span>
+                <i class="ri-arrow-down-s-line sb-chevron"></i>
+            </div>
+            <div class="sb-submenu">
+                <a href="/pos/" class="{% if request.path == '/pos/' %}active{% endif %}">
+                    <i class="ri-computer-line"></i><span data-i18n="nav_pos">POS Screen</span>
+                </a>
+                <a href="/pos/invoices/" class="{% if '/pos/invoices/' in request.path %}active{% endif %}">
+                    <i class="ri-file-list-3-line"></i><span data-i18n="nav_invoices">Invoices</span>
+                </a>
+                <a href="/pos/refunds/" class="{% if '/pos/refunds/' in request.path %}active{% endif %}">
+                    <i class="ri-arrow-go-back-line"></i><span data-i18n="nav_refunds">Refunds</span>
+                </a>
+                <a href="/pos/held-bills/" class="{% if '/pos/held-bills/' in request.path %}active{% endif %}">
+                    <i class="ri-pause-circle-line"></i><span data-i18n="nav_held_bills">Held Bills</span>
+                </a>
+                <a href="/pos/shifts/" class="{% if '/pos/shifts/' in request.path %}active{% endif %}">
+                    <i class="ri-time-line"></i><span>Shift Management</span>
+                </a>
+                <a href="/pos/cash-management/" class="{% if '/pos/cash-management/' in request.path %}active{% endif %}">
+                    <i class="ri-money-dollar-circle-line"></i><span>Cash Management</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="sb-dropdown {% if '/upgrade/' in request.path or '/subscription/' in request.path %}open has-active{% endif %}" id="ddSubBilling">
+            <div class="sb-dropdown-toggle" onclick="sbToggle('ddSubBilling')">
+                <i class="ri-vip-crown-line sb-icon"></i>
+                <span class="sb-label">Subscription Billing</span>
+                <i class="ri-arrow-down-s-line sb-chevron"></i>
+            </div>
+            <div class="sb-submenu">
+                <a href="/upgrade/" class="{% if '/upgrade/' in request.path %}active{% endif %}">
+                    <i class="ri-price-tag-3-line"></i><span>Plans &amp; Pricing</span>
+                </a>
+                <a href="/subscription/usage/" class="{% if '/subscription/usage/' in request.path %}active{% endif %}">
+                    <i class="ri-bar-chart-2-line"></i><span>Usage &amp; Billing</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- ===== CRM & SALES ===== -->
+        <div class="sb-section-label">CRM &amp; Sales</div>
+
+        <div class="sb-dropdown {% if '/customers/' in request.path %}open has-active{% endif %}" id="ddCustomers">
+            <div class="sb-dropdown-toggle" onclick="sbToggle('ddCustomers')">
+                <i class="ri-user-3-line sb-icon"></i>
+                <span class="sb-label" data-i18n="nav_customers">Customers</span>
+                <i class="ri-arrow-down-s-line sb-chevron"></i>
+            </div>
+            <div class="sb-submenu">
+                <a href="/customers/" class="{% if request.path == '/customers/' %}active{% endif %}">
+                    <i class="ri-list-check"></i><span data-i18n="nav_customers">Customer List</span>
+                </a>
+                <a href="/customers/add/" class="{% if '/customers/add/' in request.path %}active{% endif %}">
+                    <i class="ri-user-add-line"></i><span data-i18n="btn_add_customer">Add Customer</span>
+                </a>
+                <a href="/crm/loyalty/" class="{% if '/crm/loyalty/' in request.path %}active{% endif %}">
+                    <i class="ri-medal-line"></i><span>Loyalty Program</span>
+                </a>
+                <a href="/crm/portal/" class="{% if '/crm/portal/' in request.path %}active{% endif %}">
+                    <i class="ri-global-line"></i><span>Customer Portal</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="sb-dropdown {% if '/sales/' in request.path %}open has-active{% endif %}" id="ddSales">
+            <div class="sb-dropdown-toggle" onclick="sbToggle('ddSales')">
+                <i class="ri-file-text-line sb-icon"></i>
+                <span class="sb-label">Sales</span>
+                <i class="ri-arrow-down-s-line sb-chevron"></i>
+            </div>
+            <div class="sb-submenu">
+                <a href="/sales/quotations/" class="{% if '/sales/quotations/' in request.path %}active{% endif %}">
+                    <i class="ri-file-paper-line"></i><span>Quotations</span>
+                </a>
+                <a href="/sales/orders/" class="{% if '/sales/orders/' in request.path %}active{% endif %}">
+                    <i class="ri-shopping-bag-line"></i><span>Sales Orders</span>
+                </a>
+                <a href="/sales/invoices/" class="{% if '/sales/invoices/' in request.path %}active{% endif %}">
+                    <i class="ri-file-list-3-line"></i><span>Invoices</span>
+                </a>
+                <a href="/sales/proforma/" class="{% if '/sales/proforma/' in request.path %}active{% endif %}">
+                    <i class="ri-file-copy-line"></i><span>Proforma Invoices</span>
+                </a>
+                <a href="/sales/recurring/" class="{% if '/sales/recurring/' in request.path %}active{% endif %}">
+                    <i class="ri-loop-left-line"></i><span>Recurring Invoices</span>
+                </a>
+                <a href="/sales/credit-notes/" class="{% if '/sales/credit-notes/' in request.path %}active{% endif %}">
+                    <i class="ri-refund-2-line"></i><span>Credit Notes</span>
+                </a>
+                <a href="/sales/delivery-notes/" class="{% if '/sales/delivery-notes/' in request.path %}active{% endif %}">
+                    <i class="ri-truck-line"></i><span>Delivery Notes</span>
+                </a>
+                <a href="/sales/returns/" class="{% if '/sales/returns/' in request.path %}active{% endif %}">
+                    <i class="ri-arrow-go-back-line"></i><span>Sales Returns</span>
+                </a>
+            </div>
+        </div>
+
+        <a href="/crm/leads/" class="sb-link {% if '/crm/leads/' in request.path %}active{% endif %}">
+            <i class="ri-lightbulb-line"></i>
+            <span>Leads &amp; Opportunities</span>
+        </a>
+
+        <!-- ===== INVENTORY & WAREHOUSE ===== -->
+        <div class="sb-section-label" data-i18n="nav_inventory">Inventory &amp; Warehouse</div>
+
+        <div class="sb-dropdown {% if '/inventory/' in request.path and '/supplier' not in request.path and '/purchases' not in request.path %}open has-active{% endif %}" id="ddInventory">
+            <div class="sb-dropdown-toggle" onclick="sbToggle('ddInventory')">
+                <i class="ri-box-3-line sb-icon"></i>
+                <span class="sb-label" data-i18n="nav_inventory">Inventory</span>
+                <i class="ri-arrow-down-s-line sb-chevron"></i>
+            </div>
+            <div class="sb-submenu">
+                <a href="/inventory/" class="{% if request.path == '/inventory/' %}active{% endif %}">
+                    <i class="ri-list-check"></i><span data-i18n="nav_products">Products</span>
+                </a>
+                <a href="/inventory/add/" class="{% if '/inventory/add/' in request.path %}active{% endif %}">
+                    <i class="ri-add-box-line"></i><span data-i18n="inv_add_product">Add Product</span>
+                </a>
+                <a href="/inventory/categories/" class="{% if '/categories/' in request.path %}active{% endif %}">
+                    <i class="ri-price-tag-3-line"></i><span data-i18n="nav_categories">Categories</span>
+                </a>
+                <a href="/inventory/variants/" class="{% if '/inventory/variants/' in request.path %}active{% endif %}">
+                    <i class="ri-stack-line"></i><span>Product Variants</span>
+                </a>
+                <a href="/inventory/barcodes/" class="{% if '/inventory/barcodes/' in request.path %}active{% endif %}">
+                    <i class="ri-barcode-line"></i><span>Barcodes &amp; QR</span>
+                </a>
+                <a href="/inventory/stock-history/" class="{% if '/stock-history/' in request.path %}active{% endif %}">
+                    <i class="ri-history-line"></i><span data-i18n="nav_stock_history">Stock History</span>
+                </a>
+                <a href="/inventory/stock-adjustments/" class="{% if '/stock-adjustments/' in request.path %}active{% endif %}">
+                    <i class="ri-equalizer-line"></i><span>Stock Adjustments</span>
+                </a>
+                <a href="/inventory/stock-transfers/" class="{% if '/stock-transfers/' in request.path %}active{% endif %}">
+                    <i class="ri-arrow-left-right-line"></i><span>Stock Transfers</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="sb-dropdown {% if '/warehouse/' in request.path %}open has-active{% endif %}" id="ddWarehouse">
+            <div class="sb-dropdown-toggle" onclick="sbToggle('ddWarehouse')">
+                <i class="ri-building-3-line sb-icon"></i>
+                <span class="sb-label">Warehouse</span>
+                <i class="ri-arrow-down-s-line sb-chevron"></i>
+            </div>
+            <div class="sb-submenu">
+                <a href="/warehouse/" class="{% if request.path == '/warehouse/' %}active{% endif %}">
+                    <i class="ri-building-3-line"></i><span>Warehouses</span>
+                </a>
+                <a href="/warehouse/movements/" class="{% if '/warehouse/movements/' in request.path %}active{% endif %}">
+                    <i class="ri-arrow-left-right-line"></i><span>Stock Movements</span>
+                </a>
+                <a href="/warehouse/audit/" class="{% if '/warehouse/audit/' in request.path %}active{% endif %}">
+                    <i class="ri-search-eye-line"></i><span>Inventory Audit</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="sb-dropdown {% if '/inventory/purchases/' in request.path %}open has-active{% endif %}" id="ddPurchases">
+            <div class="sb-dropdown-toggle" onclick="sbToggle('ddPurchases')">
+                <i class="ri-truck-line sb-icon"></i>
+                <span class="sb-label" data-i18n="nav_purchases">Purchases</span>
+                <i class="ri-arrow-down-s-line sb-chevron"></i>
+            </div>
+            <div class="sb-submenu">
+                <a href="/inventory/purchases/" class="{% if request.path == '/inventory/purchases/' %}active{% endif %}">
+                    <i class="ri-list-check"></i><span>Purchase Orders</span>
+                </a>
+                <a href="/purchases/supplier-quotes/" class="{% if '/purchases/supplier-quotes/' in request.path %}active{% endif %}">
+                    <i class="ri-file-paper-line"></i><span>Supplier Quotes</span>
+                </a>
+                <a href="/purchases/grn/" class="{% if '/purchases/grn/' in request.path %}active{% endif %}">
+                    <i class="ri-inbox-unarchive-line"></i><span>GRN (Goods Received)</span>
+                </a>
+                <a href="/purchases/returns/" class="{% if '/purchases/returns/' in request.path %}active{% endif %}">
+                    <i class="ri-arrow-go-back-line"></i><span>Purchase Returns</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="sb-dropdown {% if '/inventory/suppliers/' in request.path %}open has-active{% endif %}" id="ddSuppliers">
+            <div class="sb-dropdown-toggle" onclick="sbToggle('ddSuppliers')">
+                <i class="ri-store-2-line sb-icon"></i>
+                <span class="sb-label" data-i18n="nav_suppliers">Suppliers</span>
+                <i class="ri-arrow-down-s-line sb-chevron"></i>
+            </div>
+            <div class="sb-submenu">
+                <a href="/inventory/suppliers/" class="{% if request.path == '/inventory/suppliers/' %}active{% endif %}">
+                    <i class="ri-list-check"></i><span data-i18n="nav_suppliers">Supplier List</span>
+                </a>
+                <a href="/inventory/supplier/add/" class="{% if '/supplier/add/' in request.path %}active{% endif %}">
+                    <i class="ri-add-box-line"></i><span data-i18n="btn_add_supplier">Add Supplier</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- ===== FINANCE & ACCOUNTING ===== -->
+        <div class="sb-section-label" data-i18n="nav_accounting">Finance &amp; Accounting</div>
+
+        <div class="sb-dropdown {% if '/accounting/' in request.path or '/finance/' in request.path %}open has-active{% endif %}" id="ddAccounting">
+            <div class="sb-dropdown-toggle" onclick="sbToggle('ddAccounting')">
+                <i class="ri-money-dollar-circle-line sb-icon"></i>
+                <span class="sb-label" data-i18n="nav_accounting">Accounting</span>
+                <i class="ri-arrow-down-s-line sb-chevron"></i>
+            </div>
+            <div class="sb-submenu">
+                <a href="/finance/general-ledger/" class="{% if '/finance/general-ledger/' in request.path %}active{% endif %}">
+                    <i class="ri-book-2-line"></i><span>General Ledger</span>
+                </a>
+                <a href="/finance/chart-of-accounts/" class="{% if '/finance/chart-of-accounts/' in request.path %}active{% endif %}">
+                    <i class="ri-organization-chart"></i><span>Chart of Accounts</span>
+                </a>
+                <a href="/finance/journal-entries/" class="{% if '/finance/journal-entries/' in request.path %}active{% endif %}">
+                    <i class="ri-file-edit-line"></i><span>Journal Entries</span>
+                </a>
+                <a href="/finance/trial-balance/" class="{% if '/finance/trial-balance/' in request.path %}active{% endif %}">
+                    <i class="ri-scales-3-line"></i><span>Trial Balance</span>
+                </a>
+                <a href="/finance/pl-statement/" class="{% if '/finance/pl-statement/' in request.path %}active{% endif %}">
+                    <i class="ri-line-chart-line"></i><span>P&amp;L Statement</span>
+                </a>
+                <a href="/finance/balance-sheet/" class="{% if '/finance/balance-sheet/' in request.path %}active{% endif %}">
+                    <i class="ri-equalizer-2-line"></i><span>Balance Sheet</span>
+                </a>
+                <a href="/finance/cash-flow/" class="{% if '/finance/cash-flow/' in request.path %}active{% endif %}">
+                    <i class="ri-funds-line"></i><span>Cash Flow</span>
+                </a>
+                <a href="/accounting/business-invoices/" class="{% if '/accounting/business-invoices/' in request.path %}active{% endif %}">
+                    <i class="ri-file-paper-2-line"></i><span data-i18n="nav_business_invoice">B2B Invoices</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="sb-dropdown {% if '/expenses/' in request.path %}open has-active{% endif %}" id="ddExpenses">
+            <div class="sb-dropdown-toggle" onclick="sbToggle('ddExpenses')">
+                <i class="ri-wallet-3-line sb-icon"></i>
+                <span class="sb-label" data-i18n="nav_expenses">Expenses</span>
+                <i class="ri-arrow-down-s-line sb-chevron"></i>
+            </div>
+            <div class="sb-submenu">
+                <a href="/expenses/" class="{% if request.path == '/expenses/' %}active{% endif %}">
+                    <i class="ri-list-check"></i><span>Expense List</span>
+                </a>
+                <a href="/expenses/add/" class="{% if '/expenses/add/' in request.path %}active{% endif %}">
+                    <i class="ri-add-box-line"></i><span>Add Expense</span>
+                </a>
+                <a href="/expenses/reports/" class="{% if '/expenses/reports/' in request.path %}active{% endif %}">
+                    <i class="ri-file-chart-line"></i><span>Expense Reports</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="sb-dropdown {% if '/payroll/' in request.path %}open has-active{% endif %}" id="ddPayroll">
+            <div class="sb-dropdown-toggle" onclick="sbToggle('ddPayroll')">
+                <i class="ri-bank-card-line sb-icon"></i>
+                <span class="sb-label" data-i18n="nav_payroll">Payroll</span>
+                <i class="ri-arrow-down-s-line sb-chevron"></i>
+            </div>
+            <div class="sb-submenu">
+                <a href="/payroll/" class="{% if request.path == '/payroll/' %}active{% endif %}">
+                    <i class="ri-list-check"></i><span data-i18n="nav_payroll">Payroll List</span>
+                </a>
+                <a href="/payroll/run/" class="{% if '/payroll/run/' in request.path %}active{% endif %}">
+                    <i class="ri-play-circle-line"></i><span data-i18n="hr_run_payroll">Run Payroll</span>
+                </a>
+                <a href="/payroll/payslips/" class="{% if '/payroll/payslips/' in request.path %}active{% endif %}">
+                    <i class="ri-file-list-2-line"></i><span>Payslips</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- ===== TAX & COMPLIANCE ===== -->
+        <div class="sb-dropdown {% if '/vat/' in request.path or '/pos/monthly-report/' in request.path %}open has-active{% endif %}" id="ddVat">
+            <div class="sb-dropdown-toggle" onclick="sbToggle('ddVat')">
+                <i class="ri-government-line sb-icon"></i>
+                <span class="sb-label" data-i18n="nav_vat_return">Tax &amp; Compliance</span>
+                <i class="ri-arrow-down-s-line sb-chevron"></i>
+            </div>
+            <div class="sb-submenu">
+                <a href="/pos/monthly-report/" class="{% if '/pos/monthly-report/' in request.path %}active{% endif %}">
+                    <i class="ri-file-chart-line"></i><span data-i18n="nav_vat_return">VAT Return Report</span>
+                </a>
+                <a href="/tax/zatca/" class="{% if '/tax/zatca/' in request.path %}active{% endif %}">
+                    <i class="ri-qr-code-line"></i><span>ZATCA E-Invoicing</span>
+                </a>
+                <a href="/settings/company/" class="{% if '/settings/company/' in request.path %}active{% endif %}">
+                    <i class="ri-settings-3-line"></i><span data-i18n="nav_company_settings">TRN &amp; Settings</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- ===== HR & WORKFORCE ===== -->
+        <div class="sb-section-label" data-i18n="nav_hr">HR &amp; Workforce</div>
+
+        <div class="sb-dropdown {% if '/employees/' in request.path %}open has-active{% endif %}" id="ddEmployees">
+            <div class="sb-dropdown-toggle" onclick="sbToggle('ddEmployees')">
+                <i class="ri-team-line sb-icon"></i>
+                <span class="sb-label" data-i18n="nav_employees">Employees</span>
+                <i class="ri-arrow-down-s-line sb-chevron"></i>
+            </div>
+            <div class="sb-submenu">
+                <a href="/employees/" class="{% if request.path == '/employees/' %}active{% endif %}">
+                    <i class="ri-list-check"></i><span data-i18n="nav_employees">Employee List</span>
+                </a>
+                <a href="/employees/add/" class="{% if '/employees/add/' in request.path %}active{% endif %}">
+                    <i class="ri-user-add-line"></i><span data-i18n="hr_add_employee">Add Employee</span>
+                </a>
+                <a href="/employees/attendance/" class="{% if '/employees/attendance/' in request.path %}active{% endif %}">
+                    <i class="ri-calendar-check-line"></i><span>Attendance</span>
+                </a>
+                <a href="/employees/leaves/" class="{% if '/employees/leaves/' in request.path %}active{% endif %}">
+                    <i class="ri-calendar-todo-line"></i><span>Leave Management</span>
+                </a>
+                <a href="/employees/performance/" class="{% if '/employees/performance/' in request.path %}active{% endif %}">
+                    <i class="ri-award-line"></i><span>Performance</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="sb-dropdown {% if '/cashiers/' in request.path or '/add-cashier/' in request.path %}open has-active{% endif %}" id="ddCashiers">
+            <div class="sb-dropdown-toggle" onclick="sbToggle('ddCashiers')">
+                <i class="ri-user-star-line sb-icon"></i>
+                <span class="sb-label" data-i18n="nav_cashiers">Cashiers</span>
+                <i class="ri-arrow-down-s-line sb-chevron"></i>
+            </div>
+            <div class="sb-submenu">
+                <a href="/cashiers/" class="{% if request.path == '/cashiers/' %}active{% endif %}">
+                    <i class="ri-list-check"></i><span data-i18n="nav_cashiers">Cashier List</span>
+                </a>
+                <a href="/add-cashier/" class="{% if '/add-cashier/' in request.path %}active{% endif %}">
+                    <i class="ri-user-add-line"></i><span data-i18n="btn_add_employee">Add Cashier</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- ===== BRANCHES & COMPANY ===== -->
+        <div class="sb-section-label">Branches &amp; Company</div>
+
+        <div class="sb-dropdown {% if '/branches/' in request.path %}open has-active{% endif %}" id="ddBranches">
+            <div class="sb-dropdown-toggle" onclick="sbToggle('ddBranches')">
+                <i class="ri-building-4-line sb-icon"></i>
+                <span class="sb-label" data-i18n="nav_branches">Branches</span>
+                <i class="ri-arrow-down-s-line sb-chevron"></i>
+            </div>
+            <div class="sb-submenu">
+                <a href="/branches/" class="{% if request.path == '/branches/' %}active{% endif %}">
+                    <i class="ri-list-check"></i><span data-i18n="nav_branches">Branch List</span>
+                </a>
+                <a href="/branches/add/" class="{% if '/branches/add/' in request.path %}active{% endif %}">
+                    <i class="ri-add-box-line"></i><span>Add Branch</span>
+                </a>
+                <a href="/branches/warehouses/" class="{% if '/branches/warehouses/' in request.path %}active{% endif %}">
+                    <i class="ri-building-3-line"></i><span>Warehouses</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- ===== PROJECTS & TASKS ===== -->
+        <div class="sb-section-label">Projects &amp; Tasks</div>
+
+        <div class="sb-dropdown {% if '/projects/' in request.path %}open has-active{% endif %}" id="ddProjects">
+            <div class="sb-dropdown-toggle" onclick="sbToggle('ddProjects')">
+                <i class="ri-kanban-view sb-icon"></i>
+                <span class="sb-label">Projects</span>
+                <i class="ri-arrow-down-s-line sb-chevron"></i>
+            </div>
+            <div class="sb-submenu">
+                <a href="/projects/" class="{% if request.path == '/projects/' %}active{% endif %}">
+                    <i class="ri-list-check"></i><span>Project List</span>
+                </a>
+                <a href="/projects/tasks/" class="{% if '/projects/tasks/' in request.path %}active{% endif %}">
+                    <i class="ri-checkbox-multiple-line"></i><span>Tasks</span>
+                </a>
+                <a href="/projects/time-tracking/" class="{% if '/projects/time-tracking/' in request.path %}active{% endif %}">
+                    <i class="ri-timer-line"></i><span>Time Tracking</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- ===== REPORTS & ANALYTICS ===== -->
+        <div class="sb-section-label" data-i18n="nav_reports">Reports &amp; Analytics</div>
+
+        <div class="sb-dropdown {% if '/daily-report/' in request.path or '/monthly-report/' in request.path or '/shift-report/' in request.path or '/cashier-analytics/' in request.path or '/reports/' in request.path %}open has-active{% endif %}" id="ddReports">
+            <div class="sb-dropdown-toggle" onclick="sbToggle('ddReports')">
+                <i class="ri-bar-chart-grouped-line sb-icon"></i>
+                <span class="sb-label" data-i18n="nav_reports">Reports</span>
+                <i class="ri-arrow-down-s-line sb-chevron"></i>
+            </div>
+            <div class="sb-submenu">
+                <a href="/pos/daily-report/" class="{% if '/daily-report/' in request.path %}active{% endif %}">
+                    <i class="ri-calendar-check-line"></i><span data-i18n="nav_daily_report">Daily Report</span>
+                </a>
+                <a href="/pos/monthly-report/" class="{% if '/monthly-report/' in request.path %}active{% endif %}">
+                    <i class="ri-calendar-2-line"></i><span data-i18n="nav_monthly_report">Monthly Report</span>
+                </a>
+                <a href="/pos/shift-report/" class="{% if '/shift-report/' in request.path %}active{% endif %}">
+                    <i class="ri-time-line"></i><span data-i18n="nav_shift_report">Shift Report</span>
+                </a>
+                <a href="/pos/cashier-analytics/" class="{% if '/cashier-analytics/' in request.path %}active{% endif %}">
+                    <i class="ri-user-chart-line"></i><span data-i18n="nav_cashier_analytics">Cashier Analytics</span>
+                </a>
+                <a href="/reports/sales/" class="{% if '/reports/sales/' in request.path %}active{% endif %}">
+                    <i class="ri-line-chart-line"></i><span>Sales Report</span>
+                </a>
+                <a href="/reports/inventory/" class="{% if '/reports/inventory/' in request.path %}active{% endif %}">
+                    <i class="ri-box-3-line"></i><span>Inventory Report</span>
+                </a>
+                <a href="/reports/financial/" class="{% if '/reports/financial/' in request.path %}active{% endif %}">
+                    <i class="ri-funds-line"></i><span>Financial Report</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- ===== SYSTEM ===== -->
+        <div class="sb-section-label">System</div>
+
+        <div class="sb-dropdown {% if '/settings/' in request.path %}open has-active{% endif %}" id="ddSettings">
+            <div class="sb-dropdown-toggle" onclick="sbToggle('ddSettings')">
+                <i class="ri-settings-3-line sb-icon"></i>
+                <span class="sb-label">Settings</span>
+                <i class="ri-arrow-down-s-line sb-chevron"></i>
+            </div>
+            <div class="sb-submenu">
+                <a href="/settings/company/" class="{% if '/settings/company/' in request.path %}active{% endif %}">
+                    <i class="ri-building-2-line"></i><span data-i18n="company_settings">Company Settings</span>
+                </a>
+                <a href="/settings/users/" class="{% if '/settings/users/' in request.path %}active{% endif %}">
+                    <i class="ri-group-line"></i><span>User Management</span>
+                </a>
+                <a href="/settings/roles/" class="{% if '/settings/roles/' in request.path %}active{% endif %}">
+                    <i class="ri-shield-user-line"></i><span>Roles &amp; Permissions</span>
+                </a>
+                <a href="/settings/payment-gateways/" class="{% if '/settings/payment-gateways/' in request.path %}active{% endif %}">
+                    <i class="ri-bank-card-line"></i><span>Payment Gateways</span>
+                </a>
+                <a href="/settings/integrations/" class="{% if '/settings/integrations/' in request.path %}active{% endif %}">
+                    <i class="ri-plug-line"></i><span>Integrations</span>
+                </a>
+                <a href="/settings/backup/" class="{% if '/settings/backup/' in request.path %}active{% endif %}">
+                    <i class="ri-database-2-line"></i><span>Backup &amp; Security</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="sb-dropdown {% if '/notifications/' in request.path %}open has-active{% endif %}" id="ddNotifications">
+            <div class="sb-dropdown-toggle" onclick="sbToggle('ddNotifications')">
+                <i class="ri-notification-3-line sb-icon"></i>
+                <span class="sb-label">Notifications</span>
+                <i class="ri-arrow-down-s-line sb-chevron"></i>
+            </div>
+            <div class="sb-submenu">
+                <a href="/notifications/inbox/" class="{% if '/notifications/inbox/' in request.path %}active{% endif %}">
+                    <i class="ri-inbox-line"></i><span>Inbox</span>
+                </a>
+                <a href="/notifications/admin/" class="{% if '/notifications/admin/' in request.path %}active{% endif %}">
+                    <i class="ri-megaphone-line"></i><span>Send (Admin)</span>
+                </a>
+            </div>
+        </div>
+
+    </div><!-- /sb-body -->
+
+    <!-- ===== FOOTER — LOGOUT ONLY ===== -->
+    <div class="sb-footer">
+        <a href="/logout/" class="sb-logout">
+            <i class="ri-logout-box-r-line"></i>
+            <span data-i18n="logout">Logout</span>
+        </a>
+    </div>
+
+</nav>
+
+
+<script>
+    (function () {
+        var STORAGE_KEY = "labezra_sidebar_collapsed";
+        var sidebar = document.getElementById("mainSidebar");
+        var toggleBtn = document.getElementById("sidebarToggle");
+        var topbarBtn = document.getElementById("topbarMenuBtn");
+        var overlay = document.getElementById("sbMobileOverlay");
+        var mainEl = document.getElementById("mainContent");
+
+        // Restore collapsed state on page load
+        if (localStorage.getItem(STORAGE_KEY) === "1") {
+            sidebar.classList.add("collapsed");
+            if (mainEl) mainEl.classList.add("sb-expanded");
+        }
+
+        function doDesktopToggle() {
+            var collapsed = sidebar.classList.toggle("collapsed");
+            localStorage.setItem(STORAGE_KEY, collapsed ? "1" : "0");
+            // Push main content
+            if (mainEl) mainEl.classList.toggle("sb-expanded", collapsed);
+        }
+
+        function doMobileToggle() {
+            sidebar.classList.toggle("mobile-open");
+            if (overlay) overlay.classList.toggle("active");
+        }
+
+        // Sidebar's own hamburger button
+        if (toggleBtn) {
+            toggleBtn.addEventListener("click", function () {
+                if (window.innerWidth <= 768) {
+                    doMobileToggle();
+                } else {
+                    doDesktopToggle();
+                }
+            });
+        }
+
+        // Topbar hamburger button — same behaviour
+        if (topbarBtn) {
+            topbarBtn.addEventListener("click", function () {
+                if (window.innerWidth <= 768) {
+                    doMobileToggle();
+                } else {
+                    doDesktopToggle();
+                }
+            });
+        }
+
+        if (overlay) {
+            overlay.addEventListener("click", function () {
+                sidebar.classList.remove("mobile-open");
+                overlay.classList.remove("active");
+            });
+        }
+
+        // Expose for any external calls
+        window.sbOpenMobile = function () {
+            sidebar.classList.add("mobile-open");
+            if (overlay) overlay.classList.add("active");
+        };
+    })();
+
+    // ===== DROPDOWN TOGGLE =====
+    function sbToggle(id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        var sidebar = document.getElementById("mainSidebar");
+        if (sidebar && sidebar.classList.contains("collapsed") && window.innerWidth > 768) return;
+        el.classList.toggle("open");
+    }
+</script>

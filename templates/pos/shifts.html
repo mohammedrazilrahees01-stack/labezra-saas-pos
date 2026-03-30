@@ -1,0 +1,36 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Shift Management - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-exchange-line"></i>{% endblock %}
+{% block page_title %}Shift Management{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div><h2 class="page-heading">Shift Management</h2><p class="page-subheading">Track and manage POS shift sessions</p></div>
+    <div class="header-actions"><button class="btn btn-success"><i class="ri-play-circle-line"></i> Open New Shift</button></div>
+  </div>
+  <div class="card" style="padding:20px;margin-bottom:20px;background:linear-gradient(135deg,#10b981,#059669);color:#fff;">
+    <h4 style="margin-bottom:16px;color:#fff;">Current Shift</h4>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;">
+      <div><div style="opacity:0.8;font-size:12px;margin-bottom:4px;">Opened By</div><div style="font-size:16px;font-weight:700;">Ahmed Ali</div></div>
+      <div><div style="opacity:0.8;font-size:12px;margin-bottom:4px;">Start Time</div><div style="font-size:16px;font-weight:700;">09:00 AM</div></div>
+      <div><div style="opacity:0.8;font-size:12px;margin-bottom:4px;">Transactions</div><div style="font-size:16px;font-weight:700;">24</div></div>
+      <div><div style="opacity:0.8;font-size:12px;margin-bottom:4px;">Sales Total</div><div style="font-size:16px;font-weight:700;">AED 8,450</div></div>
+    </div>
+    <div style="margin-top:16px;"><button class="btn" style="background:#fff;color:#059669;font-weight:700;"><i class="ri-stop-circle-line"></i> Close Shift</button></div>
+  </div>
+  <div class="card">
+    <div style="padding:20px;border-bottom:1px solid var(--border-color);"><h4 style="margin:0;">Shift History</h4></div>
+    <div class="card-body p-0">
+      <table class="table">
+        <thead><tr><th>Shift #</th><th>Opened By</th><th>Start</th><th>End</th><th>Duration</th><th>Transactions</th><th>Total Sales</th><th>Status</th><th>Report</th></tr></thead>
+        <tbody>
+          <tr><td><strong>#SH-089</strong></td><td>Ahmed Ali</td><td>17 Mar, 9:00 AM</td><td>In Progress</td><td>--</td><td>24</td><td>AED 8,450</td><td><span class="badge badge-success">Active</span></td><td>--</td></tr>
+          <tr><td><strong>#SH-088</strong></td><td>Sara Mohammed</td><td>16 Mar, 9:00 AM</td><td>16 Mar, 6:00 PM</td><td>9h</td><td>38</td><td>AED 15,230</td><td><span class="badge badge-secondary">Closed</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-file-chart-line"></i></a></td></tr>
+          <tr><td><strong>#SH-087</strong></td><td>Ahmed Ali</td><td>15 Mar, 9:00 AM</td><td>15 Mar, 7:30 PM</td><td>10.5h</td><td>52</td><td>AED 22,100</td><td><span class="badge badge-secondary">Closed</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-file-chart-line"></i></a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

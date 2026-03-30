@@ -1,0 +1,25 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Purchase Returns - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-arrow-go-back-line"></i>{% endblock %}
+{% block page_title %}Purchase Returns{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div><h2 class="page-heading">Purchase Returns</h2><p class="page-subheading">Manage returned items to suppliers</p></div>
+    <div class="header-actions"><button class="btn btn-primary"><i class="ri-add-line"></i> New Return</button></div>
+  </div>
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table">
+        <thead><tr><th>Return #</th><th>PO #</th><th>Supplier</th><th>Date</th><th>Reason</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr><td><strong>#PR-012</strong></td><td>#PO-081</td><td>Al Futtaim Supplies</td><td>16 Mar 2026</td><td>Quality Issue</td><td>AED 3,500.00</td><td><span class="badge badge-success">Approved</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a></td></tr>
+          <tr><td><strong>#PR-011</strong></td><td>#PO-078</td><td>Gulf Electronics</td><td>10 Mar 2026</td><td>Overstocked</td><td>AED 12,000.00</td><td><span class="badge badge-warning">Pending</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a> <button class="btn btn-sm btn-primary">Approve</button></td></tr>
+          <tr><td><strong>#PR-010</strong></td><td>#PO-075</td><td>Samsung UAE Partner</td><td>05 Mar 2026</td><td>Wrong Specs</td><td>AED 25,000.00</td><td><span class="badge badge-success">Approved</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

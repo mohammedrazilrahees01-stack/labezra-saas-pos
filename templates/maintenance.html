@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Under Maintenance — Labezra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #1A1D27;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px 24px;
+            max-width: 520px;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 40px;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: #00AEEF;
+        }
+
+        .icon-wrap {
+            width: 96px;
+            height: 96px;
+            border-radius: 24px;
+            background: rgba(0, 174, 239, 0.12);
+            border: 2px solid rgba(0, 174, 239, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 32px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .icon-wrap i {
+            font-size: 44px;
+            color: #00AEEF;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        p.subtitle {
+            font-size: 16px;
+            color: #9CA3AF;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #00AEEF;
+            animation: bounce 1.4s ease-in-out infinite;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .eta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-size: 14px;
+            color: #D1D5DB;
+        }
+
+        .eta i {
+            color: #00AEEF;
+        }
+
+        .footer {
+            margin-top: 48px;
+            font-size: 12px;
+            color: #6B7280;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0.6);
+                opacity: 0.4;
+            }
+
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 174, 239, 0.2);
+            }
+
+            50% {
+                box-shadow: 0 0 0 16px rgba(0, 174, 239, 0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">Lab<span>ezra</span></div>
+
+        <div class="icon-wrap">
+            <i class="ri-tools-line"></i>
+        </div>
+
+        <h1>Under Maintenance</h1>
+        <p class="subtitle">
+            We're making some improvements to give you a better experience.<br>
+            We'll be back shortly.
+        </p>
+
+        <div class="dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        {% if eta %}
+        <div class="eta">
+            <i class="ri-time-line"></i>
+            <span>Estimated completion: <strong>{{ eta }}</strong></span>
+        </div>
+        {% else %}
+        <div class="eta">
+            <i class="ri-time-line"></i>
+            <span>Estimated completion: <strong>Soon</strong></span>
+        </div>
+        {% endif %}
+
+        <div class="footer">
+            &copy; {% now "Y" %} Labezra ERP. All rights reserved.
+        </div>
+    </div>
+</body>
+
+</html>

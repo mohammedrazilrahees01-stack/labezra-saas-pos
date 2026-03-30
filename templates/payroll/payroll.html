@@ -1,0 +1,123 @@
+{% extends "base/base.html" %}
+
+{% block title %}Payroll — Labezra{% endblock %}
+{% block page_title %}Payroll{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Payroll</h1>
+        <p class="page-subtitle">Process and manage employee salaries</p>
+    </div>
+    <div class="page-actions">
+        <a href="/payroll/run/" class="btn btn-primary">
+            <i class="ri-play-circle-line"></i> Run Payroll
+        </a>
+    </div>
+</div>
+
+<!-- KPI Row -->
+<div class="kpi-row">
+    <div class="kpi-card">
+        <div class="kpi-icon green"><i class="ri-money-dollar-circle-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-value">AED {{ total_payroll|floatformat:2|default:"0.00" }}</span>
+            <span class="kpi-label">Total Payroll This Month</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon blue"><i class="ri-team-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-value">{{ total_employees|default:"0" }}</span>
+            <span class="kpi-label">Total Employees</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon orange"><i class="ri-time-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-value">{{ pending_payments|default:"0" }}</span>
+            <span class="kpi-label">Pending Payments</span>
+        </div>
+    </div>
+</div>
+
+<!-- Payroll Table -->
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Payroll Records</h3>
+        <div class="table-toolbar">
+            <div class="search-box">
+                <i class="ri-search-line"></i>
+                <input type="text" placeholder="Search payroll..." oninput="filterPayroll(this.value)"
+                    id="payrollSearch">
+            </div>
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table class="table" id="payrollTable">
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                    <th>Position</th>
+                    <th>Base Salary (AED)</th>
+                    <th>Deductions</th>
+                    <th>Bonuses</th>
+                    <th>Net Pay (AED)</th>
+                    <th>Month</th>
+                    <th data-i18n="th_status">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in payroll_records %}
+                <tr>
+                    <td>
+                        <div style="font-weight:600;">{{ record.employee.get_full_name }}</div>
+                    </td>
+                    <td>{{ record.employee.position }}</td>
+                    <td>{{ record.salary|floatformat:2 }}</td>
+                    <td style="color:var(--danger);">- {{ record.deductions|floatformat:2 }}</td>
+                    <td style="color:var(--success);">+ {{ record.bonuses|floatformat:2 }}</td>
+                    <td style="font-weight:700;font-size:15px;">{{ record.net_pay|floatformat:2 }}</td>
+                    <td>{{ record.month }}</td>
+                    <td>
+                        {% if record.status == "paid" %}
+                        <span class="badge badge-success" data-i18n="status_paid">Paid</span>
+                        {% elif record.status == "pending" %}
+                        <span class="badge badge-warning" data-i18n="status_pending">Pending</span>
+                        {% elif record.status == "cancelled" %}
+                        <span class="badge badge-danger" data-i18n="status_cancelled">Cancelled</span>
+                        {% else %}
+                        <span class="badge badge-gray">{{ record.status|title }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8">
+                        <div class="table-empty">
+                            <i class="ri-money-dollar-circle-line"
+                                style="font-size:48px;color:var(--text-muted);margin-bottom:12px;"></i>
+                            <h4>No payroll records</h4>
+                            <p>Run payroll to generate employee payment records.</p>
+                            <a href="/payroll/run/" class="btn btn-primary" style="margin-top:12px;">
+                                <i class="ri-play-circle-line"></i> Run Payroll
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function filterPayroll(query) {
+        const q = query.toLowerCase();
+        document.querySelectorAll('#payrollTable tbody tr').forEach(row => {
+            row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+        });
+    }
+</script>
+{% endblock %}

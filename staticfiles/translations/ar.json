@@ -1,0 +1,19 @@
+{
+"app_title":"لابيزرا ERP",
+"login":"تسجيل الدخول",
+"logout":"تسجيل الخروج",
+"dashboard":"لوحة التحكم",
+"invoices":"الفواتير",
+"customers":"العملاء",
+"employees":"الموظفون",
+"expenses":"المصروفات",
+"inventory":"المخزون",
+"save":"حفظ",
+"delete":"حذف",
+"edit":"تعديل",
+"cancel":"إلغاء",
+"actions":"الإجراءات",
+"date":"التاريخ",
+"total":"الإجمالي",
+"refund":"استرجاع"
+}

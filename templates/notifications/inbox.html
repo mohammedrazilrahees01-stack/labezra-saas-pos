@@ -1,0 +1,109 @@
+{% extends "base/base.html" %}
+{% block title %}Notifications — Labezra{% endblock %}
+{% block page_title %}Notifications{% endblock %}
+
+{% block breadcrumb %}
+<nav class="breadcrumb-nav">
+    <a href="/dashboard/">Dashboard</a>
+    <i class="ri-arrow-right-s-line"></i>
+    <span>Notifications</span>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Notifications</h1>
+        <p class="page-subtitle">
+            {% if unread_count > 0 %}{{ unread_count }} unread notification{{ unread_count|pluralize }}{% else %}All caught up!{% endif %}
+        </p>
+    </div>
+    <div class="page-actions">
+        {% if request.user.role == "OWNER" or request.user.is_staff %}
+        <a href="/notifications/admin/" class="btn btn-outline">
+            <i class="ri-send-plane-line"></i> Send Notification
+        </a>
+        {% endif %}
+        <button class="btn btn-primary" onclick="markAllRead()">
+            <i class="ri-check-double-line"></i> Mark All Read
+        </button>
+    </div>
+</div>
+
+<div class="card animate-slide-up">
+    {% if notifications %}
+    <div style="display:flex;flex-direction:column;gap:0;">
+        {% for notif in notifications %}
+        <div class="notif-row {% if not notif.read %}notif-unread{% endif %}" id="notif-{{ notif.pk }}" style="
+            display:flex; align-items:flex-start; gap:16px; padding:18px 24px;
+            border-bottom:1px solid var(--border); transition:.2s;
+            {% if not notif.read %}background:rgba(0,174,239,.04);{% endif %}
+        ">
+            <!-- icon -->
+            <div style="width:40px;height:40px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+                {% if notif.type == 'success' %}background:#D1FAE5;color:#065F46;
+                {% elif notif.type == 'warning' %}background:#FEF3C7;color:#92400E;
+                {% elif notif.type == 'error' %}background:#FEE2E2;color:#991B1B;
+                {% else %}background:#DBEAFE;color:#1D4ED8;{% endif %}">
+                <i class="ri-{% if notif.type == 'success' %}checkbox-circle{% elif notif.type == 'warning' %}alert{% elif notif.type == 'error' %}error-warning{% else %}information{% endif %}-line" style="font-size:18px;"></i>
+            </div>
+            <!-- content -->
+            <div style="flex:1;min-width:0;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                    <strong style="font-size:14px;">{{ notif.title }}</strong>
+                    {% if not notif.read %}
+                    <span style="width:8px;height:8px;border-radius:50%;background:var(--primary);display:inline-block;flex-shrink:0;"></span>
+                    {% endif %}
+                </div>
+                {% if notif.message %}
+                <p style="font-size:13px;color:var(--text-muted);margin:0 0 6px;line-height:1.5;">{{ notif.message }}</p>
+                {% endif %}
+                <span style="font-size:12px;color:var(--text-muted);">{{ notif.created_at|timesince }} ago</span>
+                {% if notif.link %}
+                &nbsp;·&nbsp;
+                <a href="{{ notif.link }}" style="font-size:12px;color:var(--primary);font-weight:600;">View →</a>
+                {% endif %}
+            </div>
+            <!-- mark read btn -->
+            {% if not notif.read %}
+            <button onclick="markRead({{ notif.pk }})" title="Mark as read"
+                style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:18px;padding:4px;flex-shrink:0;">
+                <i class="ri-eye-line"></i>
+            </button>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align:center;padding:80px 24px;">
+        <i class="ri-notification-off-line" style="font-size:56px;color:var(--border);display:block;margin-bottom:16px;"></i>
+        <h3 style="font-size:18px;font-weight:700;margin-bottom:8px;">No Notifications Yet</h3>
+        <p style="color:var(--text-muted);font-size:14px;max-width:360px;margin:0 auto;">
+            You're all caught up! Notifications about invoices, stock alerts, payroll and system messages will appear here.
+        </p>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function markRead(pk){
+    fetch('/notifications/mark-read/' + pk + '/', {
+        method: 'POST',
+        headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+    }).then(() => {
+        const row = document.getElementById('notif-' + pk);
+        if(row){ row.style.background=''; row.classList.remove('notif-unread'); }
+        const dot = row ? row.querySelector('span[style*="border-radius:50%"]') : null;
+        if(dot) dot.remove();
+        const btn = row ? row.querySelector('button') : null;
+        if(btn) btn.remove();
+    });
+}
+function markAllRead(){
+    fetch('/notifications/mark-all-read/', {
+        method: 'POST',
+        headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+    }).then(() => location.reload());
+}
+</script>
+{% endblock %}

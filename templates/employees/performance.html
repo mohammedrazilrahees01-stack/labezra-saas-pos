@@ -1,0 +1,54 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Performance - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-award-line"></i>{% endblock %}
+{% block page_title %}Performance Dashboard{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div><h2 class="page-heading">Performance Dashboard</h2><p class="page-subheading">Employee KPIs and performance metrics</p></div>
+    <div class="header-actions"><select class="form-control" style="max-width:140px;"><option>March 2026</option><option>February 2026</option></select></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;">
+    <div class="card" style="padding:20px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <div style="width:48px;height:48px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:700;">A</div>
+        <div><strong>Ahmed Ali</strong><div style="font-size:13px;color:var(--text-muted);">Store Manager</div></div>
+        <div style="margin-left:auto;"><span class="badge badge-success">A+</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;"><span>Sales Target</span><span>92%</span></div><div style="background:var(--border-color);border-radius:4px;height:6px;"><div style="width:92%;background:var(--success);border-radius:4px;height:100%;"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;"><span>Attendance</span><span>98%</span></div><div style="background:var(--border-color);border-radius:4px;height:6px;"><div style="width:98%;background:var(--primary);border-radius:4px;height:100%;"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;"><span>Customer Rating</span><span>4.8/5</span></div><div style="background:var(--border-color);border-radius:4px;height:6px;"><div style="width:96%;background:#f59e0b;border-radius:4px;height:100%;"></div></div></div>
+      </div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13px;color:var(--text-muted);">AI Score</span><span style="font-size:20px;font-weight:700;color:var(--success);">95</span></div>
+    </div>
+    <div class="card" style="padding:20px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <div style="width:48px;height:48px;background:#f59e0b;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:700;">S</div>
+        <div><strong>Sara Mohammed</strong><div style="font-size:13px;color:var(--text-muted);">Cashier</div></div>
+        <div style="margin-left:auto;"><span class="badge badge-info">B+</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;"><span>Sales Target</span><span>78%</span></div><div style="background:var(--border-color);border-radius:4px;height:6px;"><div style="width:78%;background:var(--success);border-radius:4px;height:100%;"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;"><span>Attendance</span><span>85%</span></div><div style="background:var(--border-color);border-radius:4px;height:6px;"><div style="width:85%;background:var(--primary);border-radius:4px;height:100%;"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;"><span>Customer Rating</span><span>4.2/5</span></div><div style="background:var(--border-color);border-radius:4px;height:6px;"><div style="width:84%;background:#f59e0b;border-radius:4px;height:100%;"></div></div></div>
+      </div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13px;color:var(--text-muted);">AI Score</span><span style="font-size:20px;font-weight:700;color:#f59e0b;">79</span></div>
+    </div>
+    <div class="card" style="padding:20px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <div style="width:48px;height:48px;background:#10b981;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:700;">K</div>
+        <div><strong>Khalid Hassan</strong><div style="font-size:13px;color:var(--text-muted);">Sales Associate</div></div>
+        <div style="margin-left:auto;"><span class="badge badge-warning">B</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;"><span>Sales Target</span><span>85%</span></div><div style="background:var(--border-color);border-radius:4px;height:6px;"><div style="width:85%;background:var(--success);border-radius:4px;height:100%;"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;"><span>Attendance</span><span>72%</span></div><div style="background:var(--border-color);border-radius:4px;height:6px;"><div style="width:72%;background:#ef4444;border-radius:4px;height:100%;"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;"><span>Customer Rating</span><span>4.0/5</span></div><div style="background:var(--border-color);border-radius:4px;height:6px;"><div style="width:80%;background:#f59e0b;border-radius:4px;height:100%;"></div></div></div>
+      </div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13px;color:var(--text-muted);">AI Score</span><span style="font-size:20px;font-weight:700;color:#f59e0b;">75</span></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

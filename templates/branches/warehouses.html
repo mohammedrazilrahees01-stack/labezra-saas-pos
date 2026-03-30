@@ -1,0 +1,45 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Warehouses - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-building-4-line"></i>{% endblock %}
+{% block page_title %}Branch Warehouses{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div><h2 class="page-heading">Warehouses</h2><p class="page-subheading">Manage your branch warehouse locations</p></div>
+    <div class="header-actions"><button class="btn btn-primary"><i class="ri-add-line"></i> Add Warehouse</button></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;">
+    <div class="card" style="padding:20px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;">
+        <div><h4 style="margin:0 0 4px;">Main Warehouse</h4><span class="badge badge-success">Active</span></div>
+        <button class="btn btn-sm btn-outline"><i class="ri-edit-line"></i></button>
+      </div>
+      <div style="color:var(--text-muted);font-size:13px;margin-bottom:16px;"><i class="ri-map-pin-line"></i> Deira, Dubai, UAE</div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span>Total Products</span><strong>248</strong></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span>Stock Value</span><strong>AED 485,200</strong></div>
+      <div style="margin-top:12px;"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span>Capacity Used</span><span>68%</span></div><div style="background:var(--border-color);border-radius:4px;height:8px;"><div style="width:68%;background:var(--primary);border-radius:4px;height:100%;"></div></div></div>
+    </div>
+    <div class="card" style="padding:20px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;">
+        <div><h4 style="margin:0 0 4px;">Branch 2 - JLT</h4><span class="badge badge-success">Active</span></div>
+        <button class="btn btn-sm btn-outline"><i class="ri-edit-line"></i></button>
+      </div>
+      <div style="color:var(--text-muted);font-size:13px;margin-bottom:16px;"><i class="ri-map-pin-line"></i> JLT, Dubai, UAE</div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span>Total Products</span><strong>124</strong></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span>Stock Value</span><strong>AED 192,800</strong></div>
+      <div style="margin-top:12px;"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span>Capacity Used</span><span>45%</span></div><div style="background:var(--border-color);border-radius:4px;height:8px;"><div style="width:45%;background:#10b981;border-radius:4px;height:100%;"></div></div></div>
+    </div>
+    <div class="card" style="padding:20px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;">
+        <div><h4 style="margin:0 0 4px;">Branch 3 - Sharjah</h4><span class="badge badge-warning">Low Stock Alert</span></div>
+        <button class="btn btn-sm btn-outline"><i class="ri-edit-line"></i></button>
+      </div>
+      <div style="color:var(--text-muted);font-size:13px;margin-bottom:16px;"><i class="ri-map-pin-line"></i> Sharjah, UAE</div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span>Total Products</span><strong>87</strong></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span>Stock Value</span><strong>AED 95,400</strong></div>
+      <div style="margin-top:12px;"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;"><span>Capacity Used</span><span>91%</span></div><div style="background:var(--border-color);border-radius:4px;height:8px;"><div style="width:91%;background:#ef4444;border-radius:4px;height:100%;"></div></div></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

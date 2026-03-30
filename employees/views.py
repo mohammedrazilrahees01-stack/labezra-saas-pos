@@ -1,0 +1,69 @@
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Employee
+from django.contrib.auth.decorators import login_required
+from accounts.decorators import owner_required
+
+
+# =========================
+# LIST EMPLOYEES
+# =========================
+
+@owner_required
+@login_required
+def employees(request):
+    data = Employee.objects.filter(company=request.user.company)
+    return render(request, "employees/employees.html", {"employees": data})
+
+
+# =========================
+# ADD EMPLOYEE
+# =========================
+
+@owner_required
+@login_required
+def add_employee(request):
+
+    if request.method == "POST":
+        Employee.objects.create(
+            company=request.user.company,
+            name=request.POST.get("name"),
+            salary=request.POST.get("salary"),
+        )
+
+        return redirect("/employees/")
+
+    return render(request, "employees/employee_add.html")
+
+
+# =========================
+# EDIT EMPLOYEE
+# =========================
+
+@owner_required
+@login_required
+def edit_employee(request, id):
+
+    employee = get_object_or_404(Employee, id=id, company=request.user.company)
+
+    if request.method == "POST":
+        employee.name = request.POST.get("name")
+        employee.salary = request.POST.get("salary")
+        employee.save()
+
+        return redirect("/employees/")
+
+    return render(request, "employees/employee_edit.html", {"employee": employee})
+
+
+# =========================
+# DELETE EMPLOYEE
+# =========================
+
+@owner_required
+@login_required
+def delete_employee(request, id):
+
+    employee = get_object_or_404(Employee, id=id, company=request.user.company)
+    employee.delete()
+
+    return redirect("/employees/")

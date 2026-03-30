@@ -1,0 +1,647 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>{% block title %}Labezra ERP{% endblock %}</title>
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{% static 'css/app.css' %}?v=3">
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}?v=3">
+
+    <!-- Icons & Charts -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Preload translations (for instant language switch) -->
+    <link rel="prefetch" href="{% static 'translations/en.json' %}?v=3">
+    <link rel="prefetch" href="{% static 'translations/ar.json' %}?v=3">
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body class="lang-en">
+
+    <!-- ========== PAGE LOADER ========== -->
+    <div id="globalLoader" aria-hidden="true">
+        <div class="loader-ring"></div>
+        <div class="loader-text" data-i18n="msg_loading">Loading...</div>
+    </div>
+
+    <!-- ========== GLOBAL SEARCH OVERLAY ========== -->
+    <div id="searchOverlay" class="search-overlay" role="dialog" aria-label="Global Search" aria-hidden="true">
+        <div class="search-box">
+            <div class="search-input-wrap">
+                <i class="ri-search-line search-icon-left"></i>
+                <input type="text" id="searchInput" class="search-input"
+                    data-i18n-placeholder="search_placeholder"
+                    placeholder="Search anything... (Ctrl+K)"
+                    autocomplete="off" spellcheck="false">
+                <kbd class="search-esc-hint">ESC</kbd>
+            </div>
+            <div id="searchResults" class="search-results">
+                <div class="search-empty">
+                    <i class="ri-search-2-line"></i>
+                    <span data-i18n="search_placeholder">Start typing to search...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== KEYBOARD SHORTCUTS PANEL ========== -->
+    <div id="shortcutsPanel" class="shortcuts-panel" aria-hidden="true">
+        <div class="shortcuts-inner">
+            <div class="shortcuts-header">
+                <span data-i18n="keyboard_shortcuts">Keyboard Shortcuts</span>
+                <button id="shortcutsClose"><i class="ri-close-line"></i></button>
+            </div>
+            <div class="shortcuts-grid">
+                <div class="shortcut-item"><kbd>Ctrl</kbd><kbd>K</kbd><span data-i18n="shortcuts_search">Global Search</span></div>
+                <div class="shortcut-item"><kbd>Alt</kbd><kbd>P</kbd><span data-i18n="shortcuts_pos">Open POS</span></div>
+                <div class="shortcut-item"><kbd>Alt</kbd><kbd>D</kbd><span data-i18n="shortcuts_dashboard">Dashboard</span></div>
+                <div class="shortcut-item"><kbd>Alt</kbd><kbd>I</kbd><span data-i18n="shortcuts_new_invoice">New Invoice</span></div>
+                <div class="shortcut-item"><kbd>?</kbd><span data-i18n="shortcuts_help">Show Shortcuts</span></div>
+                <div class="shortcut-item"><kbd>ESC</kbd><span data-i18n="btn_close">Close Overlay</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper">
+
+        <!-- ========== SIDEBAR ========== -->
+        {% include "partials/sidebar.html" %}
+
+        <!-- ========== MAIN ========== -->
+        <div class="main sb-expanded" id="mainContent">
+
+            <!-- ========== TOPBAR ========== -->
+            <div class="topbar">
+
+                <div class="topbar-left">
+                    <!-- Mobile-only hamburger (hidden on desktop — sidebar handles collapse) -->
+                    <button class="topbar-mobile-menu" id="mobileMenuBtn" aria-label="Menu"
+                        style="display:none;">
+                        <i class="ri-menu-line"></i>
+                    </button>
+                    <!-- Page icon + title -->
+                    <span class="topbar-page-icon">{% block page_icon %}<i class="ri-dashboard-line"></i>{% endblock %}</span>
+                    <span class="topbar-page-title">{% block page_title %}Dashboard{% endblock %}</span>
+                </div>
+
+                <div class="topbar-right">
+
+                    <!-- Live Clock (UAE/KSA time) -->
+                    <div class="topbar-clock" id="liveClock" title="UAE Time">
+                        <i class="ri-time-line"></i>
+                        <span id="clockTime">--:--</span>
+                    </div>
+
+                    <!-- Global Search trigger -->
+                    <div class="topbar-icon" id="searchBtn" title="Search (Ctrl+K)" data-i18n-title="shortcuts_search">
+                        <i class="ri-search-line"></i>
+                    </div>
+
+                    <!-- Dark / Light mode -->
+                    <div class="topbar-icon" id="darkModeBtn" title="Toggle Dark Mode" data-i18n-title="dark_mode">
+                        <i class="ri-moon-line"></i>
+                    </div>
+
+                    <!-- Notifications -->
+                    <div class="notification-wrapper">
+                        <div id="notificationToggle" class="topbar-icon notification-icon" title="Notifications" data-i18n-title="notifications">
+                            <i class="ri-notification-3-line"></i>
+                            {% if notifications_count %}
+                            <span class="notification-badge">{{ notifications_count }}</span>
+                            {% endif %}
+                        </div>
+                        <div id="notificationDropdown" class="notification-dropdown">
+                            {% include "partials/notifications_dropdown.html" %}
+                        </div>
+                    </div>
+
+                    <!-- Calculator -->
+                    <div class="topbar-icon" id="calcOpen" title="Calculator (Alt+C)" data-i18n-title="pos_calculator">
+                        <i class="ri-calculator-line"></i>
+                    </div>
+
+                    <!-- Profile -->
+                    <div class="profile-wrapper">
+                        <!-- Topbar Avatar Button -->
+                        <div id="profileToggle" class="profile-avatar" title="{{ request.user.username }}">
+                            {% if request.user.profile_photo %}
+                            <img src="{{ request.user.profile_photo.url }}" alt="{{ request.user.username }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                            {% else %}
+                            <span>{{ request.user.username|slice:":1"|upper }}</span>
+                            {% endif %}
+                        </div>
+                        <!-- Profile Dropdown -->
+                        <div id="profileDropdown" class="profile-dropdown">
+                            <!-- Header: Avatar + Name + Email -->
+                            <div class="pd-header">
+                                <div class="pd-avatar-wrap">
+                                    <div class="pd-avatar" onclick="document.getElementById('avatarUploadInput').click();" title="Change photo">
+                                        {% if request.user.profile_photo %}
+                                        <img src="{{ request.user.profile_photo.url }}" alt="{{ request.user.username }}">
+                                        {% else %}
+                                        <span>{{ request.user.username|slice:":1"|upper }}</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="pd-camera-btn" onclick="document.getElementById('avatarUploadInput').click();">
+                                        <i class="ri-camera-line"></i>
+                                    </div>
+                                    <form id="avatarUploadForm" method="POST" action="/profile/update-photo/" enctype="multipart/form-data" style="display:none;">
+                                        {% csrf_token %}
+                                        <input type="file" id="avatarUploadInput" name="photo" accept="image/*" onchange="this.form.submit();">
+                                    </form>
+                                </div>
+                                <div class="pd-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+                                <div class="pd-email">{{ request.user.email }}</div>
+                                <span class="pd-role-badge">{{ request.user.role|capfirst|default:"User" }}</span>
+                            </div>
+                            <!-- Menu Items -->
+                            <div class="pd-menu">
+                                <a href="/profile/" class="pd-item">
+                                    <i class="ri-user-line"></i>
+                                    <span>My Profile</span>
+                                    <i class="ri-arrow-right-s-line pd-arrow"></i>
+                                </a>
+                                <a href="/settings/company/" class="pd-item">
+                                    <i class="ri-building-2-line"></i>
+                                    <span>Company Settings</span>
+                                    <i class="ri-arrow-right-s-line pd-arrow"></i>
+                                </a>
+                                <a href="/upgrade/" class="pd-item">
+                                    <i class="ri-vip-crown-line"></i>
+                                    <span>Subscription &amp; Billing</span>
+                                    <i class="ri-arrow-right-s-line pd-arrow"></i>
+                                </a>
+                                <a href="/settings/security/" class="pd-item">
+                                    <i class="ri-shield-keyhole-line"></i>
+                                    <span>Security &amp; 2FA</span>
+                                    <i class="ri-arrow-right-s-line pd-arrow"></i>
+                                </a>
+                                <a href="/settings/notifications/" class="pd-item">
+                                    <i class="ri-notification-3-line"></i>
+                                    <span>Notification Settings</span>
+                                    <i class="ri-arrow-right-s-line pd-arrow"></i>
+                                </a>
+                                <a href="/settings/integrations/" class="pd-item">
+                                    <i class="ri-plug-line"></i>
+                                    <span>Integrations &amp; API</span>
+                                    <i class="ri-arrow-right-s-line pd-arrow"></i>
+                                </a>
+
+                                <div class="pd-divider"></div>
+                                <a href="/settings/privacy/" class="pd-item">
+                                    <i class="ri-lock-line"></i>
+                                    <span>Privacy &amp; Policy</span>
+                                    <i class="ri-arrow-right-s-line pd-arrow"></i>
+                                </a>
+                                <a href="/support/" class="pd-item">
+                                    <i class="ri-question-line"></i>
+                                    <span>Help &amp; Support</span>
+                                    <i class="ri-arrow-right-s-line pd-arrow"></i>
+                                </a>
+                                <div class="pd-divider"></div>
+                                <a href="/logout/" class="pd-item pd-logout">
+                                    <i class="ri-logout-box-r-line"></i>
+                                    <span>Sign Out</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Language Toggle -->
+                    <div class="lang-toggle">
+                        <button class="lang-btn {% if request.COOKIES.labezra_lang != 'ar' %}active{% endif %}" data-lang="en">EN</button>
+                        <button class="lang-btn {% if request.COOKIES.labezra_lang == 'ar' %}active{% endif %}" data-lang="ar">AR</button>
+                    </div>
+
+                </div>
+            </div>
+            <!-- /TOPBAR -->
+
+            <!-- ========== BREADCRUMB ========== -->
+            {% block breadcrumb %}{% endblock %}
+
+            <!-- ========== CONTENT ========== -->
+            <div class="content">
+
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible animate-slide-down">
+                    <i class="ri-{% if message.tags == 'success' %}checkbox-circle{% elif message.tags == 'error' or message.tags == 'danger' %}error-warning{% elif message.tags == 'warning' %}alert{% else %}information{% endif %}-line"></i>
+                    <span>{{ message }}</span>
+                    <button class="alert-close" type="button" onclick="this.parentElement.remove()">&times;</button>
+                </div>
+                {% endfor %}
+                {% endif %}
+
+                {% block content %}{% endblock %}
+
+            </div>
+            <!-- /CONTENT -->
+
+        </div>
+        <!-- /MAIN -->
+
+    </div>
+    <!-- /WRAPPER -->
+
+    <!-- ========== FLOATING CALCULATOR ========== -->
+    {% include "partials/calculator_widget.html" %}
+
+    <!-- ========== TOAST CONTAINER ========== -->
+    <!-- Offline bar -->
+    <div id="offlineBar">
+      <i class="ri-wifi-off-line"></i>
+      <span>You are offline — transactions are saved locally and will sync when reconnected</span>
+      <span id="offlinePendingBadge" style="background:rgba(255,255,255,.25);border-radius:20px;padding:2px 8px;font-size:11px;display:none;"></span>
+    </div>
+
+    <div id="toastContainer" aria-live="polite"></div>
+
+    <!-- ========== FLOATING ACTION BUTTON ========== -->
+    <div class="fab-container" id="fabContainer">
+        <div class="fab-menu" id="fabMenu">
+            <a href="/pos/" class="fab-item" data-i18n-title="qa_open_pos" title="Open POS">
+                <span class="fab-label" data-i18n="qa_open_pos">Open POS</span>
+                <div class="fab-btn"><i class="ri-store-2-line"></i></div>
+            </a>
+            <a href="/sales/invoices/create/" class="fab-item" data-i18n-title="qa_new_invoice" title="New Invoice">
+                <span class="fab-label" data-i18n="qa_new_invoice">New Invoice</span>
+                <div class="fab-btn"><i class="ri-file-add-line"></i></div>
+            </a>
+            <a href="/inventory/add/" class="fab-item" data-i18n-title="qa_add_product" title="Add Product">
+                <span class="fab-label" data-i18n="qa_add_product">Add Product</span>
+                <div class="fab-btn"><i class="ri-box-3-line"></i></div>
+            </a>
+            <a href="/customers/add/" class="fab-item" data-i18n-title="qa_add_customer" title="Add Customer">
+                <span class="fab-label" data-i18n="qa_add_customer">Add Customer</span>
+                <div class="fab-btn"><i class="ri-user-add-line"></i></div>
+            </a>
+            <a href="https://wa.me/971569956676" target="_blank" class="fab-item" title="WhatsApp Support">
+                <span class="fab-label">WhatsApp</span>
+                <div class="fab-btn" style="background:#25D366!important;color:#fff!important;"><i class="ri-whatsapp-line"></i></div>
+            </a>
+            <a href="#" class="fab-item" id="fabChatbotToggle" title="AI Assistant" onclick="event.preventDefault();if(window.closeFab)window.closeFab();setTimeout(function(){if(window.toggleChatbot)window.toggleChatbot();},160);">
+                <span class="fab-label">AI Assistant</span>
+                <div class="fab-btn" style="background:linear-gradient(135deg,#00AEEF,#0070B8)!important;color:#fff!important;"><i class="ri-robot-2-line"></i></div>
+            </a>
+        </div>
+        <button class="fab-main" id="fabMain" title="Quick Actions">
+            <i class="ri-add-line fab-icon-open"></i>
+            <i class="ri-close-line fab-icon-close" style="display:none;"></i>
+        </button>
+    </div>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script src="{% static 'js/app.js' %}?v=7"></script>
+    <script src="{% static 'js/i18n.js' %}?v=3"></script>
+    <script src="{% static 'js/offline.js' %}?v=1"></script>
+    {% block extra_js %}{% endblock %}
+
+<!-- ========== AI CHATBOT + WHATSAPP ========== -->
+<!-- AI Chatbot Box (standalone — toggled from FAB menu) -->
+<div class="chatbot-box" id="chatbotBox" style="display:none;">
+    <div class="chatbot-header">
+        <div class="chatbot-avatar"><i class="ri-robot-2-line"></i></div>
+        <div>
+            <div class="chatbot-name">Labezra AI</div>
+            <div class="chatbot-status"><span class="chatbot-dot"></span> Online</div>
+        </div>
+        <button class="chatbot-close" id="chatbotClose"><i class="ri-close-line"></i></button>
+    </div>
+    <div class="chatbot-messages" id="chatbotMessages">
+        <div class="chat-msg bot">
+            <div class="chat-bubble">👋 Hi! I'm Labezra AI. How can I help you today?
+                <br><br>Try asking:
+                <div class="chat-suggestions">
+                    <button class="chat-suggest" onclick="chatSuggest('How do I add a product?')">Add product</button>
+                    <button class="chat-suggest" onclick="chatSuggest('How to create invoice?')">Create invoice</button>
+                    <button class="chat-suggest" onclick="chatSuggest('How to add employee?')">Add employee</button>
+                    <button class="chat-suggest" onclick="chatSuggest('Show me reports')">Reports</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="chatbot-input-row">
+        <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')sendChat()">
+        <button class="chatbot-send" onclick="sendChat()"><i class="ri-send-plane-fill"></i></button>
+    </div>
+    <div class="chatbot-footer">
+        Powered by Labezra AI • <a href="https://wa.me/971569956676" target="_blank">WhatsApp Support</a>
+    </div>
+</div>
+
+<style>
+/* wa-btn, chatbot-container, chatbot-btn removed — now inside FAB menu */
+.chatbot-box { position: fixed !important; bottom: 90px !important; right: 24px !important; z-index: 9900 !important; width: 340px; background: var(--card-bg,#fff); border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,.2); overflow: hidden; animation: slideUp .3s cubic-bezier(.34,1.56,.64,1); border: 1px solid var(--border,#e5e7eb); display: flex; flex-direction: column; }
+.chatbot-header { background: linear-gradient(135deg, #0f1929, #1a2d4a); padding: 14px 16px; display: flex; align-items: center; gap: 10px; }
+.chatbot-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #00AEEF, #0070B8); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; flex-shrink: 0; }
+.chatbot-name { color: #fff; font-weight: 700; font-size: 13px; }
+.chatbot-status { font-size: 11px; color: rgba(255,255,255,.6); display: flex; align-items: center; gap: 4px; }
+.chatbot-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+.chatbot-close { margin-left: auto; background: none; border: none; color: rgba(255,255,255,.6); cursor: pointer; font-size: 20px; }
+.chatbot-messages { height: 280px; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.chat-msg { display: flex; }
+.chat-msg.bot { justify-content: flex-start; }
+.chat-msg.user { justify-content: flex-end; }
+.chat-bubble { max-width: 85%; padding: 10px 14px; border-radius: 16px; font-size: 13px; line-height: 1.5; }
+.chat-msg.bot .chat-bubble { background: #f1f5f9; color: #1e293b; border-bottom-left-radius: 4px; }
+.chat-msg.user .chat-bubble { background: linear-gradient(135deg,#00AEEF,#0070B8); color:#fff; border-bottom-right-radius: 4px; }
+.chat-suggestions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chat-suggest { background: #fff; border: 1px solid #e5e7eb; border-radius: 20px; padding: 4px 10px; font-size: 11px; cursor: pointer; color: #00AEEF; transition: all .15s; }
+.chat-suggest:hover { background: #00AEEF; color: #fff; border-color: #00AEEF; }
+.chatbot-input-row { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--border,#e5e7eb); }
+.chatbot-input { flex: 1; border: 1px solid #e5e7eb; border-radius: 24px; padding: 8px 14px; font-size: 13px; outline: none; transition: border-color .2s; background: var(--card-bg,#fff); color: var(--text-primary,#1e293b); }
+.chatbot-input:focus { border-color: #00AEEF; }
+.chatbot-send { width: 36px; height: 36px; border-radius: 50%; background: #00AEEF; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .15s; flex-shrink:0; }
+.chatbot-send:hover { background: #0070B8; }
+.chatbot-footer { text-align: center; font-size: 10px; color: #94a3b8; padding: 8px; background: #f8fafc; }
+.chatbot-footer a { color: #00AEEF; }
+.chat-typing { display: flex; gap: 4px; padding: 10px 14px; }
+.chat-typing span { width: 6px; height: 6px; border-radius: 50%; background: #94a3b8; animation: typing 1.2s ease infinite; }
+.chat-typing span:nth-child(2) { animation-delay: .2s; }
+.chat-typing span:nth-child(3) { animation-delay: .4s; }
+@keyframes typing { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+@keyframes slideUp { from { transform: translateY(30px); opacity:0; } to { transform: translateY(0); opacity:1; } }
+</style>
+
+<!-- ============================================================
+     DEFINITIVE FAB + SEARCH STYLES (ID selectors win all cascade)
+     ============================================================ -->
+<style>
+/* ═══════════════════════════════════════════════
+   FAB — Using ID selectors for maximum specificity
+   No display:none/flex toggle — uses visibility/opacity
+   so app.css display:flex on .fab-menu doesn't matter
+═══════════════════════════════════════════════ */
+#fabContainer {
+    position: fixed !important;
+    bottom: 24px !important;
+    right: 24px !important;
+    z-index: 9800 !important;
+    display: flex !important;
+    flex-direction: column-reverse !important; /* button at bottom, menu stacks above */
+    align-items: flex-end !important;
+    gap: 12px !important;
+}
+#fabMenu {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    gap: 10px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    /* HIDDEN state — no display toggle, just invisible */
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translateY(12px) !important;
+    transition: opacity .22s ease, visibility .22s ease, transform .22s ease !important;
+}
+#fabContainer.fab-is-open #fabMenu {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: all !important;
+    transform: translateY(0) !important;
+}
+#fabMain {
+    width: 56px !important; height: 56px !important;
+    border-radius: 50% !important;
+    background: linear-gradient(135deg, #00AEEF, #0070B8) !important;
+    border: none !important; color: #fff !important;
+    font-size: 22px !important; cursor: pointer !important;
+    display: flex !important; align-items: center !important; justify-content: center !important;
+    box-shadow: 0 6px 24px rgba(0,174,239,.5) !important;
+    transition: transform .25s, background .25s !important;
+    position: relative !important; z-index: 2 !important; flex-shrink: 0 !important;
+}
+#fabMain:hover { transform: scale(1.08) !important; }
+#fabContainer.fab-is-open #fabMain {
+    background: linear-gradient(135deg, #ef4444, #b91c1c) !important;
+    transform: rotate(45deg) !important;
+}
+#fabContainer.fab-is-open #fabMain:hover {
+    transform: rotate(45deg) scale(1.05) !important;
+}
+/* FAB items */
+#fabMenu .fab-item {
+    display: flex !important; align-items: center !important;
+    gap: 10px !important; text-decoration: none !important;
+}
+#fabMenu .fab-label {
+    background: #1a1d27 !important; color: #fff !important;
+    font-size: 12px !important; font-weight: 600 !important;
+    padding: 5px 13px !important; border-radius: 20px !important;
+    white-space: nowrap !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,.3) !important;
+    border: 1px solid rgba(255,255,255,.12) !important;
+    pointer-events: none !important;
+}
+#fabMenu .fab-btn {
+    width: 44px !important; height: 44px !important;
+    border-radius: 50% !important;
+    background: #fff !important; border: none !important;
+    font-size: 18px !important; color: #00AEEF !important;
+    display: flex !important; align-items: center !important; justify-content: center !important;
+    box-shadow: 0 2px 14px rgba(0,0,0,.18) !important;
+    cursor: pointer !important; flex-shrink: 0 !important;
+    transition: background .15s, color .15s, transform .15s !important;
+}
+#fabMenu .fab-item:hover .fab-btn {
+    background: #00AEEF !important; color: #fff !important; transform: scale(1.1) !important;
+}
+
+/* ─── SEARCH OVERLAY ─── */
+.search-overlay {
+    position: fixed !important; inset: 0 !important;
+    background: rgba(0,0,0,.65) !important;
+    backdrop-filter: blur(6px) !important;
+    z-index: 10000 !important;
+    display: flex !important;
+    align-items: flex-start !important; justify-content: center !important;
+    padding-top: 80px !important;
+    opacity: 0 !important; visibility: hidden !important;
+    transition: opacity .2s, visibility .2s !important;
+    pointer-events: none !important;
+}
+.search-overlay.active {
+    opacity: 1 !important; visibility: visible !important;
+    pointer-events: all !important;
+}
+.search-box {
+    background: #fff !important;
+    border-radius: 16px !important;
+    width: 600px !important; max-width: 90vw !important;
+    box-shadow: 0 20px 60px rgba(0,0,0,.4) !important;
+    overflow: hidden !important;
+}
+.search-input-wrap {
+    display: flex !important; align-items: center !important;
+    padding: 16px 20px !important;
+    border-bottom: 1px solid #e5e7eb !important;
+}
+.search-input {
+    flex: 1 !important; border: none !important; outline: none !important;
+    font-size: 16px !important;
+    background: transparent !important;
+    color: #111827 !important; /* ← always dark text on light bg */
+}
+.search-results { max-height: 380px !important; overflow-y: auto !important; }
+.search-result-item {
+    display: flex !important; align-items: center !important;
+    gap: 12px !important; padding: 12px 20px !important;
+    text-decoration: none !important; color: #374151 !important;
+    transition: background .12s !important;
+}
+.search-result-item:hover { background: #f3f4f6 !important; }
+.search-empty { padding: 24px !important; text-align: center !important; color: #9ca3af !important; }
+/* Dark mode */
+body.dark-mode .search-box { background: #1e2235 !important; border: 1px solid #2d3154 !important; }
+body.dark-mode .search-input { color: #e2e8f0 !important; }
+body.dark-mode .search-input::placeholder { color: #4a5568 !important; }
+body.dark-mode .search-input-wrap { border-bottom-color: #2d3154 !important; }
+body.dark-mode .search-results { background: #1e2235 !important; }
+body.dark-mode .search-result-item { color: #e2e8f0 !important; }
+body.dark-mode .search-result-item:hover { background: rgba(255,255,255,.05) !important; }
+body.dark-mode .search-empty { color: #4a5568 !important; }
+</style>
+
+<script>
+(function() {
+    var box = document.getElementById('chatbotBox');
+    var closeBtn = document.getElementById('chatbotClose');
+
+    /* Expose globally so FAB item onclick can call it */
+    window.openChatbot = function() {
+        if (box) { box.style.display = 'flex'; }
+    };
+    window.closeChatbot = function() {
+        if (box) { box.style.display = 'none'; }
+    };
+    window.toggleChatbot = function() {
+        if (box) { box.style.display = (box.style.display === 'flex') ? 'none' : 'flex'; }
+    };
+
+    if (closeBtn) {
+        closeBtn.onclick = function(e) {
+            e.stopPropagation();
+            window.closeChatbot();
+        };
+    }
+    /* Close chatbot when clicking outside */
+    document.addEventListener('click', function(e) {
+        if (box && box.style.display === 'flex') {
+            if (!box.contains(e.target) && e.target.id !== 'fabChatbotToggle' && !e.target.closest('#fabChatbotToggle')) {
+                window.closeChatbot();
+            }
+        }
+    });
+})();
+
+var KB = {
+    'add product': 'To add a product: Go to Inventory and click Add Product. Fill in name, price, stock quantity, and barcode. Set the low stock threshold for automatic alerts.',
+    'create invoice': 'To create an invoice: Go to the POS screen, add products to your cart, select customer, choose payment method, then click Charge.',
+    'add employee': 'To add an employee: Go to Employees and click Add Employee. Fill in details and assign a role (Manager or Cashier).',
+    'reports': 'Reports: Daily Report, Monthly Report, Shift Report, and Cashier Analytics. For VAT reports, go to Monthly Report.',
+    'vat': 'VAT is automatically calculated at 5 percent on all invoices. Your TRN number appears on every invoice. For FTA reports go to Monthly Report.',
+    'low stock': 'Set a low stock threshold on each product. When stock drops below it, you get an automatic alert in the notification bell.',
+    'subscription': 'Plans: Free (1 branch), Pro (AED 75/month or AED 735/year), Enterprise (contact us). Go to Upgrade in your profile menu.',
+    'whatsapp': 'For WhatsApp support, click the green WhatsApp button on the bottom right, or call +971 56 995 6676.',
+    'calendar': 'The Calendar is accessible from the sidebar. Add reminders with browser notifications for stock tasks, payments, and deliveries.',
+    'branch': 'Multi-branch management is available in Pro and Enterprise plans. Go to Branches in the sidebar to add and manage branches.',
+    'default': 'I can help with adding products, creating invoices, managing employees, reports, VAT/TRN, subscriptions, and more. What do you need? Contact us on WhatsApp: +971 56 995 6676'
+};
+
+function getBotResponse(msg) {
+    var lower = msg.toLowerCase();
+    for (var key in KB) {
+        if (lower.includes(key)) return KB[key];
+    }
+    return KB['default'];
+}
+
+function appendMsg(text, type) {
+    var msgs = document.getElementById('chatbotMessages');
+    var div = document.createElement('div');
+    div.className = 'chat-msg ' + type;
+    div.innerHTML = '<div class="chat-bubble">' + text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').split('\n').join('<br>') + '</div>';
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showTyping() {
+    var msgs = document.getElementById('chatbotMessages');
+    var div = document.createElement('div');
+    div.className = 'chat-msg bot';
+    div.id = 'typingIndicator';
+    div.innerHTML = '<div class="chat-bubble chat-typing"><span></span><span></span><span></span></div>';
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeTyping() {
+    var t = document.getElementById('typingIndicator');
+    if (t) t.remove();
+}
+
+function sendChat() {
+    var input = document.getElementById('chatbotInput');
+    var msg = input.value.trim();
+    if (!msg) return;
+    input.value = '';
+    appendMsg(msg, 'user');
+    showTyping();
+    setTimeout(function() {
+        removeTyping();
+        appendMsg(getBotResponse(msg), 'bot');
+    }, 700 + Math.random() * 500);
+}
+
+function chatSuggest(msg) {
+    document.getElementById('chatbotInput').value = msg;
+    sendChat();
+}
+</script>
+
+<!-- ═══════════════════════════════════════════════════
+     FAB — DEFINITIVE IMPLEMENTATION
+     Runs LAST, after app.js, app.css, chatbot script.
+     Uses #fabContainer.fab-is-open selector — no display toggle.
+═══════════════════════════════════════════════════ -->
+<script>
+(function() {
+    var wrap = document.getElementById('fabContainer');
+    var btn  = document.getElementById('fabMain');
+    if (!wrap || !btn) return;
+
+    /* Stop ALL clicks inside the FAB container from bubbling to document.
+       This means: clicking the button OR any menu item will NOT trigger
+       the document close-handler below. */
+    wrap.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+
+    /* Toggle open/closed on main button click */
+    btn.addEventListener('click', function() {
+        wrap.classList.toggle('fab-is-open');
+    });
+
+    /* Close when clicking anywhere outside the FAB container */
+    document.addEventListener('click', function() {
+        wrap.classList.remove('fab-is-open');
+    });
+
+    /* Global API so other scripts can close the FAB */
+    window.closeFab = function() { wrap.classList.remove('fab-is-open'); };
+    window.openFab  = function() { wrap.classList.add('fab-is-open'); };
+})();
+</script>
+
+</body>
+</html>

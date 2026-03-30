@@ -1,0 +1,275 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- {# ── Page-level CSS ─────────────────────────────────────────────── #} -->
+<link rel="stylesheet" href="{% static 'css/pos_style.css' %}">
+
+<!-- {# ── Flash Messages ─────────────────────────────────────────────── #} -->
+{% if messages %}
+<div id="pos-messages">
+    {% for message in messages %}
+    <div class="pos-flash pos-flash--{{ message.tags }}">
+        <i class="ri-alert-line"></i> {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{# BLOCKER ALERT — shown when setup is incomplete (e.g. no branch) #}
+{% if blocker %}
+<style>
+  .setup-blocker-wrap { padding: 2rem 1.5rem; }
+  .setup-blocker-box {
+    background: #fff8e1; border: 1.5px solid #f0a500;
+    border-radius: 12px; padding: 1.4rem 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+    max-width: 700px; margin: 0 auto;
+    box-shadow: 0 2px 8px rgba(240,165,0,0.12);
+  }
+  .setup-blocker-icon { font-size: 2.2rem; line-height: 1; flex-shrink: 0; }
+  .setup-blocker-title { font-weight: 700; font-size: 1.05rem; color: #7a4f00; margin-bottom: 0.25rem; }
+  .setup-blocker-msg  { color: #5a3800; font-size: 0.93rem; }
+  .setup-blocker-btn  {
+    background: #f0a500; color: #fff !important; text-decoration: none;
+    padding: 0.55rem 1.3rem; border-radius: 7px;
+    font-weight: 600; font-size: 0.9rem; white-space: nowrap;
+    transition: background .2s;
+  }
+  .setup-blocker-btn:hover { background: #d4920a; }
+  [data-theme="dark"] .setup-blocker-box,
+  .dark .setup-blocker-box,
+  body.dark-mode .setup-blocker-box {
+    background: #2d2200; border-color: #c98a00;
+  }
+  [data-theme="dark"] .setup-blocker-title,
+  .dark .setup-blocker-title,
+  body.dark-mode .setup-blocker-title { color: #ffd166; }
+  [data-theme="dark"] .setup-blocker-msg,
+  .dark .setup-blocker-msg,
+  body.dark-mode .setup-blocker-msg { color: #f0c060; }
+</style>
+<div class="setup-blocker-wrap">
+  <div class="setup-blocker-box">
+    <span class="setup-blocker-icon">⚠️</span>
+    <div style="flex:1;">
+      <div class="setup-blocker-title">Setup Required</div>
+      <div class="setup-blocker-msg">{{ blocker_message }}</div>
+    </div>
+    {% if blocker_link %}
+    <a href="{{ blocker_link }}" class="setup-blocker-btn">
+      {{ blocker_link_label|default:"Fix Now" }}
+    </a>
+    {% endif %}
+  </div>
+</div>
+{% else %}
+
+{# THREE-COLUMN POS LAYOUT: col1=categories, col2=products, col3=cart #}
+<div class="pos-container">
+
+    {# COLUMN 1 · CATEGORY SIDEBAR #}
+    <aside class="pos-sidebar">
+        <div class="sidebar-header">
+            <h3><i class="ri-layout-grid-line"></i> Categories</h3>
+        </div>
+        <nav class="category-list">
+            <a href="/pos/" class="cat-link {% if not selected_category %}active{% endif %}">
+                <i class="ri-apps-2-line cat-icon"></i> All Products
+            </a>
+            {% for cat in categories %}
+            <a href="/pos/?category={{ cat.id }}"
+                class="cat-link {% if selected_category == cat.id|stringformat:'s' %}active{% endif %}">
+                <i class="ri-price-tag-3-line cat-icon"></i> {{ cat.name }}
+            </a>
+            {% endfor %}
+        </nav>
+    </aside>
+
+    {# COLUMN 2 · PRODUCT GRID #}
+    <main class="pos-main">
+        {# Search Bar #}
+        <div class="pos-header">
+            <div class="search-wrapper">
+                <i class="ri-search-line search-svg"></i>
+                <input type="text" id="productSearch" placeholder="Search products or scan barcode…" autocomplete="off">
+            </div>
+        </div>
+
+        {# Product Grid #}
+        <div class="products-viewport">
+            <div class="products-grid" id="productsGrid">
+
+                {% for p in products %}
+                <div class="product-card product-item" onclick="addProduct('{{ p.id }}')">
+
+                    {% if p.stock <= p.low_stock %} <span class="stock-badge">⚠ Low: {{ p.stock }}</span>
+                        {% endif %}
+
+                        <div class="product-img-container">
+                            {% if p.image %}
+                            <img src="{{ p.image.url }}" alt="{{ p.name }}" loading="lazy">
+                            {% else %}
+                            <div class="img-placeholder">
+                                <i class="ri-box-3-line"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        {# NOTE: class="p-name" must match pos_logic.js search selector #}
+                        <div class="p-name">{{ p.name }}</div>
+                        <div class="p-price">AED {{ p.price|floatformat:2 }}</div>
+
+                        {% if p.stock == 0 %}
+                        <div class="out-of-stock-overlay">Out of Stock</div>
+                        {% endif %}
+
+                </div>
+                {% empty %}
+                <div class="empty-state">
+                    <i class="ri-inbox-2-line"></i>
+                    <p>No products found in this category.</p>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </main>
+
+    {# COLUMN 3 · CART + CHECKOUT #}
+    <section class="pos-cart-panel">
+
+        {# Cart Header #}
+        <div class="cart-header">
+            <div class="cart-title">
+                <i class="ri-shopping-cart-2-line"></i>
+                <span>Cart</span>
+            </div>
+            <span class="item-count">{{ cart_items|length }} item{{ cart_items|length|pluralize }}</span>
+        </div>
+
+        {# Cart Items #}
+        <div class="cart-items-list">
+            {% for item in cart_items %}
+            <div class="cart-item">
+                <div class="cart-item-info">
+                    <span class="cart-item-name">{{ item.product.name }}</span>
+                    <span class="cart-item-price">AED {{ item.product.price|floatformat:2 }} each</span>
+                </div>
+                <div class="cart-item-controls">
+                    <span class="cart-item-total">AED {{ item.subtotal|floatformat:2 }}</span>
+                    <div class="qty-group">
+                        {# MINUS #}
+                        <form method="post" style="display:inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="minus" value="{{ item.product.id }}">
+                            <button type="submit" class="qty-btn" title="Remove one">−</button>
+                        </form>
+                        <span class="qty-val">{{ item.qty }}</span>
+                        {# PLUS #}
+                        <form method="post" style="display:inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="plus" value="{{ item.product.id }}">
+                            <button type="submit" class="qty-btn" title="Add one">+</button>
+                        </form>
+                        {# REMOVE #}
+                        <form method="post" style="display:inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="remove" value="{{ item.product.id }}">
+                            <button type="submit" class="qty-btn del" title="Remove item">×</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="cart-empty">
+                <i class="ri-shopping-cart-line"></i>
+                <p>Cart is empty</p>
+                <small>Click a product to add it</small>
+            </div>
+            {% endfor %}
+        </div>
+
+        {# CHECKOUT AREA #}
+        <div class="checkout-area">
+            <form action="/pos/checkout/" method="post" id="checkoutForm">
+                {% csrf_token %}
+
+                {# Customer #}
+                <select name="customer" class="pos-input">
+                    <option value="">👤 Walk-in Customer</option>
+                    {% for c in customers %}
+                    <option value="{{ c.id }}">{{ c.name }}</option>
+                    {% endfor %}
+                </select>
+
+                {# Payment Method #}
+                <select name="payment" class="pos-input" id="paymentMethod">
+                    <option value="CASH">💵 Cash</option>
+                    <option value="CARD">💳 Card</option>
+                    <option value="UPI">📱 UPI</option>
+                </select>
+
+                {# Discount Row #}
+                <div class="discount-row">
+                    <input type="number" step="0.01" name="discount_percent" placeholder="Disc %" min="0" max="100"
+                        class="pos-input">
+                    <input type="number" step="0.01" name="discount_amount" placeholder="Disc AED" min="0"
+                        class="pos-input">
+                </div>
+
+                {# Cash Received — hidden when payment is CARD/UPI #}
+                {# NOTE: id="cashReceived" must match pos_logic.js selector #}
+                <input type="number" step="0.01" name="cash" id="cashReceived" class="pos-input cash-input"
+                    placeholder="Cash Received (AED)">
+
+                {# Summary Lines #}
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span>AED {{ total|floatformat:2 }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>VAT (5%)</span>
+                    <span>AED {{ vat|floatformat:2 }}</span>
+                </div>
+
+                {# Grand Total Card #}
+                {# NOTE: class="total-value" must match pos_logic.js selector #}
+                <div class="grand-total-card">
+                    <span>TOTAL</span>
+                    <span class="total-value">AED {{ grand|floatformat:2 }}</span>
+                </div>
+
+                <button type="submit" class="btn-pay">
+                    <i class="ri-check-double-line"></i> Complete Sale
+                </button>
+            </form>
+
+            {# Utility Actions #}
+            <div class="cart-actions">
+                <a href="/pos/hold-bill/" class="cart-action-btn">
+                    <i class="ri-pause-circle-line"></i> Hold
+                </a>
+                <a href="/pos/held-bills/" class="cart-action-btn">
+                    <i class="ri-time-line"></i> Held
+                </a>
+                <a href="/pos/invoices/" class="cart-action-btn">
+                    <i class="ri-file-list-3-line"></i> Invoices
+                </a>
+                <a href="/pos/clear-cart/" class="cart-action-btn danger"
+                    onclick="return confirm('Clear entire cart?')">
+                    <i class="ri-delete-bin-2-line"></i> Clear
+                </a>
+            </div>
+        </div>
+
+    </section>
+</div>
+
+<!-- {# ── Pass CSRF token to JS (no inline addProduct needed) ───────── #} -->
+<script>const CSRF_TOKEN = "{{ csrf_token }}";</script>
+<script src="{% static 'js/pos_logic.js' %}"></script>
+
+{% endif %}
+{% endblock %}

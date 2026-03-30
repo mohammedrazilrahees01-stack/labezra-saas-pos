@@ -1,0 +1,28 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block page_title %}Backup & Restore{% endblock %}
+{% block page_icon %}<i class="ri-database-2-line"></i>{% endblock %}
+{% block content %}
+<div style="padding:24px;max-width:700px">
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <div class="card" style="padding:24px">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:4px"><i class="ri-download-cloud-line" style="color:var(--primary)"></i> Export Data</h3>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">Download a complete backup of your business data in CSV format.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a href="/inventory/export/csv/" class="btn btn-outline"><i class="ri-box-3-line"></i> Products</a>
+        <a href="/customers/export/" class="btn btn-outline"><i class="ri-user-line"></i> Customers</a>
+        <a href="/employees/export/" class="btn btn-outline"><i class="ri-team-line"></i> Employees</a>
+        <a href="/expenses/export/" class="btn btn-outline"><i class="ri-money-dollar-circle-line"></i> Expenses</a>
+      </div>
+    </div>
+    <div class="card" style="padding:24px">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:4px"><i class="ri-cloud-line" style="color:#10b981"></i> Automatic Backup</h3>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">Your data is automatically backed up daily to our secure cloud servers.</p>
+      <div style="display:flex;align-items:center;gap:10px;padding:14px;background:rgba(16,185,129,.1);border-radius:10px;border:1px solid rgba(16,185,129,.2)">
+        <i class="ri-shield-check-fill" style="font-size:22px;color:#10b981"></i>
+        <div><div style="font-size:13px;font-weight:600;color:#10b981">Backup Active</div><div style="font-size:12px;color:var(--text-muted)">Last backup: Today at 02:00 AM</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

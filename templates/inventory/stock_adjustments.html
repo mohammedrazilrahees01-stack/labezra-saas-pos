@@ -1,0 +1,55 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Stock Adjustments - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-equalizer-line"></i>{% endblock %}
+{% block page_title %}Stock Adjustments{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div><h2 class="page-heading">Stock Adjustments</h2><p class="page-subheading">Manually adjust inventory quantities</p></div>
+    <div class="header-actions"><button class="btn btn-primary" data-toggle="modal" data-target="#adjustModal"><i class="ri-add-line"></i> New Adjustment</button></div>
+  </div>
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table">
+        <thead><tr><th>Date</th><th>Product</th><th>Type</th><th>Qty Change</th><th>Reason</th><th>Before</th><th>After</th><th>By</th></tr></thead>
+        <tbody>
+          <tr><td>17 Mar 2026, 10:00 AM</td><td><strong>iPhone 15 Pro</strong></td><td><span class="badge badge-success">Add Stock</span></td><td>+10</td><td>Stock Received from Supplier</td><td>2</td><td>12</td><td>Ahmed Ali</td></tr>
+          <tr><td>16 Mar 2026, 3:30 PM</td><td><strong>Samsung S24</strong></td><td><span class="badge badge-danger">Remove Stock</span></td><td>-2</td><td>Damaged Items</td><td>10</td><td>8</td><td>Sara Mohammed</td></tr>
+          <tr><td>15 Mar 2026, 11:00 AM</td><td><strong>AirPods Pro</strong></td><td><span class="badge badge-success">Add Stock</span></td><td>+15</td><td>Stock Count Correction</td><td>10</td><td>25</td><td>Khalid Hassan</td></tr>
+          <tr><td>14 Mar 2026, 4:00 PM</td><td><strong>Nike Air Max 270</strong></td><td><span class="badge badge-warning">Correction</span></td><td>-5</td><td>Inventory Audit Correction</td><td>50</td><td>45</td><td>Ahmed Ali</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Adjustment Modal -->
+  <div id="adjustModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;">
+    <div class="card" style="width:500px;padding:24px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+        <h4 style="margin:0;">New Stock Adjustment</h4>
+        <button onclick="document.getElementById('adjustModal').style.display='none'" style="background:none;border:none;font-size:20px;cursor:pointer;">×</button>
+      </div>
+      <form method="POST">
+        {% csrf_token %}
+        <div class="form-group"><label class="form-label">Product</label><select class="form-control"><option>Select product...</option><option>iPhone 15 Pro</option><option>Samsung S24</option><option>AirPods Pro</option></select></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="form-group"><label class="form-label">Adjustment Type</label><select class="form-control"><option>Add Stock</option><option>Remove Stock</option><option>Set to Exact</option></select></div>
+          <div class="form-group"><label class="form-label">Quantity</label><input type="number" class="form-control" placeholder="0"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Reason</label><select class="form-control"><option>Stock Received</option><option>Damaged Goods</option><option>Theft/Loss</option><option>Inventory Count Correction</option><option>Other</option></select></div>
+        <div class="form-group"><label class="form-label">Notes</label><textarea class="form-control" rows="2" placeholder="Optional notes..."></textarea></div>
+        <div style="display:flex;gap:12px;margin-top:8px;">
+          <button type="submit" class="btn btn-primary"><i class="ri-save-line"></i> Save Adjustment</button>
+          <button type="button" class="btn btn-outline" onclick="document.getElementById('adjustModal').style.display='none'">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelector('[data-toggle="modal"]') && document.querySelector('[data-toggle="modal"]').addEventListener('click', function() {
+  document.getElementById('adjustModal').style.display = 'flex';
+});
+</script>
+{% endblock %}

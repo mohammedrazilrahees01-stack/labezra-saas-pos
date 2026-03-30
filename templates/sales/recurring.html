@@ -1,0 +1,25 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Recurring Invoices - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-repeat-line"></i>{% endblock %}
+{% block page_title %}Recurring Invoices{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div><h2 class="page-heading">Recurring Invoices</h2><p class="page-subheading">Automated recurring billing schedules</p></div>
+    <div class="header-actions"><button class="btn btn-primary"><i class="ri-add-line"></i> New Recurring</button></div>
+  </div>
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table">
+        <thead><tr><th>Name</th><th>Customer</th><th>Frequency</th><th>Amount</th><th>Next Run</th><th>Last Run</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Monthly Maintenance</strong></td><td>Ahmed Al Mansoori</td><td><span class="badge badge-info">Monthly</span></td><td>AED 1,500.00</td><td>01 Apr 2026</td><td>01 Mar 2026</td><td><span class="badge badge-success">Active</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-pause-line"></i></a> <a href="#" class="btn btn-sm btn-outline"><i class="ri-edit-line"></i></a></td></tr>
+          <tr><td><strong>Weekly Delivery</strong></td><td>Sara Traders</td><td><span class="badge badge-warning">Weekly</span></td><td>AED 350.00</td><td>24 Mar 2026</td><td>17 Mar 2026</td><td><span class="badge badge-success">Active</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-pause-line"></i></a> <a href="#" class="btn btn-sm btn-outline"><i class="ri-edit-line"></i></a></td></tr>
+          <tr><td><strong>Annual License</strong></td><td>Tech Solutions LLC</td><td><span class="badge badge-secondary">Yearly</span></td><td>AED 15,000.00</td><td>01 Jan 2027</td><td>01 Jan 2026</td><td><span class="badge badge-success">Active</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-pause-line"></i></a> <a href="#" class="btn btn-sm btn-outline"><i class="ri-edit-line"></i></a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

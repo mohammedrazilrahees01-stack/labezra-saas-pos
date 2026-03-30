@@ -1,0 +1,197 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Loyalty Program{% endblock %}
+{% block page_icon %}<i class="ri-vip-crown-line"></i>{% endblock %}
+{% block page_title %}Loyalty Program{% endblock %}
+
+{% block content %}
+<div class="page-container">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h2 class="page-heading">Loyalty Program</h2>
+      <p class="page-sub">Reward your customers and drive repeat business</p>
+    </div>
+    <button class="btn btn-primary" onclick="openModal('addTierModal')">
+      <i class="ri-settings-3-line"></i> Configure Program
+    </button>
+  </div>
+
+  <!-- KPI Strip -->
+  <div class="kpi-row" style="margin-bottom:24px;">
+    <div class="kpi-card">
+      <div class="kpi-icon orange"><i class="ri-vip-crown-line"></i></div>
+      <div class="kpi-info">
+        <span class="kpi-label">Loyalty Members</span>
+        <span class="kpi-value">{{ total_loyalty_customers|default:"0" }}</span>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon blue"><i class="ri-star-line"></i></div>
+      <div class="kpi-info">
+        <span class="kpi-label">Points Issued</span>
+        <span class="kpi-value">{{ total_points|default:"0" }}</span>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon green"><i class="ri-gift-line"></i></div>
+      <div class="kpi-info">
+        <span class="kpi-label">Points Redeemed</span>
+        <span class="kpi-value">{{ redeemed_points|default:"0" }}</span>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon purple"><i class="ri-percent-line"></i></div>
+      <div class="kpi-info">
+        <span class="kpi-label">Redemption Rate</span>
+        <span class="kpi-value">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+
+    <!-- Loyalty Tiers -->
+    <div class="card">
+      <div class="card-header">
+        <span><i class="ri-medal-line"></i> Loyalty Tiers</span>
+        <button class="btn btn-sm btn-outline"><i class="ri-edit-line"></i> Edit Tiers</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;padding:16px;">
+
+        <!-- Bronze -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#fff9f0;border:1px solid #f59e0b22;border-radius:10px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:50%;background:#f59e0b22;display:flex;align-items:center;justify-content:center;">
+              <i class="ri-medal-line" style="color:#cd7f32;font-size:18px;"></i>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:13px;">Bronze</div>
+              <div style="font-size:12px;color:var(--text-light);">0 – 500 points</div>
+            </div>
+          </div>
+          <span style="background:#cd7f3222;color:#cd7f32;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:600;">0 members</span>
+        </div>
+
+        <!-- Silver -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#f8f9fa;border:1px solid #9ca3af22;border-radius:10px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:50%;background:#9ca3af22;display:flex;align-items:center;justify-content:center;">
+              <i class="ri-medal-line" style="color:#9ca3af;font-size:18px;"></i>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:13px;">Silver</div>
+              <div style="font-size:12px;color:var(--text-light);">501 – 2,000 points</div>
+            </div>
+          </div>
+          <span style="background:#9ca3af22;color:#6b7280;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:600;">0 members</span>
+        </div>
+
+        <!-- Gold -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#fffbeb;border:1px solid #f59e0b22;border-radius:10px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:50%;background:#f59e0b22;display:flex;align-items:center;justify-content:center;">
+              <i class="ri-medal-2-line" style="color:#f59e0b;font-size:18px;"></i>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:13px;">Gold</div>
+              <div style="font-size:12px;color:var(--text-light);">2,001 – 5,000 points</div>
+            </div>
+          </div>
+          <span style="background:#f59e0b22;color:#d97706;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:600;">0 members</span>
+        </div>
+
+        <!-- Platinum -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#f5f3ff;border:1px solid #8b5cf622;border-radius:10px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:50%;background:#8b5cf622;display:flex;align-items:center;justify-content:center;">
+              <i class="ri-vip-crown-line" style="color:#8b5cf6;font-size:18px;"></i>
+            </div>
+            <div>
+              <div style="font-weight:600;font-size:13px;">Platinum</div>
+              <div style="font-size:12px;color:var(--text-light);">5,001+ points</div>
+            </div>
+          </div>
+          <span style="background:#8b5cf622;color:#8b5cf6;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:600;">0 members</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Points Rules -->
+    <div class="card">
+      <div class="card-header">
+        <span><i class="ri-settings-line"></i> Points Rules</span>
+        <button class="btn btn-sm btn-outline"><i class="ri-edit-line"></i> Edit Rules</button>
+      </div>
+      <div style="padding:16px;display:flex;flex-direction:column;gap:12px;">
+        <div style="padding:14px;background:var(--body-bg);border-radius:10px;">
+          <div style="font-weight:600;font-size:13px;margin-bottom:4px;"><i class="ri-shopping-bag-line" style="color:var(--primary);"></i> Purchase Points</div>
+          <div style="font-size:13px;color:var(--text-med);">1 point per <strong>AED 10</strong> spent</div>
+        </div>
+        <div style="padding:14px;background:var(--body-bg);border-radius:10px;">
+          <div style="font-weight:600;font-size:13px;margin-bottom:4px;"><i class="ri-gift-line" style="color:#10b981;"></i> Redemption</div>
+          <div style="font-size:13px;color:var(--text-med);">100 points = <strong>AED 5</strong> discount</div>
+        </div>
+        <div style="padding:14px;background:var(--body-bg);border-radius:10px;">
+          <div style="font-weight:600;font-size:13px;margin-bottom:4px;"><i class="ri-calendar-event-line" style="color:#f59e0b;"></i> Points Expiry</div>
+          <div style="font-size:13px;color:var(--text-med);">Points expire after <strong>12 months</strong></div>
+        </div>
+        <div style="padding:14px;background:var(--body-bg);border-radius:10px;">
+          <div style="font-weight:600;font-size:13px;margin-bottom:4px;"><i class="ri-user-heart-line" style="color:#8b5cf6;"></i> Birthday Bonus</div>
+          <div style="font-size:13px;color:var(--text-med);"><strong>2x points</strong> on birthday month</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Members Table -->
+  <div class="card" style="margin-top:20px;">
+    <div class="card-header">
+      <span><i class="ri-group-line"></i> Loyalty Members</span>
+      <input type="text" class="form-control" placeholder="Search members..." style="max-width:250px;" oninput="filterTable(this,'loyaltyTable')">
+    </div>
+    <div class="table-wrapper">
+      <table class="data-table" id="loyaltyTable">
+        <thead>
+          <tr>
+            <th>Member</th>
+            <th>Phone</th>
+            <th>Tier</th>
+            <th>Points Balance</th>
+            <th>Total Spent</th>
+            <th>Member Since</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="7" style="text-align:center;padding:40px;color:var(--text-light);">
+              <i class="ri-vip-crown-line" style="font-size:32px;display:block;margin-bottom:10px;opacity:.4;"></i>
+              No loyalty members yet. Members are enrolled at checkout.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+function filterTable(input, tableId) {
+  var q = input.value.toLowerCase();
+  document.querySelectorAll('#' + tableId + ' tbody tr').forEach(function(row) {
+    row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+function openModal(id) {
+  var m = document.getElementById(id);
+  if (m) m.style.display = 'flex';
+}
+function closeModal(id) {
+  var m = document.getElementById(id);
+  if (m) m.style.display = 'none';
+}
+</script>
+{% endblock %}

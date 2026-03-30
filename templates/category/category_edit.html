@@ -1,0 +1,54 @@
+{% extends "base/base.html" %}
+{% block title %}Edit Category — Labezra{% endblock %}
+{% block page_title %}Edit Category{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<nav class="breadcrumb">
+    <a href="/">Home</a>
+    <i class="ri-arrow-right-s-line"></i>
+    <a href="/inventory/category/">Categories</a>
+    <i class="ri-arrow-right-s-line"></i>
+    <span>Edit Category</span>
+</nav>
+
+<!-- Page Header -->
+<div class="page-header">
+    <h2>Edit Category</h2>
+    <a href="/inventory/category/" class="btn btn-secondary"><i class="ri-arrow-left-line"></i> Back</a>
+</div>
+
+<div style="max-width:640px;">
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Category Details</span>
+        </div>
+        <form method="post" action="">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Category Name <span class="text-danger">*</span></label>
+                <input type="text" id="name" name="name" class="form-control" placeholder="Enter category name"
+                    value="{{ category.name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="form-control" rows="3"
+                    placeholder="Optional description...">{{ category.description }}</textarea>
+            </div>
+            <div class="form-group" style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.5rem;">
+                <button type="submit" class="btn btn-primary"><i class="ri-save-line"></i> Update Category</button>
+                <a href="/inventory/category/" class="btn btn-secondary">Cancel</a>
+                <button type="button" class="btn btn-danger" style="margin-left:auto;"
+                    onclick="if(confirm('Are you sure you want to delete this category? Products in this category may be affected.')) { document.getElementById('deleteCatForm').submit(); }">
+                    <i class="ri-delete-bin-line"></i> Delete
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Hidden delete form -->
+<form id="deleteCatForm" method="post" action="/inventory/category/delete/{{ category.id }}/" style="display:none;">
+    {% csrf_token %}
+</form>
+{% endblock %}

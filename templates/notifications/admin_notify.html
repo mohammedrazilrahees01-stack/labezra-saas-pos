@@ -1,0 +1,164 @@
+{% extends "base/base.html" %}
+{% block title %}Admin Notification Center — Labezra{% endblock %}
+{% block page_title %}Notification Center{% endblock %}
+
+{% block breadcrumb %}
+<nav class="breadcrumb-nav">
+    <a href="/dashboard/">Dashboard</a>
+    <i class="ri-arrow-right-s-line"></i>
+    <a href="/notifications/">Notifications</a>
+    <i class="ri-arrow-right-s-line"></i>
+    <span>Send Notification</span>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">
+            <i class="ri-megaphone-line" style="color:var(--primary);margin-right:8px;"></i>
+            Notification Center
+        </h1>
+        <p class="page-subtitle">Send messages and alerts to users in your company</p>
+    </div>
+    <a href="/notifications/" class="btn btn-outline">
+        <i class="ri-arrow-left-line"></i> Back to Inbox
+    </a>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;">
+
+    <!-- COMPOSE -->
+    <div class="card animate-slide-up">
+        <div class="card-header">
+            <h3 class="card-title"><i class="ri-send-plane-line" style="color:var(--primary);margin-right:8px;"></i>Compose Notification</h3>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="/notifications/admin/">
+                {% csrf_token %}
+
+                <!-- Target -->
+                <div class="form-group" style="margin-bottom:18px;">
+                    <label class="form-label">Send To</label>
+                    <select name="target" class="form-control" id="targetSelect">
+                        <option value="all">📢 All Users in Company</option>
+                        {% for u in recipients %}
+                        <option value="{{ u.pk }}">👤 {{ u.get_full_name|default:u.username }} ({{ u.role|capfirst }}){% if u.email %} — {{ u.email }}{% endif %}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Type -->
+                <div class="form-group" style="margin-bottom:18px;">
+                    <label class="form-label">Notification Type</label>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                        {% for type_val, type_icon, type_label, type_color in type_choices %}
+                        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:8px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;transition:.2s;" class="type-option">
+                            <input type="radio" name="type" value="{{ type_val }}" style="display:none;" {% if type_val == 'info' %}checked{% endif %}>
+                            <i class="{{ type_icon }}" style="color:{{ type_color }};"></i> {{ type_label }}
+                        </label>
+                        {% empty %}
+                        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:8px 14px;border:2px solid var(--primary);border-radius:8px;font-size:13px;font-weight:600;" class="type-option selected">
+                            <input type="radio" name="type" value="info" checked style="display:none;">
+                            <i class="ri-information-line" style="color:#3B82F6;"></i> Info
+                        </label>
+                        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:8px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;" class="type-option">
+                            <input type="radio" name="type" value="success" style="display:none;">
+                            <i class="ri-checkbox-circle-line" style="color:#10B981;"></i> Success
+                        </label>
+                        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:8px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;" class="type-option">
+                            <input type="radio" name="type" value="warning" style="display:none;">
+                            <i class="ri-alert-line" style="color:#F59E0B;"></i> Warning
+                        </label>
+                        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:8px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;" class="type-option">
+                            <input type="radio" name="type" value="error" style="display:none;">
+                            <i class="ri-error-warning-line" style="color:#EF4444;"></i> Alert
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Title -->
+                <div class="form-group" style="margin-bottom:18px;">
+                    <label class="form-label">Title <span style="color:var(--danger);">*</span></label>
+                    <input type="text" name="title" class="form-control" placeholder="e.g. Shift Reminder, Low Stock Alert" required maxlength="200">
+                </div>
+
+                <!-- Message -->
+                <div class="form-group" style="margin-bottom:18px;">
+                    <label class="form-label">Message (Optional)</label>
+                    <textarea name="message" class="form-control" rows="4"
+                        placeholder="Add more detail here..."></textarea>
+                </div>
+
+                <!-- Link -->
+                <div class="form-group" style="margin-bottom:24px;">
+                    <label class="form-label">Link (Optional)</label>
+                    <input type="url" name="link" class="form-control" placeholder="https://... or /invoices/">
+                    <small style="font-size:12px;color:var(--text-muted);">If set, users will see a "View →" link in their notification.</small>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width:100%;">
+                    <i class="ri-send-plane-fill"></i>
+                    Send Notification
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- RECENT SENT -->
+    <div class="card animate-slide-up" style="animation-delay:.15s;">
+        <div class="card-header">
+            <h3 class="card-title"><i class="ri-history-line" style="color:var(--primary);margin-right:8px;"></i>Recently Sent</h3>
+        </div>
+
+        {% if recent_sent %}
+        <div style="display:flex;flex-direction:column;gap:0;max-height:600px;overflow-y:auto;">
+            {% for notif in recent_sent %}
+            <div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start;">
+                <div style="width:34px;height:34px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+                    {% if notif.type == 'success' %}background:#D1FAE5;color:#065F46;
+                    {% elif notif.type == 'warning' %}background:#FEF3C7;color:#92400E;
+                    {% elif notif.type == 'error' %}background:#FEE2E2;color:#991B1B;
+                    {% else %}background:#DBEAFE;color:#1D4ED8;{% endif %}">
+                    <i class="ri-{% if notif.type == 'success' %}checkbox-circle{% elif notif.type == 'warning' %}alert{% elif notif.type == 'error' %}error-warning{% else %}information{% endif %}-line" style="font-size:15px;"></i>
+                </div>
+                <div style="flex:1;min-width:0;">
+                    <div style="font-size:13px;font-weight:600;margin-bottom:2px;">{{ notif.title }}</div>
+                    <div style="font-size:12px;color:var(--text-muted);">To: {{ notif.user.get_full_name|default:notif.user.username }}</div>
+                    <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">{{ notif.created_at|timesince }} ago</div>
+                </div>
+                {% if notif.read %}
+                <span style="font-size:11px;color:var(--success);font-weight:600;flex-shrink:0;">Read</span>
+                {% else %}
+                <span style="font-size:11px;color:var(--text-muted);flex-shrink:0;">Unread</span>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div style="text-align:center;padding:48px 24px;">
+            <i class="ri-send-plane-line" style="font-size:40px;color:var(--border);display:block;margin-bottom:12px;"></i>
+            <p style="font-size:14px;color:var(--text-muted);">No notifications sent yet.</p>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+<script>
+// Type radio visual selection
+document.querySelectorAll('.type-option').forEach(function(label){
+    label.addEventListener('click', function(){
+        document.querySelectorAll('.type-option').forEach(function(l){
+            l.style.border = '1.5px solid var(--border)';
+        });
+        this.style.border = '2px solid var(--primary)';
+        this.querySelector('input[type=radio]').checked = true;
+    });
+});
+// Set initial
+const firstType = document.querySelector('.type-option');
+if(firstType) firstType.style.border = '2px solid var(--primary)';
+</script>
+{% endblock %}

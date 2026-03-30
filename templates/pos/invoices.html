@@ -1,0 +1,192 @@
+{% extends "base/base.html" %}
+
+{% block title %}Sales Invoices — Labezra ERP{% endblock %}
+
+{% block page_title %}Sales Invoices{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Sales Invoices</h1>
+        <p class="page-subtitle">View and manage all sales transactions</p>
+    </div>
+    <div class="page-header-actions">
+        <a href="/pos/" class="btn btn-primary">
+            <i class="ri-add-line"></i> New Sale
+        </a>
+    </div>
+</div>
+
+<!-- KPI Row -->
+<div class="kpi-row">
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background: rgba(0,174,239,0.15); color: #00AEEF;">
+            <i class="ri-file-list-3-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Total Invoices</span>
+            <span class="kpi-value">{{ total_invoices|default:"0" }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background: rgba(39,174,96,0.15); color: #27AE60;">
+            <i class="ri-money-dollar-circle-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Total Revenue (AED)</span>
+            <span class="kpi-value">{{ total_revenue|floatformat:2|default:"0.00" }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background: rgba(243,156,18,0.15); color: #F39C12;">
+            <i class="ri-calendar-check-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Today's Sales (AED)</span>
+            <span class="kpi-value">{{ today_sales|default:"0.00" }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background: rgba(231,76,60,0.15); color: #E74C3C;">
+            <i class="ri-close-circle-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Voided</span>
+            <span class="kpi-value">{{ voided_count|default:"0" }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Bar -->
+<div class="card" style="margin-bottom: 1.5rem;">
+    <div class="card-body">
+        <form method="GET" action="">
+            <div class="form-grid-2"
+                style="grid-template-columns: 1fr 1fr 1fr 1fr auto; align-items: flex-end; gap: 1rem;">
+                <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label">Date From</label>
+                    <input type="date" name="date_from" class="form-control" value="{{ request.GET.date_from }}">
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label">Date To</label>
+                    <input type="date" name="date_to" class="form-control" value="{{ request.GET.date_to }}">
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label">Payment Method</label>
+                    <select name="payment_method" class="form-control">
+                        <option value="">All Methods</option>
+                        <option value="cash" {% if request.GET.payment_method == "cash" %}selected{% endif %}>Cash
+                        </option>
+                        <option value="card" {% if request.GET.payment_method == "card" %}selected{% endif %}>Card
+                        </option>
+                        <option value="bank_transfer" {% if request.GET.payment_method == "bank_transfer"%}selected{%endif %}>Bank Transfer</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label">Search Invoice #</label>
+                    <input type="text" name="q" class="form-control" placeholder="e.g. INV-0001"
+                        value="{{ request.GET.q }}">
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary" style="width:100%;">
+                        <i class="ri-search-line"></i> Filter
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Invoices Table -->
+<div class="card">
+    <div class="card-body" style="padding:0;">
+        {% if invoices %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th data-i18n="th_number">Invoice #</th>
+                        <th data-i18n="th_date">Date</th>
+                        <th data-i18n="th_customer">Customer</th>
+                        <th data-i18n="th_subtotal">Subtotal</th>
+                        <th data-i18n="th_vat">VAT</th>
+                        <th data-i18n="th_total">Total</th>
+                        <th>Payment</th>
+                        <th data-i18n="th_status">Status</th>
+                        <th data-i18n="actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inv in invoices %}
+                    <tr>
+                        <td><strong>{{ inv.number }}</strong></td>
+                        <td>{{ inv.created|date:"d M Y H:i" }}</td>
+                        <td>
+                            {% if inv.customer %}
+                            {{ inv.customer.name }}
+                            {% else %}
+                            <span style="color: var(--text-muted);">Walk-in</span>
+                            {% endif %}
+                        </td>
+                        <td>AED {{ inv.subtotal|floatformat:2 }}</td>
+                        <td>AED {{ inv.vat_amount|floatformat:2 }}</td>
+                        <td><strong>AED {{ inv.total|floatformat:2 }}</strong></td>
+                        <td>
+                            <span style="text-transform: capitalize;">{{ inv.payment_method|default:"—" }}</span>
+                        </td>
+                        <td>
+                            {% if inv.status == "voided" %}
+                            <span class="badge badge-danger">Voided</span>
+                            {% else %}
+                            <span class="badge badge-success" data-i18n="status_paid">Paid</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="/pos/receipt/{{ inv.id }}/" class="btn btn-outline btn-sm">
+                                <i class="ri-receipt-line"></i> Receipt
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+        <div
+            style="padding: 1rem 1.5rem; display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem; border-top: 1px solid var(--border-color);">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+                class="btn btn-outline btn-sm">
+                <i class="ri-arrow-left-s-line"></i> Prev
+            </a>
+            {% endif %}
+            <span style="color: var(--text-muted); font-size: 0.875rem;">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+                class="btn btn-outline btn-sm">
+                Next <i class="ri-arrow-right-s-line"></i>
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <!-- Empty State -->
+        <div style="text-align: center; padding: 4rem 2rem;">
+            <i class="ri-file-list-3-line"
+                style="font-size: 3rem; color: var(--text-muted); display: block; margin-bottom: 1rem;"></i>
+            <h3 style="color: var(--text-secondary); margin-bottom: 0.5rem;">No invoices found</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">No sales invoices match your current filters.
+            </p>
+            <a href="/pos/" class="btn btn-primary">
+                <i class="ri-add-line"></i> Create New Sale
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

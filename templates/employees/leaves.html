@@ -1,0 +1,40 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Leave Management - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-calendar-check-line"></i>{% endblock %}
+{% block page_title %}Leave Management{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div><h2 class="page-heading">Leave Management</h2><p class="page-subheading">Manage employee leave requests and balances</p></div>
+    <div class="header-actions"><button class="btn btn-primary"><i class="ri-add-line"></i> New Leave Request</button></div>
+  </div>
+  <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px;">
+    <div>
+      <div class="card">
+        <div class="card-body p-0">
+          <table class="table">
+            <thead><tr><th>Employee</th><th>Type</th><th>From</th><th>To</th><th>Days</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Ahmed Ali</strong></td><td>Annual Leave</td><td>20 Mar 2026</td><td>25 Mar 2026</td><td>5</td><td><span class="badge badge-warning">Pending</span></td><td><button class="btn btn-sm btn-success">Approve</button> <button class="btn btn-sm btn-danger">Reject</button></td></tr>
+              <tr><td><strong>Farid Othman</strong></td><td>Sick Leave</td><td>17 Mar 2026</td><td>18 Mar 2026</td><td>2</td><td><span class="badge badge-success">Approved</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a></td></tr>
+              <tr><td><strong>Sara Mohammed</strong></td><td>Emergency</td><td>14 Mar 2026</td><td>14 Mar 2026</td><td>1</td><td><span class="badge badge-success">Approved</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a></td></tr>
+              <tr><td><strong>Nour Al Rashidi</strong></td><td>Annual Leave</td><td>01 Apr 2026</td><td>10 Apr 2026</td><td>8</td><td><span class="badge badge-warning">Pending</span></td><td><button class="btn btn-sm btn-success">Approve</button> <button class="btn btn-sm btn-danger">Reject</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="padding:20px;">
+        <h4 style="margin-bottom:16px;">Leave Balances (This Year)</h4>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span>Annual Leave</span><span><strong>18</strong>/30 days remaining</span></div><div style="background:var(--border-color);border-radius:4px;height:8px;"><div style="width:60%;background:var(--primary);border-radius:4px;height:100%;"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span>Sick Leave</span><span><strong>8</strong>/10 days remaining</span></div><div style="background:var(--border-color);border-radius:4px;height:8px;"><div style="width:80%;background:#f59e0b;border-radius:4px;height:100%;"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span>Emergency Leave</span><span><strong>2</strong>/3 days remaining</span></div><div style="background:var(--border-color);border-radius:4px;height:8px;"><div style="width:67%;background:#ef4444;border-radius:4px;height:100%;"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

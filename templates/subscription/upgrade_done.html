@@ -1,0 +1,51 @@
+{% extends "base/base.html" %}
+
+{% block title %}Subscription Activated — Labezra{% endblock %}
+{% block page_title %}Subscription{% endblock %}
+
+{% block content %}
+<div style="display:flex;align-items:center;justify-content:center;min-height:60vh;">
+    <div class="card" style="max-width:480px;width:100%;text-align:center;padding:48px 40px;">
+        <div style="margin-bottom:20px;">
+            <i class="ri-checkbox-circle-line" style="font-size:64px;color:var(--success);"></i>
+        </div>
+        <h1 style="font-size:28px;font-weight:800;color:var(--text-primary);margin-bottom:10px;">
+            Subscription Activated!
+        </h1>
+        <p style="color:var(--text-muted);font-size:16px;margin-bottom:8px;">
+            Your plan is now active.
+        </p>
+        {% if plan_name %}
+        <p style="margin-bottom:28px;">
+            <span class="badge badge-primary" style="font-size:14px;padding:6px 14px;">{{ plan_name }} Plan</span>
+        </p>
+        {% else %}
+        <div style="margin-bottom:28px;"></div>
+        {% endif %}
+
+        <div style="background:var(--body-bg);border-radius:12px;padding:16px 20px;margin-bottom:28px;text-align:left;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                <i class="ri-check-line" style="color:var(--success);"></i>
+                <span style="font-size:14px;">All features unlocked for your plan</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                <i class="ri-check-line" style="color:var(--success);"></i>
+                <span style="font-size:14px;">Billing activated successfully</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <i class="ri-check-line" style="color:var(--success);"></i>
+                <span style="font-size:14px;">Confirmation sent to your email</span>
+            </div>
+        </div>
+
+        <a href="/dashboard/" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;">
+            <i class="ri-layout-2-line"></i> Go to Dashboard
+        </a>
+        <div style="margin-top:16px;">
+            <a href="/subscription/" style="color:var(--text-muted);font-size:13px;text-decoration:none;">
+                View subscription details →
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

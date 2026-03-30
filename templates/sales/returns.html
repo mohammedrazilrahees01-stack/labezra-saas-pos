@@ -1,0 +1,25 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Sales Returns - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-arrow-go-back-line"></i>{% endblock %}
+{% block page_title %}Sales Returns{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div><h2 class="page-heading">Sales Returns</h2><p class="page-subheading">Track returned items and refunds</p></div>
+    <div class="header-actions"><button class="btn btn-primary"><i class="ri-add-line"></i> New Return</button></div>
+  </div>
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table">
+        <thead><tr><th>Return #</th><th>Original Invoice</th><th>Customer</th><th>Date</th><th>Reason</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr><td><strong>#RET-008</strong></td><td>#INV-0039</td><td>Fatima Al Zaabi</td><td>15 Mar 2026</td><td>Defective Item</td><td>AED 500.00</td><td><span class="badge badge-success">Approved</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a></td></tr>
+          <tr><td><strong>#RET-007</strong></td><td>#INV-0035</td><td>Mohammed Khalid</td><td>12 Mar 2026</td><td>Wrong Item</td><td>AED 820.00</td><td><span class="badge badge-warning">Pending</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a> <button class="btn btn-sm btn-primary">Approve</button></td></tr>
+          <tr><td><strong>#RET-006</strong></td><td>#INV-0031</td><td>Khalid Trading</td><td>08 Mar 2026</td><td>Customer Changed Mind</td><td>AED 1,200.00</td><td><span class="badge badge-danger">Rejected</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "base/base.html" %}
+{% block title %}Suppliers — Labezra{% endblock %}
+{% block page_title %}Suppliers{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+    <h2>Suppliers</h2>
+    <a href="/inventory/supplier/add/" class="btn btn-primary"><i class="ri-add-line"></i> Add Supplier</a>
+</div>
+
+<!-- KPI Row -->
+<div class="kpi-row">
+    <div class="kpi-card">
+        <div class="kpi-icon blue"><i class="ri-store-2-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-label">Total Suppliers</span>
+            <span class="kpi-value">{{ suppliers|length }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- Table Card -->
+<div class="card">
+    <div class="card-header">
+        <span class="card-title">All Suppliers</span>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th data-i18n="th_name">Name</th>
+                <th data-i18n="th_phone">Phone</th>
+                <th data-i18n="th_email">Email</th>
+                <th>Address</th>
+                <th data-i18n="actions">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for supplier in suppliers %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ supplier.name }}</td>
+                <td>{{ supplier.phone|default:"—" }}</td>
+                <td>{{ supplier.email|default:"—" }}</td>
+                <td>{{ supplier.address|default:"—"|truncatechars:40 }}</td>
+                <td class="table-actions">
+                    <a href="/inventory/supplier/edit/{{ supplier.id }}/" class="btn btn-warning btn-sm"><i
+                            class="ri-edit-line"></i> Edit</a>
+                    <a href="/inventory/supplier/delete/{{ supplier.id }}/" class="btn btn-danger btn-sm"
+                        onclick="return confirm('Are you sure you want to delete this supplier?')">
+                        <i class="ri-delete-bin-line"></i> Delete
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">
+                    <div class="empty-state">
+                        <i class="ri-store-2-line"></i>
+                        <h3>No suppliers found</h3>
+                        <p>Add your first supplier to start tracking purchases.</p>
+                        <a href="/inventory/supplier/add/" class="btn btn-primary">Add Supplier</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

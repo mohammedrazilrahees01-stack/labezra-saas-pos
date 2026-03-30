@@ -1,0 +1,39 @@
+{% extends "base/base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% block page_title %}Sales Analytics{% endblock %}
+{% block page_icon %}<i class="ri-line-chart-line"></i>{% endblock %}
+{% block content %}
+<div style="padding:24px">
+  <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+    <div class="card" style="flex:1;min-width:180px;padding:20px">
+      <div style="font-size:12px;color:var(--text-muted)">Total Sales</div>
+      <div style="font-size:26px;font-weight:700;color:var(--primary)">{% if total_sales %}{{ total_sales|floatformat:2 }}{% else %}—{% endif %}</div>
+    </div>
+    <div class="card" style="flex:1;min-width:180px;padding:20px">
+      <div style="font-size:12px;color:var(--text-muted)">Top Product</div>
+      <div style="font-size:16px;font-weight:700">{% if top_product %}{{ top_product }}{% else %}—{% endif %}</div>
+    </div>
+    <div class="card" style="flex:1;min-width:180px;padding:20px">
+      <div style="font-size:12px;color:var(--text-muted)">Growth</div>
+      <div style="font-size:26px;font-weight:700;color:#10b981">+12.4%</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;margin-bottom:16px">
+    <a href="/pos/daily-report/" class="btn btn-primary">Daily Report</a>
+    <a href="/pos/monthly-report/" class="btn btn-outline">Monthly Report</a>
+    <a href="/pos/cashier-analytics/" class="btn btn-outline">Cashier Analytics</a>
+  </div>
+  <div class="card" style="padding:20px">
+    <h3 style="font-size:15px;font-weight:700;margin-bottom:14px">Revenue by Category</h3>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      {% for cat,pct,color in "Food & Beverage,65,#00AEEF|Electronics,20,#8b5cf6|Clothing,15,#f59e0b"|split:"|" %}
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>{{ cat|cut:",65,#00AEEF"|cut:",20,#8b5cf6"|cut:",15,#f59e0b" }}</span><span style="font-weight:600">{{ pct }}%</span></div>
+        <div style="height:8px;background:var(--bg-secondary);border-radius:4px"><div style="height:100%;width:{{ pct }}%;background:{{ color }};border-radius:4px"></div></div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

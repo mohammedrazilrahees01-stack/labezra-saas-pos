@@ -1,0 +1,144 @@
+{% extends "base/base.html" %}
+
+{% block title %}Notifications — Labezra ERP{% endblock %}
+
+{% block page_title %}Notifications{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Notifications</h1>
+        <p class="page-subtitle">System alerts and activity updates</p>
+    </div>
+    <div class="page-header-actions">
+        {% if unread_count > 0 %}
+        <form method="POST" action="/notifications/mark-all-read/" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline">
+                <i class="ri-check-double-line"></i> Mark All Read
+            </button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+<!-- KPI Row -->
+<div class="kpi-row" style="margin-bottom:1.5rem;">
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background:rgba(0,174,239,0.15); color:#00AEEF;">
+            <i class="ri-notification-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Total Notifications</span>
+            <span class="kpi-value">{{ total_notifications|default:"0" }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background:rgba(231,76,60,0.15); color:#E74C3C;">
+            <i class="ri-mail-unread-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Unread</span>
+            <span class="kpi-value">{{ unread_count|default:"0" }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- Notifications Table -->
+<div class="card">
+    <div class="card-body" style="padding:0;">
+        {% if notifications %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width:40px;"></th>
+                        <th>Title</th>
+                        <th>Message</th>
+                        <th data-i18n="th_date">Date</th>
+                        <th data-i18n="th_status">Status</th>
+                        <th data-i18n="actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for notif in notifications %}
+                    <tr style="{% if not notif.is_read %}background: rgba(0,174,239,0.04);{% endif %}">
+                        <td style="text-align:center;">
+                            <i class="
+                {% if notif.type == 'warning' %}ri-alert-line{% elif notif.type == 'success' %}ri-checkbox-circle-line{% elif notif.type == 'error' %}ri-error-warning-line{% else %}ri-notification-line{% endif %}"
+                                style="font-size:1.1rem; color:
+                {% if notif.type == 'warning' %}#F39C12{% elif notif.type == 'success' %}#27AE60{% elif notif.type == 'error' %}#E74C3C{% else %}#00AEEF{% endif %};">
+                            </i>
+                        </td>
+                        <td>
+                            <span
+                                style="font-weight: {% if not notif.is_read %}700{% else %}500{% endif %}; color: {% if not notif.is_read %}var(--text-primary){% else %}var(--text-secondary){% endif %};">
+                                {{ notif.title }}
+                            </span>
+                        </td>
+                        <td style="color: var(--text-muted); max-width: 320px;">
+                            {{ notif.message|truncatechars:80 }}
+                        </td>
+                        <td style="white-space:nowrap; color:var(--text-muted); font-size:0.85rem;">
+                            {{ notif.created|date:"d M Y" }}<br>
+                            <span style="font-size:0.78rem;">{{ notif.created|date:"H:i" }}</span>
+                        </td>
+                        <td>
+                            {% if not notif.is_read %}
+                            <span class="badge badge-primary">Unread</span>
+                            {% else %}
+                            <span class="badge" style="background:rgba(149,165,166,0.2); color:#95A5A6;">Read</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if not notif.is_read %}
+                            <form method="POST" action="/notifications/{{ notif.id }}/mark-read/"
+                                style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline btn-sm">
+                                    <i class="ri-check-line"></i> Mark Read
+                                </button>
+                            </form>
+                            {% else %}
+                            <span style="color:var(--text-muted); font-size:0.8rem;">—</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+        <div
+            style="padding: 1rem 1.5rem; display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem; border-top: 1px solid var(--border-color);">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline btn-sm">
+                <i class="ri-arrow-left-s-line"></i> Prev
+            </a>
+            {% endif %}
+            <span style="color:var(--text-muted); font-size:0.875rem;">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span>
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline btn-sm">
+                Next <i class="ri-arrow-right-s-line"></i>
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <!-- Empty State -->
+        <div style="text-align:center; padding:4rem 2rem;">
+            <i class="ri-notification-off-line"
+                style="font-size:3rem; color:var(--text-muted); display:block; margin-bottom:1rem;"></i>
+            <h3 style="color:var(--text-secondary); margin-bottom:0.5rem;">No notifications</h3>
+            <p style="color:var(--text-muted);">You're all caught up! System alerts and activity notifications will
+                appear here.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

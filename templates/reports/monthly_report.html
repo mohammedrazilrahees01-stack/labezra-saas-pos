@@ -1,0 +1,305 @@
+{% extends "base/base.html" %}
+
+{% block title %}Monthly Revenue Report — Labezra ERP{% endblock %}
+
+{% block page_title %}Monthly Revenue Report{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Monthly Revenue Report</h1>
+        <p class="page-subtitle">Revenue analysis and VAT summary for the selected month</p>
+    </div>
+    <div class="page-header-actions">
+        <a href="?month={{ selected_month }}&year={{ selected_year }}&export=csv" class="btn btn-outline">
+            <i class="ri-file-text-line"></i> Export CSV
+        </a>
+        <a href="?month={{ selected_month }}&year={{ selected_year }}&export=pdf" class="btn btn-secondary">
+            <i class="ri-file-pdf-line"></i> Export PDF
+        </a>
+    </div>
+</div>
+
+<!-- Filter -->
+<div class="card" style="margin-bottom:1.5rem;">
+    <div class="card-body">
+        <form method="GET" action="">
+            <div style="display:flex; align-items:flex-end; gap:1rem; flex-wrap:wrap;">
+                <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label">Month</label>
+                    <select name="month" class="form-control">
+                        <option value="1" {% if selected_month == 1 %}selected{% endif %}>January</option>
+                        <option value="2" {% if selected_month == 2 %}selected{% endif %}>February</option>
+                        <option value="3" {% if selected_month == 3 %}selected{% endif %}>March</option>
+                        <option value="4" {% if selected_month == 4 %}selected{% endif %}>April</option>
+                        <option value="5" {% if selected_month == 5 %}selected{% endif %}>May</option>
+                        <option value="6" {% if selected_month == 6 %}selected{% endif %}>June</option>
+                        <option value="7" {% if selected_month == 7 %}selected{% endif %}>July</option>
+                        <option value="8" {% if selected_month == 8 %}selected{% endif %}>August</option>
+                        <option value="9" {% if selected_month == 9 %}selected{% endif %}>September</option>
+                        <option value="10" {% if selected_month == 10 %}selected{% endif %}>October</option>
+                        <option value="11" {% if selected_month == 11 %}selected{% endif %}>November</option>
+                        <option value="12" {% if selected_month == 12 %}selected{% endif %}>December</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label">Year</label>
+                    <select name="year" class="form-control">
+                        {% for y in available_years %}
+                        <option value="{{ y }}" {% if selected_year == y %}selected{% endif %}>{{ y }}</option>
+                        {% empty %}
+                        <option value="2026" selected>2026</option>
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="ri-bar-chart-line"></i> Generate Report
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- KPI Row -->
+<div class="kpi-row">
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background:rgba(0,174,239,0.15); color:#00AEEF;">
+            <i class="ri-money-dollar-circle-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Total Revenue (AED)</span>
+            <span class="kpi-value">{{ total_revenue|floatformat:2 }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background:rgba(39,174,96,0.15); color:#27AE60;">
+            <i class="ri-shopping-bag-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Total Orders</span>
+            <span class="kpi-value">{{ total_orders|default:"0" }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background:rgba(243,156,18,0.15); color:#F39C12;">
+            <i class="ri-percent-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Total VAT (AED)</span>
+            <span class="kpi-value">{{ total_vat|floatformat:2 }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background:rgba(231,76,60,0.15); color:#E74C3C;">
+            <i class="ri-trophy-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Best Day</span>
+            <span class="kpi-value" style="font-size:0.9rem;">
+                {{ best_day_date|date:"d M"|default:"—" }}<br>
+                <small style="font-size:0.8rem; color:var(--text-muted);">AED {{ best_day_amount|default:"0.00"
+                    }}</small>
+            </span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background:rgba(155,89,182,0.15); color:#9B59B6;">
+            <i class="ri-line-chart-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Avg Daily Revenue</span>
+            <span class="kpi-value">AED {{ avg_daily_revenue|floatformat:2 }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- Charts -->
+<div class="analytics-grid" style="margin-bottom:1.5rem;">
+    <div class="chart-card" style="grid-column: span 2;">
+        <div class="chart-card-header">
+            <h3 class="chart-title"><i class="ri-bar-chart-2-line" style="color:#00AEEF;"></i> Revenue by Day</h3>
+        </div>
+        <div style="height:260px; padding:1rem;">
+            <canvas id="monthlyChart"></canvas>
+        </div>
+    </div>
+    <div class="chart-card">
+        <div class="chart-card-header">
+            <h3 class="chart-title"><i class="ri-bar-chart-line" style="color:#00AEEF;"></i> vs Previous Month</h3>
+        </div>
+        <div style="height:260px; padding:1rem;">
+            <canvas id="compChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Top Products -->
+<div class="card" style="margin-bottom:1.5rem;">
+    <div class="card-header" style="padding:1rem 1.5rem; border-bottom:1px solid var(--border-color);">
+        <h3 style="margin:0; font-size:0.95rem; font-weight:600;">Top 10 Products</h3>
+    </div>
+    <div class="card-body" style="padding:0;">
+        {% if top_products %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th data-i18n="th_product">Product</th>
+                    <th>Units Sold</th>
+                    <th>Revenue (AED)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in top_products %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ p.name }}</td>
+                    <td>{{ p.units_sold }}</td>
+                    <td><strong>AED {{ p.revenue|floatformat:2 }}</strong></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div style="text-align:center; padding:2rem; color:var(--text-muted);">No product data available.</div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Payment Method + VAT Return Row -->
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem; margin-bottom:1.5rem;">
+    <!-- Payment Breakdown -->
+    <div class="card">
+        <div class="card-header" style="padding:1rem 1.5rem; border-bottom:1px solid var(--border-color);">
+            <h3 style="margin:0; font-size:0.95rem; font-weight:600;">Payment Method Breakdown</h3>
+        </div>
+        <div class="card-body">
+            {% for pm in payment_breakdown %}
+            <div style="margin-bottom:0.75rem;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                    <span style="color:var(--text-secondary); text-transform:capitalize;">{{ pm.method }}</span>
+                    <span style="font-weight:600;">AED {{ pm.total|floatformat:2 }} <small
+                            style="color:var(--text-muted);">({{ pm.pct }}%)</small></span>
+                </div>
+                <div style="height:6px; background:var(--bg-secondary); border-radius:3px;">
+                    <div style="height:100%; width:{{ pm.pct }}%; background:#00AEEF; border-radius:3px;"></div>
+                </div>
+            </div>
+            {% empty %}
+            <p style="color:var(--text-muted);">No data available.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- VAT Return Summary -->
+    <div class="card">
+        <div class="card-header"
+            style="padding:1rem 1.5rem; border-bottom:1px solid var(--border-color); background:rgba(243,156,18,0.08);">
+            <h3 style="margin:0; font-size:0.95rem; font-weight:600; color:#F39C12;">
+                <i class="ri-government-line"></i> VAT Return Summary
+            </h3>
+        </div>
+        <div class="card-body">
+            <table style="width:100%; border-collapse:collapse;">
+                <tr style="border-bottom:1px solid var(--border-color);">
+                    <td style="padding:0.6rem 0; color:var(--text-secondary);">Taxable Sales</td>
+                    <td style="padding:0.6rem 0; text-align:right; font-weight:600;">AED {{ total_revenue|default:"0.00"
+                        }}</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border-color);">
+                    <td style="padding:0.6rem 0; color:var(--text-secondary);">VAT Collected (5%)</td>
+                    <td style="padding:0.6rem 0; text-align:right; font-weight:600; color:#F39C12;">AED {{
+                        total_vat|default:"0.00" }}</td>
+                </tr>
+                <tr>
+                    <td style="padding:0.6rem 0; color:var(--text-secondary);">VAT Filing Due Date</td>
+                    <td style="padding:0.6rem 0; text-align:right; font-weight:600; color:#E74C3C;">{{
+                        vat_due_date|default:"—" }}</td>
+                </tr>
+            </table>
+            <div
+                style="margin-top:1rem; padding:0.75rem; background:rgba(243,156,18,0.08); border-radius:6px; font-size:0.8rem; color:var(--text-muted);">
+                <i class="ri-information-line"></i> VAT returns are due by the 28th of the month following the tax
+                period. Consult your tax advisor for details.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+    (function () {
+        Chart.defaults.color = 'rgba(255,255,255,0.65)';
+
+        // Monthly daily chart
+        const monthlyData = {{ monthly_daily_data|default:"[]"|safe
+    }};
+    const daysInMonth = monthlyData.length || 31;
+    const dayLabels = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+
+    new Chart(document.getElementById('monthlyChart'), {
+        type: 'bar',
+        data: {
+            labels: dayLabels,
+            datasets: [{
+                label: 'Revenue (AED)',
+                data: monthlyData,
+                backgroundColor: 'rgba(0,174,239,0.7)',
+                borderColor: '#00AEEF',
+                borderWidth: 1,
+                borderRadius: 3,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { grid: { color: 'rgba(255,255,255,0.05)' } },
+                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { callback: v => 'AED ' + v } }
+            }
+        }
+    });
+
+    // Comparison chart
+    const currentData = {{ monthly_daily_data|default:"[]"|safe }};
+    const prevData = {{ prev_monthly_data|default:"[]"|safe }};
+
+    new Chart(document.getElementById('compChart'), {
+        type: 'bar',
+        data: {
+            labels: dayLabels,
+            datasets: [
+                {
+                    label: 'This Month',
+                    data: currentData,
+                    backgroundColor: 'rgba(0,174,239,0.7)',
+                    borderRadius: 2,
+                },
+                {
+                    label: 'Prev Month',
+                    data: prevData,
+                    backgroundColor: 'rgba(149,165,166,0.4)',
+                    borderRadius: 2,
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom', labels: { padding: 10, font: { size: 10 } } } },
+            scales: {
+                x: { grid: { color: 'rgba(255,255,255,0.05)' } },
+                y: { grid: { color: 'rgba(255,255,255,0.05)' } }
+            }
+        }
+    });
+}) ();
+</script>
+{% endblock %}

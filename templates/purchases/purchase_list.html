@@ -1,0 +1,94 @@
+{% extends "base/base.html" %}
+{% block title %}Purchase Orders — Labezra{% endblock %}
+{% block page_title %}Purchase Orders{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+    <h2>Purchase Orders</h2>
+    <a href="/inventory/purchases/add/" class="btn btn-primary"><i class="ri-add-line"></i> New Purchase</a>
+</div>
+
+<!-- KPI Row -->
+<div class="kpi-row">
+    <div class="kpi-card">
+        <div class="kpi-icon blue"><i class="ri-shopping-cart-2-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-label">Total Purchases</span>
+            <span class="kpi-value">{{ purchases|length }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon green"><i class="ri-money-dollar-circle-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-label">Total Amount Spent</span>
+            <span class="kpi-value">AED {{ total_amount|default:"0.00" }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- Table Card -->
+<div class="card">
+    <div class="card-header">
+        <span class="card-title">All Purchase Orders</span>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th data-i18n="th_date">Date</th>
+                <th data-i18n="th_supplier">Supplier</th>
+                <th data-i18n="th_product">Product</th>
+                <th>Qty</th>
+                <th>Unit Cost</th>
+                <th data-i18n="th_total">Total</th>
+                <th data-i18n="th_status">Status</th>
+                <th data-i18n="actions">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for purchase in purchases %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ purchase.date }}</td>
+                <td>{{ purchase.supplier }}</td>
+                <td>{{ purchase.product }}</td>
+                <td>{{ purchase.quantity }}</td>
+                <td>AED {{ purchase.unit_cost }}</td>
+                <td>AED {{ purchase.total }}</td>
+                <td>
+                    {% if purchase.status == 'received' %}
+                    <span class="badge badge-success">Received</span>
+                    {% elif purchase.status == 'pending' %}
+                    <span class="badge badge-warning" data-i18n="status_pending">Pending</span>
+                    {% elif purchase.status == 'cancelled' %}
+                    <span class="badge badge-danger" data-i18n="status_cancelled">Cancelled</span>
+                    {% else %}
+                    <span class="badge badge-gray">{{ purchase.status|default:"—" }}</span>
+                    {% endif %}
+                </td>
+                <td class="table-actions">
+                    <a href="/inventory/purchases/edit/{{ purchase.id }}/" class="btn btn-warning btn-sm"><i
+                            class="ri-edit-line"></i> Edit</a>
+                    <a href="/inventory/purchases/delete/{{ purchase.id }}/" class="btn btn-danger btn-sm"
+                        onclick="return confirm('Are you sure you want to delete this purchase order?')">
+                        <i class="ri-delete-bin-line"></i>
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9">
+                    <div class="empty-state">
+                        <i class="ri-shopping-cart-2-line"></i>
+                        <h3>No purchase orders found</h3>
+                        <p>Create your first purchase order to start tracking inventory replenishments.</p>
+                        <a href="/inventory/purchases/add/" class="btn btn-primary">New Purchase</a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block page_title %}Projects{% endblock %}
+{% block page_icon %}<i class="ri-kanban-view"></i>{% endblock %}
+
+{% block breadcrumb %}
+<nav style="padding:10px 24px;font-size:13px;color:#6b7280;background:#f8fafc;border-bottom:1px solid #e5e7eb;">
+    <a href="/dashboard/" style="color:#00AEEF;text-decoration:none;">Dashboard</a>
+    <span style="margin:0 6px;">/</span>
+    <span style="color:#1A1D27;font-weight:600;">Projects</span>
+</nav>
+{% endblock %}
+
+{% block content %}
+{% if messages %}
+{% for msg in messages %}
+<div class="alert alert-{{ msg.tags }}" style="margin-bottom:16px;">{{ msg }}</div>
+{% endfor %}
+{% endif %}
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Projects</h1>
+        <p class="page-subtitle">Manage all company projects, timelines and budgets</p>
+    </div>
+</div>
+
+<div class="kpi-row" style="margin-bottom:1.5rem;">
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background:rgba(0,174,239,0.15);color:#00AEEF;"><i class="ri-kanban-view"></i></div>
+        <div class="kpi-content"><span class="kpi-label">Total Projects</span><span class="kpi-value">{{ project_count }}</span></div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background:rgba(39,174,96,0.15);color:#27AE60;"><i class="ri-checkbox-circle-line"></i></div>
+        <div class="kpi-content"><span class="kpi-label">Active</span><span class="kpi-value">{{ active_count }}</span></div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border,#e5e7eb);">
+        <h3 style="margin:0;font-size:15px;font-weight:700;">All Projects</h3>
+        <button class="btn btn-primary" onclick="document.getElementById('addProjectModal').style.display='flex'">
+            <i class="ri-add-line"></i> New Project
+        </button>
+    </div>
+    <div class="card-body" style="padding:0;">
+        {% if projects %}
+        <table class="table">
+            <thead><tr><th>Name</th><th>Status</th><th>Start Date</th><th>Due Date</th><th>Budget</th></tr></thead>
+            <tbody>
+                {% for p in projects %}
+                <tr>
+                    <td><strong>{{ p.name }}</strong><br><small style="color:var(--text-muted);">{{ p.description|truncatechars:60 }}</small></td>
+                    <td><span class="badge badge-{{ p.status }}">{{ p.get_status_display }}</span></td>
+                    <td>{{ p.start_date|date:"d M Y"|default:"—" }}</td>
+                    <td>{{ p.due_date|date:"d M Y"|default:"—" }}</td>
+                    <td>AED {{ p.budget|floatformat:2 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon"><i class="ri-kanban-view"></i></div>
+            <h3>No projects yet</h3>
+            <p>Get started by creating your first project.</p>
+            <button class="btn btn-primary" onclick="document.getElementById('addProjectModal').style.display='flex'">
+                <i class="ri-add-line"></i> New Project
+            </button>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Add Project Modal -->
+<div id="addProjectModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9000;align-items:center;justify-content:center;padding:20px;">
+    <div style="background:#fff;border-radius:16px;padding:28px;width:100%;max-width:500px;box-shadow:0 24px 60px rgba(0,0,0,.25);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+            <h3 style="margin:0;font-size:1.1rem;font-weight:700;"><i class="ri-kanban-view" style="color:#00AEEF;margin-right:8px;"></i>New Project</h3>
+            <button onclick="document.getElementById('addProjectModal').style.display='none'" style="background:none;border:none;font-size:20px;cursor:pointer;color:#64748b;">&times;</button>
+        </div>
+        <form method="POST" action="/projects/">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label">Project Name <span style="color:red;">*</span></label>
+                <input type="text" name="name" class="form-control" placeholder="Enter project name" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea name="description" class="form-control" rows="3" placeholder="Brief description..."></textarea>
+            </div>
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">Start Date</label>
+                    <input type="date" name="start_date" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Due Date</label>
+                    <input type="date" name="due_date" class="form-control">
+                </div>
+            </div>
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select name="status" class="form-control">
+                        <option value="active">Active</option>
+                        <option value="on_hold">On Hold</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Budget (AED)</label>
+                    <input type="number" name="budget" class="form-control" placeholder="0.00" step="0.01" min="0">
+                </div>
+            </div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
+                <button type="button" class="btn btn-outline" onclick="document.getElementById('addProjectModal').style.display='none'">Cancel</button>
+                <button type="submit" class="btn btn-primary"><i class="ri-save-line"></i> Create Project</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

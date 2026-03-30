@@ -1,0 +1,92 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Usage & Billing - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-bar-chart-2-line"></i>{% endblock %}
+{% block page_title %}Usage & Billing{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+
+  <div class="page-header">
+    <div>
+      <h2 class="page-heading">Usage & Billing</h2>
+      <p class="page-subheading">Monitor your plan usage and billing information</p>
+    </div>
+    <div class="header-actions">
+      <a href="/subscription/" class="btn btn-primary">
+        <i class="ri-arrow-up-circle-line"></i> Manage Plan
+      </a>
+    </div>
+  </div>
+
+  {% if plan %}
+  <div class="card" style="padding:24px;margin-bottom:20px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+      <div>
+        <div style="font-size:12px;opacity:0.8;margin-bottom:4px;">Current Plan</div>
+        <div style="font-size:28px;font-weight:700;">{{ plan_name }}</div>
+        {% if plan_price %}
+        <div style="opacity:0.8;">AED {{ plan_price }}/month</div>
+        {% endif %}
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:12px;opacity:0.8;">Branches</div>
+        <div style="font-size:24px;font-weight:700;">{{ branch_count }} / {{ plan_branch_limit }}</div>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="card" style="padding:24px;margin-bottom:20px;background:linear-gradient(135deg,#6b7280,#9ca3af);color:#fff;">
+    <div style="font-size:16px;font-weight:600;">No Active Plan</div>
+    <div style="opacity:0.85;font-size:13px;margin-top:4px;">Subscribe to unlock all features and track usage.</div>
+  </div>
+  {% endif %}
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:20px;">
+
+    <div class="card" style="padding:20px;">
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px;"><i class="ri-receipt-line"></i> Transactions This Month</div>
+      <div style="font-size:22px;font-weight:700;">{{ transactions_this_month }}</div>
+      <div style="background:var(--border-color);border-radius:4px;height:6px;margin-top:8px;">
+        <div style="width:{% if transactions_this_month %}{{ transactions_this_month|divisibleby:50 }}%{% else %}0%{% endif %};background:var(--success);border-radius:4px;height:100%;"></div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:20px;">
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px;"><i class="ri-box-3-line"></i> Total Products</div>
+      <div style="font-size:22px;font-weight:700;">{{ product_count }}</div>
+      <div style="background:var(--border-color);border-radius:4px;height:6px;margin-top:8px;">
+        <div style="width:0%;background:var(--primary);border-radius:4px;height:100%;"></div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:20px;">
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px;"><i class="ri-team-line"></i> Total Employees</div>
+      <div style="font-size:22px;font-weight:700;">{{ employee_count }}</div>
+      <div style="background:var(--border-color);border-radius:4px;height:6px;margin-top:8px;">
+        <div style="width:0%;background:#f59e0b;border-radius:4px;height:100%;"></div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:20px;">
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px;"><i class="ri-store-2-line"></i> Active Branches</div>
+      <div style="font-size:22px;font-weight:700;">{{ branch_count }}</div>
+      <div style="background:var(--border-color);border-radius:4px;height:6px;margin-top:8px;">
+        <div style="width:0%;background:var(--primary);border-radius:4px;height:100%;"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card">
+    <div style="padding:20px;border-bottom:1px solid var(--border-color);">
+      <h4 style="margin:0;">Payment History</h4>
+    </div>
+    <div style="padding:40px;text-align:center;color:var(--text-muted);">
+      <i class="ri-receipt-line" style="font-size:36px;opacity:0.3;display:block;margin-bottom:12px;"></i>
+      <p style="margin:0;font-size:14px;">No payment records yet.</p>
+      <p style="margin:4px 0 0;font-size:12px;">Payment history will appear here once you subscribe.</p>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

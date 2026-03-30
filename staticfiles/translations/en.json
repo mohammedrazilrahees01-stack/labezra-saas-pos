@@ -1,0 +1,19 @@
+{
+"app_title":"Labezra ERP",
+"login":"Login",
+"logout":"Logout",
+"dashboard":"Dashboard",
+"invoices":"Invoices",
+"customers":"Customers",
+"employees":"Employees",
+"expenses":"Expenses",
+"inventory":"Inventory",
+"save":"Save",
+"delete":"Delete",
+"edit":"Edit",
+"cancel":"Cancel",
+"actions":"Actions",
+"date":"Date",
+"total":"Total",
+"refund":"Refund"
+}

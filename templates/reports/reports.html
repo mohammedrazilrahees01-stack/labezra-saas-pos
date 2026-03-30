@@ -1,0 +1,128 @@
+{% extends "base/base.html" %}
+
+{% block title %}Reports Hub — Labezra{% endblock %}
+{% block page_title %}Reports Hub{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Reports Hub</h1>
+        <p class="page-subtitle">Access and generate business reports</p>
+    </div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;">
+
+    <!-- Daily Report -->
+    <div class="card report-card" style="transition:transform 0.2s,box-shadow 0.2s;cursor:pointer;"
+        onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 30px rgba(0,0,0,0.1)';"
+        onmouseout="this.style.transform='';this.style.boxShadow='';">
+        <div class="card-body" style="padding:28px 24px;">
+            <div class="kpi-icon blue" style="margin-bottom:16px;width:52px;height:52px;font-size:24px;">
+                <i class="ri-calendar-check-line"></i>
+            </div>
+            <h3 style="font-size:17px;font-weight:700;margin-bottom:6px;">Daily Report</h3>
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;line-height:1.6;">
+                View today's sales summary, transactions, and cash flow breakdown.
+            </p>
+            <a href="/pos/daily-report/" class="btn btn-outline">
+                <i class="ri-bar-chart-box-line"></i> View Report
+            </a>
+        </div>
+    </div>
+
+    <!-- Monthly Report -->
+    <div class="card report-card" style="transition:transform 0.2s,box-shadow 0.2s;cursor:pointer;"
+        onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 30px rgba(0,0,0,0.1)';"
+        onmouseout="this.style.transform='';this.style.boxShadow='';">
+        <div class="card-body" style="padding:28px 24px;">
+            <div class="kpi-icon purple" style="margin-bottom:16px;width:52px;height:52px;font-size:24px;">
+                <i class="ri-calendar-2-line"></i>
+            </div>
+            <h3 style="font-size:17px;font-weight:700;margin-bottom:6px;">Monthly Report</h3>
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;line-height:1.6;">
+                Monthly revenue, expenses, top products, and performance trends.
+            </p>
+            <a href="/pos/monthly-report/" class="btn btn-outline">
+                <i class="ri-bar-chart-box-line"></i> View Report
+            </a>
+        </div>
+    </div>
+
+    <!-- Shift Report -->
+    <div class="card report-card" style="transition:transform 0.2s,box-shadow 0.2s;cursor:pointer;"
+        onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 30px rgba(0,0,0,0.1)';"
+        onmouseout="this.style.transform='';this.style.boxShadow='';">
+        <div class="card-body" style="padding:28px 24px;">
+            <div class="kpi-icon orange" style="margin-bottom:16px;width:52px;height:52px;font-size:24px;">
+                <i class="ri-time-line"></i>
+            </div>
+            <h3 style="font-size:17px;font-weight:700;margin-bottom:6px;">Shift Report</h3>
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;line-height:1.6;">
+                Review sales per shift including opening/closing cash and discrepancies.
+            </p>
+            <a href="/pos/shift-report/" class="btn btn-outline">
+                <i class="ri-bar-chart-box-line"></i> View Report
+            </a>
+        </div>
+    </div>
+
+    <!-- Cashier Analytics -->
+    <div class="card report-card" style="transition:transform 0.2s,box-shadow 0.2s;cursor:pointer;"
+        onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 30px rgba(0,0,0,0.1)';"
+        onmouseout="this.style.transform='';this.style.boxShadow='';">
+        <div class="card-body" style="padding:28px 24px;">
+            <div class="kpi-icon green" style="margin-bottom:16px;width:52px;height:52px;font-size:24px;">
+                <i class="ri-user-star-line"></i>
+            </div>
+            <h3 style="font-size:17px;font-weight:700;margin-bottom:6px;">Cashier Analytics</h3>
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;line-height:1.6;">
+                Compare cashier performance, sales totals, and transaction counts.
+            </p>
+            <a href="/pos/cashier-analytics/" class="btn btn-outline">
+                <i class="ri-bar-chart-box-line"></i> View Report
+            </a>
+        </div>
+    </div>
+
+    <!-- VAT Return Report -->
+    <div class="card report-card" style="transition:transform 0.2s,box-shadow 0.2s;cursor:pointer;position:relative;"
+        onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 30px rgba(0,0,0,0.1)';"
+        onmouseout="this.style.transform='';this.style.boxShadow='';">
+        <div class="card-body" style="padding:28px 24px;">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;">
+                <div class="kpi-icon blue" style="width:52px;height:52px;font-size:24px;">
+                    <i class="ri-government-line"></i>
+                </div>
+                <span class="badge badge-warning">Coming Soon</span>
+            </div>
+            <h3 style="font-size:17px;font-weight:700;margin-bottom:6px;">VAT Return Report</h3>
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;line-height:1.6;">
+                Generate UAE FTA-compliant VAT Return reports for quarterly filing.
+            </p>
+            <button class="btn btn-outline" disabled style="opacity:0.5;cursor:not-allowed;">
+                <i class="ri-bar-chart-box-line"></i> Coming Soon
+            </button>
+        </div>
+    </div>
+
+    <!-- Inventory Report -->
+    <div class="card report-card" style="transition:transform 0.2s,box-shadow 0.2s;cursor:pointer;"
+        onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 30px rgba(0,0,0,0.1)';"
+        onmouseout="this.style.transform='';this.style.boxShadow='';">
+        <div class="card-body" style="padding:28px 24px;">
+            <div class="kpi-icon red" style="margin-bottom:16px;width:52px;height:52px;font-size:24px;">
+                <i class="ri-box-3-line"></i>
+            </div>
+            <h3 style="font-size:17px;font-weight:700;margin-bottom:6px;">Inventory Report</h3>
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;line-height:1.6;">
+                Track stock levels, movements, low-stock items and valuation history.
+            </p>
+            <a href="/inventory/stock-history/" class="btn btn-outline">
+                <i class="ri-bar-chart-box-line"></i> View Report
+            </a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

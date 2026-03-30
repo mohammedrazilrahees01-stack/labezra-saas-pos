@@ -1,0 +1,25 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Goods Received Notes - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-truck-line"></i>{% endblock %}
+{% block page_title %}Goods Received Notes{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div><h2 class="page-heading">Goods Received Notes</h2><p class="page-subheading">Track all incoming stock deliveries</p></div>
+    <div class="header-actions"><button class="btn btn-primary"><i class="ri-add-line"></i> New GRN</button></div>
+  </div>
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table">
+        <thead><tr><th>GRN #</th><th>PO #</th><th>Supplier</th><th>Date</th><th>Items</th><th>Received By</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr><td><strong>#GRN-041</strong></td><td>#PO-087</td><td>Al Futtaim Supplies</td><td>17 Mar 2026</td><td>5 items</td><td>Ahmed Ali</td><td><span class="badge badge-success">Complete</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a> <a href="#" class="btn btn-sm btn-outline"><i class="ri-printer-line"></i></a></td></tr>
+          <tr><td><strong>#GRN-040</strong></td><td>#PO-085</td><td>Gulf Electronics Dist</td><td>15 Mar 2026</td><td>8 items</td><td>Sara Mohammed</td><td><span class="badge badge-warning">Partial</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a></td></tr>
+          <tr><td><strong>#GRN-039</strong></td><td>#PO-083</td><td>Samsung UAE Partner</td><td>12 Mar 2026</td><td>3 items</td><td>Khalid Hassan</td><td><span class="badge badge-success">Complete</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a> <a href="#" class="btn btn-sm btn-outline"><i class="ri-printer-line"></i></a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

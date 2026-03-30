@@ -1,0 +1,33 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Proforma Invoices - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-file-copy-line"></i>{% endblock %}
+{% block page_title %}Proforma Invoices{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div><h2 class="page-heading">Proforma Invoices</h2><p class="page-subheading">Pre-billing quotes and proforma documents</p></div>
+    <div class="header-actions"><button class="btn btn-primary"><i class="ri-add-line"></i> New Proforma</button></div>
+  </div>
+  <div class="card" style="padding:16px;margin-bottom:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+    <input type="text" class="form-control" placeholder="Search proforma..." style="max-width:220px;">
+    <input type="date" class="form-control" style="max-width:160px;">
+    <select class="form-control" style="max-width:140px;"><option>All Status</option><option>Draft</option><option>Sent</option><option>Accepted</option><option>Expired</option></select>
+    <button class="btn btn-outline"><i class="ri-filter-line"></i> Filter</button>
+    <button class="btn btn-outline" style="margin-left:auto;"><i class="ri-download-line"></i> Export</button>
+  </div>
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table">
+        <thead><tr><th>Proforma #</th><th>Customer</th><th>Date</th><th>Valid Until</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr><td><strong>#PRO-0015</strong></td><td>Khalid Trading LLC</td><td>17 Mar 2026</td><td>31 Mar 2026</td><td>AED 12,500.00</td><td><span class="badge badge-info">Sent</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a> <button class="btn btn-sm btn-primary">Convert to Invoice</button></td></tr>
+          <tr><td><strong>#PRO-0014</strong></td><td>Al Noor Supplies</td><td>14 Mar 2026</td><td>28 Mar 2026</td><td>AED 7,200.00</td><td><span class="badge badge-success">Accepted</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a> <button class="btn btn-sm btn-primary">Convert to Invoice</button></td></tr>
+          <tr><td><strong>#PRO-0013</strong></td><td>Future Tech Store</td><td>05 Mar 2026</td><td>19 Mar 2026</td><td>AED 4,800.00</td><td><span class="badge badge-secondary">Expired</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-eye-line"></i></a></td></tr>
+          <tr><td><strong>#PRO-0012</strong></td><td>Gulf Electronics</td><td>01 Mar 2026</td><td>15 Mar 2026</td><td>AED 9,350.00</td><td><span class="badge badge-warning">Draft</span></td><td><a href="#" class="btn btn-sm btn-outline"><i class="ri-edit-line"></i></a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,122 @@
+{% extends "base/base.html" %}
+
+{% block title %}Branches — Labezra{% endblock %}
+{% block page_title %}Branches{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Branches</h1>
+        <p class="page-subtitle">Manage your business locations</p>
+    </div>
+    <div class="page-actions">
+        <a href="/branches/add/" class="btn btn-primary">
+            <i class="ri-add-line"></i> Add Branch
+        </a>
+    </div>
+</div>
+
+<!-- KPI Row -->
+<div class="kpi-row">
+    <div class="kpi-card">
+        <div class="kpi-icon blue"><i class="ri-store-2-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-value">{{ branches|length }}</span>
+            <span class="kpi-label">Total Branches</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon green"><i class="ri-checkbox-circle-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-value">{{ active_branches }}</span>
+            <span class="kpi-label">Active Branches</span>
+        </div>
+    </div>
+</div>
+
+<!-- Table Card -->
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">All Branches</h3>
+        <div class="table-toolbar">
+            <div class="search-box">
+                <i class="ri-search-line"></i>
+                <input type="text" id="branchSearch" placeholder="Search branches..."
+                    oninput="filterBranches(this.value)">
+            </div>
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table class="table" id="branchesTable">
+            <thead>
+                <tr>
+                    <th>Branch Name</th>
+                    <th>Location</th>
+                    <th>Manager</th>
+                    <th data-i18n="th_phone">Phone</th>
+                    <th data-i18n="th_status">Status</th>
+                    <th data-i18n="actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for branch in branches %}
+                <tr>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <div
+                                style="width:36px;height:36px;border-radius:8px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;">
+                                <i class="ri-store-2-line"></i>
+                            </div>
+                            <span style="font-weight:600;">{{ branch.name }}</span>
+                        </div>
+                    </td>
+                    <td>{{ branch.location }}</td>
+                    <td>{{ branch.manager|default:"—" }}</td>
+                    <td>{{ branch.phone|default:"—" }}</td>
+                    <td>
+                        {% if branch.is_active %}
+                        <span class="badge badge-success" data-i18n="status_active">Active</span>
+                        {% else %}
+                        <span class="badge badge-gray" data-i18n="status_inactive">Inactive</span>
+                        {% endif %}
+                    </td>
+                    <td class="table-actions">
+                        <a href="/branches/edit/{{ branch.id }}/" class="btn btn-warning btn-sm">
+                            <i class="ri-edit-line"></i> Edit
+                        </a>
+                        <a href="/branches/delete/{{ branch.id }}/" class="btn btn-danger btn-sm"
+                            onclick="return confirm('Delete this branch? This cannot be undone.')">
+                            <i class="ri-delete-bin-line"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">
+                        <div class="table-empty">
+                            <i class="ri-store-2-line"
+                                style="font-size:48px;color:var(--text-muted);margin-bottom:12px;"></i>
+                            <h4>No branches yet</h4>
+                            <p>Add your first branch or location to get started.</p>
+                            <a href="/branches/add/" class="btn btn-primary" style="margin-top:12px;">
+                                <i class="ri-add-line"></i> Add Branch
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function filterBranches(query) {
+        const q = query.toLowerCase();
+        document.querySelectorAll('#branchesTable tbody tr').forEach(row => {
+            row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+        });
+    }
+</script>
+{% endblock %}

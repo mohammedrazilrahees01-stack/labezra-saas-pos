@@ -1,0 +1,245 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Upgrade Plan — Labezra ERP{% endblock %}
+{% block page_icon %}<i class="ri-vip-crown-line"></i>{% endblock %}
+{% block page_title %}Upgrade Your Plan{% endblock %}
+
+{% block content %}
+<div class="upgrade-hero">
+    <div class="upgrade-hero-content">
+        <div class="upgrade-badge"><i class="ri-vip-crown-fill"></i> Unlock Full Power</div>
+        <h1>Grow Your Business with Labezra Pro</h1>
+        <p>Unlimited branches, AI intelligence, WhatsApp Commerce, and priority support — all in one platform.</p>
+        <div class="upgrade-toggle" id="billingToggle">
+            <button class="toggle-btn active" id="monthlyBtn" onclick="setBilling('monthly')">Monthly</button>
+            <button class="toggle-btn" id="yearlyBtn" onclick="setBilling('yearly')">Yearly <span class="save-badge">Save 20%</span></button>
+        </div>
+    </div>
+</div>
+
+<div class="plans-row">
+    <!-- Free Plan -->
+    <div class="plan-box">
+        <div class="plan-label">Free</div>
+        <div class="plan-price-wrap">
+            <span class="plan-price-amount">AED 0</span>
+            <span class="plan-price-period">/month</span>
+        </div>
+        <div class="plan-desc">Perfect to get started</div>
+        <ul class="plan-features-list">
+            <li class="yes">1 Branch</li>
+            <li class="yes">Up to 3 Cashiers</li>
+            <li class="yes">Basic POS System</li>
+            <li class="yes">Inventory Management</li>
+            <li class="yes">Basic Reports</li>
+            <li class="yes">Customer Management</li>
+            <li class="no">AI Features</li>
+            <li class="no">WhatsApp Commerce</li>
+            <li class="no">Multi-Branch</li>
+            <li class="no">Advanced Analytics</li>
+        </ul>
+        <button class="btn btn-outline plan-cta" disabled>Current Plan</button>
+    </div>
+
+    <!-- Pro Plan -->
+    <div class="plan-box featured">
+        <div class="plan-popular">⭐ Most Popular</div>
+        <div class="plan-label">Pro</div>
+        <div class="plan-price-wrap">
+            <span class="plan-price-amount" id="proPrice">AED 75</span>
+            <span class="plan-price-period" id="proPeriod">/month</span>
+        </div>
+        <div class="plan-desc" id="proDesc">Billed monthly — cancel anytime</div>
+
+        <div class="promo-box">
+            <div class="promo-label"><i class="ri-coupon-line"></i> Have a promo code?</div>
+            <div class="promo-input-row">
+                <input type="text" id="promoInput" class="promo-input" placeholder="Enter code (e.g. LABEZRA20)">
+                <button class="btn btn-sm btn-primary" onclick="applyPromo()">Apply</button>
+            </div>
+            <div class="promo-msg" id="promoMsg"></div>
+        </div>
+
+        <ul class="plan-features-list">
+            <li class="yes"><strong>Unlimited Branches</strong></li>
+            <li class="yes"><strong>Unlimited Cashiers</strong></li>
+            <li class="yes"><strong>AI Analytics & Forecasting</strong></li>
+            <li class="yes"><strong>WhatsApp Commerce</strong></li>
+            <li class="yes">Customer Lifetime Value (CLV)</li>
+            <li class="yes">FTA VAT Reports</li>
+            <li class="yes">Loss & Theft Detection AI</li>
+            <li class="yes">Smart Discount Engine</li>
+            <li class="yes">Employee Performance AI</li>
+            <li class="yes">Priority 24/7 Support</li>
+        </ul>
+        <a href="https://wa.me/971569956676?text=I want to upgrade to Pro" target="_blank" class="btn btn-primary plan-cta">
+            <i class="ri-whatsapp-line"></i> Upgrade via WhatsApp
+        </a>
+        <div style="text-align:center;font-size:11px;color:rgba(255,255,255,.6);margin-top:8px;">Secure payment • Instant activation</div>
+    </div>
+
+    <!-- Enterprise Plan -->
+    <div class="plan-box">
+        <div class="plan-label">Enterprise</div>
+        <div class="plan-price-wrap">
+            <span class="plan-price-amount">Custom</span>
+        </div>
+        <div class="plan-desc">For large businesses & chains</div>
+        <ul class="plan-features-list">
+            <li class="yes">Everything in Pro</li>
+            <li class="yes">Dedicated Account Manager</li>
+            <li class="yes">Custom API Integrations</li>
+            <li class="yes">SLA (99.9% Uptime Guarantee)</li>
+            <li class="yes">White Label Option</li>
+            <li class="yes">Merchant Loan Access</li>
+            <li class="yes">Custom Training & Onboarding</li>
+            <li class="yes">Data Export & Migration</li>
+            <li class="yes">Custom Reporting</li>
+            <li class="yes">Multi-Currency Support</li>
+        </ul>
+        <a href="https://wa.me/971569956676?text=I want Enterprise pricing" target="_blank" class="btn btn-outline plan-cta">
+            <i class="ri-whatsapp-line"></i> Contact Sales
+        </a>
+    </div>
+</div>
+
+<!-- Feature Comparison -->
+<div class="comparison-section">
+    <h2>Full Feature Comparison</h2>
+    <div class="comparison-table">
+        <div class="comp-header">
+            <div class="comp-feature">Feature</div>
+            <div class="comp-col">Free</div>
+            <div class="comp-col highlight">Pro</div>
+            <div class="comp-col">Enterprise</div>
+        </div>
+        {% for row in comparison_rows %}
+        <div class="comp-row">
+            <div class="comp-feature">{{ row.feature }}</div>
+            <div class="comp-col">{{ row.free }}</div>
+            <div class="comp-col highlight">{{ row.pro }}</div>
+            <div class="comp-col">{{ row.enterprise }}</div>
+        </div>
+        {% empty %}
+        <div class="comp-row"><div class="comp-feature">Branches</div><div class="comp-col">1</div><div class="comp-col highlight">✅ Unlimited</div><div class="comp-col">✅ Unlimited</div></div>
+        <div class="comp-row"><div class="comp-feature">Cashiers</div><div class="comp-col">3</div><div class="comp-col highlight">✅ Unlimited</div><div class="comp-col">✅ Unlimited</div></div>
+        <div class="comp-row"><div class="comp-feature">POS System</div><div class="comp-col">✅</div><div class="comp-col highlight">✅</div><div class="comp-col">✅</div></div>
+        <div class="comp-row"><div class="comp-feature">AI Intelligence</div><div class="comp-col">❌</div><div class="comp-col highlight">✅ Full Suite</div><div class="comp-col">✅ Custom</div></div>
+        <div class="comp-row"><div class="comp-feature">WhatsApp Commerce</div><div class="comp-col">❌</div><div class="comp-col highlight">✅</div><div class="comp-col">✅</div></div>
+        <div class="comp-row"><div class="comp-feature">FTA VAT Reports</div><div class="comp-col">Basic</div><div class="comp-col highlight">✅ Full</div><div class="comp-col">✅ Full</div></div>
+        <div class="comp-row"><div class="comp-feature">Support</div><div class="comp-col">Community</div><div class="comp-col highlight">✅ Priority 24/7</div><div class="comp-col">✅ Dedicated</div></div>
+        <div class="comp-row"><div class="comp-feature">API Access</div><div class="comp-col">❌</div><div class="comp-col highlight">Limited</div><div class="comp-col">✅ Full</div></div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="upgrade-cta-section">
+    <div class="upgrade-cta-box">
+        <h3>Ready to unlock the full power of Labezra?</h3>
+        <p>Join 500+ UAE businesses growing with Labezra Pro</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+            <a href="https://wa.me/971569956676?text=I want to upgrade to Pro" target="_blank" class="btn btn-primary btn-lg">
+                <i class="ri-whatsapp-line"></i> Upgrade Now — AED 75/month
+            </a>
+            <a href="https://wa.me/971569956676" target="_blank" class="btn btn-outline btn-lg">
+                <i class="ri-customer-service-2-line"></i> Talk to Sales
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+.upgrade-hero { background: linear-gradient(135deg, #0f1929, #1a2d4a); border-radius: 20px; padding: 40px; text-align: center; margin-bottom: 32px; }
+.upgrade-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,174,239,.15); border: 1px solid rgba(0,174,239,.3); color: #00AEEF; border-radius: 20px; padding: 6px 16px; font-size: 12px; font-weight: 700; margin-bottom: 12px; }
+.upgrade-hero h1 { color: #fff; font-size: 28px; font-weight: 800; margin-bottom: 10px; }
+.upgrade-hero p { color: rgba(255,255,255,.7); font-size: 15px; max-width: 500px; margin: 0 auto 20px; }
+.upgrade-toggle { display: inline-flex; background: rgba(255,255,255,.1); border-radius: 24px; padding: 4px; gap: 4px; }
+.toggle-btn { background: none; border: none; color: rgba(255,255,255,.6); padding: 8px 20px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all .2s; }
+.toggle-btn.active { background: #fff; color: #1a2d4a; }
+.save-badge { background: #10b981; color: #fff; font-size: 9px; padding: 2px 6px; border-radius: 10px; margin-left: 4px; }
+.plans-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
+.plan-box { background: var(--card-bg,#fff); border-radius: 20px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,.06); display: flex; flex-direction: column; gap: 12px; position: relative; border: 2px solid transparent; }
+.plan-box.featured { background: linear-gradient(135deg, #0f1929, #1a2d4a); color: #fff; border-color: #00AEEF; }
+.plan-popular { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #00AEEF; color: #fff; font-size: 11px; font-weight: 700; padding: 4px 16px; border-radius: 20px; white-space: nowrap; }
+.plan-label { font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: .5px; }
+.plan-box.featured .plan-label { color: rgba(255,255,255,.6); }
+.plan-price-wrap { display: flex; align-items: baseline; gap: 4px; }
+.plan-price-amount { font-size: 36px; font-weight: 800; color: #00AEEF; }
+.plan-price-period { font-size: 14px; color: #64748b; }
+.plan-box.featured .plan-price-period { color: rgba(255,255,255,.5); }
+.plan-desc { font-size: 12px; color: #94a3b8; }
+.plan-box.featured .plan-desc { color: rgba(255,255,255,.5); }
+.promo-box { background: rgba(0,174,239,.08); border: 1px solid rgba(0,174,239,.2); border-radius: 12px; padding: 12px; }
+.plan-box.featured .promo-box { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.15); }
+.promo-label { font-size: 11px; font-weight: 600; color: #64748b; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.plan-box.featured .promo-label { color: rgba(255,255,255,.6); }
+.promo-input-row { display: flex; gap: 8px; }
+.promo-input { flex: 1; border: 1px solid #e5e7eb; border-radius: 8px; padding: 7px 12px; font-size: 13px; background: #fff; color: #1e293b; }
+.promo-msg { font-size: 12px; margin-top: 6px; min-height: 16px; }
+.plan-features-list { list-style: none; padding: 0; flex: 1; }
+.plan-features-list li { display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 6px 0; border-bottom: 1px solid rgba(0,0,0,.04); }
+.plan-box.featured .plan-features-list li { border-bottom-color: rgba(255,255,255,.06); color: rgba(255,255,255,.85); }
+.plan-features-list li::before { content: ''; width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; }
+.plan-features-list li.yes::before { content: '✅'; font-size: 12px; }
+.plan-features-list li.no::before { content: '❌'; font-size: 12px; }
+.plan-cta { width: 100%; justify-content: center; margin-top: 4px; }
+.comparison-section { margin-bottom: 40px; }
+.comparison-section h2 { font-size: 20px; font-weight: 700; color: #1e293b; margin-bottom: 16px; text-align: center; }
+.comparison-table { background: var(--card-bg,#fff); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+.comp-header { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; background: #f8fafc; padding: 12px 16px; font-weight: 700; font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: .5px; }
+.comp-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; padding: 11px 16px; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
+.comp-row:hover { background: #f8fafc; }
+.comp-feature { font-weight: 500; color: #374151; }
+.comp-col { text-align: center; color: #64748b; }
+.comp-col.highlight { color: #00AEEF; font-weight: 600; }
+.upgrade-cta-section { margin-bottom: 20px; }
+.upgrade-cta-box { background: linear-gradient(135deg, #00AEEF, #0070B8); border-radius: 20px; padding: 36px; text-align: center; color: #fff; }
+.upgrade-cta-box h3 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+.upgrade-cta-box p { opacity: .8; margin-bottom: 20px; }
+@media (max-width: 900px) { .plans-row { grid-template-columns: 1fr; } .comp-header, .comp-row { grid-template-columns: 1fr 1fr; } .comp-col:last-child, .comp-header div:last-child { display: none; } }
+</style>
+
+<script>
+var billingMode = 'monthly';
+var promoDiscount = 0;
+var PROMO_CODES = { 'LABEZRA20': 20, 'UAE2026': 15, 'WELCOME10': 10 };
+
+function setBilling(mode) {
+    billingMode = mode;
+    document.getElementById('monthlyBtn').classList.toggle('active', mode === 'monthly');
+    document.getElementById('yearlyBtn').classList.toggle('active', mode === 'yearly');
+    updatePrice();
+}
+
+function updatePrice() {
+    var baseMonthly = 75;
+    var discount = promoDiscount;
+    if (billingMode === 'yearly') {
+        var yearly = Math.round(baseMonthly * 12 * 0.8);
+        yearly = Math.round(yearly * (1 - discount/100));
+        document.getElementById('proPrice').textContent = 'AED ' + yearly;
+        document.getElementById('proPeriod').textContent = '/year';
+        document.getElementById('proDesc').textContent = 'Billed annually — save 20%' + (discount > 0 ? ' + ' + discount + '% promo' : '');
+    } else {
+        var monthly = Math.round(baseMonthly * (1 - discount/100));
+        document.getElementById('proPrice').textContent = 'AED ' + monthly;
+        document.getElementById('proPeriod').textContent = '/month';
+        document.getElementById('proDesc').textContent = 'Billed monthly — cancel anytime' + (discount > 0 ? ' (' + discount + '% promo applied)' : '');
+    }
+}
+
+function applyPromo() {
+    var code = document.getElementById('promoInput').value.trim().toUpperCase();
+    var msg = document.getElementById('promoMsg');
+    if (PROMO_CODES[code]) {
+        promoDiscount = PROMO_CODES[code];
+        msg.style.color = '#10b981';
+        msg.textContent = '✅ ' + promoDiscount + '% discount applied!';
+        updatePrice();
+    } else {
+        msg.style.color = '#ef4444';
+        msg.textContent = '❌ Invalid promo code';
+    }
+}
+</script>
+{% endblock %}

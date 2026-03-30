@@ -1,0 +1,187 @@
+{% extends "base/base.html" %}
+
+{% block title %}Shift Report — Labezra ERP{% endblock %}
+
+{% block page_title %}Shift Report{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Shift Report</h1>
+        <p class="page-subtitle">Cashier shifts, sales and cash reconciliation</p>
+    </div>
+    <div class="page-header-actions">
+        <a href="?{% if request.GET.date_from %}date_from={{ request.GET.date_from }}&date_to={{ request.GET.date_to }}&{% endif %}export=csv"
+            class="btn btn-outline">
+            <i class="ri-file-text-line"></i> Export CSV
+        </a>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="card" style="margin-bottom:1.5rem;">
+    <div class="card-body">
+        <form method="GET" action="">
+            <div style="display:flex; gap:1rem; align-items:flex-end; flex-wrap:wrap;">
+                <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label">Date From</label>
+                    <input type="date" name="date_from" class="form-control" value="{{ request.GET.date_from }}">
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label class="form-label">Date To</label>
+                    <input type="date" name="date_to" class="form-control" value="{{ request.GET.date_to }}">
+                </div>
+                <div class="form-group" style="margin-bottom:0; min-width:180px;">
+                    <label class="form-label">Cashier</label>
+                    <select name="cashier" class="form-control">
+                        <option value="">All Cashiers</option>
+                        {% for c in cashiers %}
+                        <option value="{{ c.id }}" {% if request.GET.cashier == c.id|stringformat:"s" %}selected{% endif %}>
+                            {{ c.get_full_name|default:c.username }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="ri-search-line"></i> Apply
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- KPI Row -->
+<div class="kpi-row">
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background:rgba(0,174,239,0.15); color:#00AEEF;">
+            <i class="ri-time-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Total Shifts</span>
+            <span class="kpi-value">{{ total_shifts|default:"0" }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background:rgba(39,174,96,0.15); color:#27AE60;">
+            <i class="ri-money-dollar-circle-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Total Sales (AED)</span>
+            <span class="kpi-value">{{ total_sales|default:"0.00" }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background:rgba(231,76,60,0.15); color:#E74C3C;">
+            <i class="ri-coupon-3-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Total Discounts (AED)</span>
+            <span class="kpi-value">{{ total_discounts|default:"0.00" }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background:rgba(243,156,18,0.15); color:#F39C12;">
+            <i class="ri-safe-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Avg Opening Cash (AED)</span>
+            <span class="kpi-value">{{ avg_opening_cash|default:"0.00" }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon" style="background:rgba(155,89,182,0.15); color:#9B59B6;">
+            <i class="ri-secure-payment-line"></i>
+        </div>
+        <div class="kpi-content">
+            <span class="kpi-label">Avg Closing Cash (AED)</span>
+            <span class="kpi-value">{{ avg_closing_cash|default:"0.00" }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- Shifts Table -->
+<div class="card">
+    <div class="card-body" style="padding:0;">
+        {% if shifts %}
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Shift #</th>
+                        <th data-i18n="th_cashier">Cashier</th>
+                        <th data-i18n="th_date">Date</th>
+                        <th>Opened</th>
+                        <th>Closed</th>
+                        <th>Opening Cash</th>
+                        <th>Closing Cash</th>
+                        <th>Sales Total</th>
+                        <th>Discounts</th>
+                        <th>Reconciliation</th>
+                        <th data-i18n="th_status">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for shift in shifts %}
+                    <tr>
+                        <td><strong>{{ shift.number }}</strong></td>
+                        <td>
+                            <div style="display:flex; align-items:center; gap:0.5rem;">
+                                <div
+                                    style="width:28px; height:28px; border-radius:50%; background:rgba(0,174,239,0.2); display:flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:700; color:#00AEEF;">
+                                    {{ shift.cashier.get_full_name|default:shift.cashier.username|slice:":1"|upper }}
+                                </div>
+                                {{ shift.cashier.get_full_name|default:shift.cashier.username }}
+                            </div>
+                        </td>
+                        <td>{{ shift.date|date:"d M Y" }}</td>
+                        <td>{{ shift.opened_at|date:"H:i" }}</td>
+                        <td>
+                            {% if shift.closed_at %}
+                            {{ shift.closed_at|date:"H:i" }}
+                            {% else %}
+                            <span class="badge badge-success" data-i18n="status_active">Active</span>
+                            {% endif %}
+                        </td>
+                        <td>AED {{ shift.opening_cash|floatformat:2 }}</td>
+                        <td>AED {{ shift.closing_cash|default:"—" }}</td>
+                        <td><strong>AED {{ shift.sales_total|floatformat:2 }}</strong></td>
+                        <td style="color:#E74C3C;">AED {{ shift.total_discounts|floatformat:2 }}</td>
+                        <td>
+                            {% if shift.closed_at %}
+                            {% if shift.cash_difference >= 0 %}
+                            <span style="color:#27AE60; font-weight:600;">+AED {{ shift.cash_difference|floatformat:2
+                                }}</span>
+                            {% else %}
+                            <span style="color:#E74C3C; font-weight:600;">AED {{ shift.cash_difference|floatformat:2
+                                }}</span>
+                            {% endif %}
+                            {% else %}
+                            <span style="color:var(--text-muted);">—</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if shift.status == "open" %}
+                            <span class="badge badge-success">Open</span>
+                            {% else %}
+                            <span class="badge" style="background:rgba(149,165,166,0.2); color:#95A5A6;">Closed</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div style="text-align:center; padding:3.5rem 2rem;">
+            <i class="ri-time-line"
+                style="font-size:3rem; color:var(--text-muted); display:block; margin-bottom:1rem;"></i>
+            <h3 style="color:var(--text-secondary); margin-bottom:0.5rem;">No shifts found</h3>
+            <p style="color:var(--text-muted);">No shift data matches your current filters. Adjust the date range or
+                cashier selection.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

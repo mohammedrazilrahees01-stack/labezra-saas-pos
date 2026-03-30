@@ -1,0 +1,124 @@
+{% extends "base/base.html" %}
+
+{% block title %}Customers — Labezra{% endblock %}
+{% block page_title %}Customers{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Customers</h1>
+        <p class="page-subtitle">Manage your customer database</p>
+    </div>
+    <div class="page-actions">
+        <a href="/customers/add/" class="btn btn-primary">
+            <i class="ri-add-line"></i> Add Customer
+        </a>
+    </div>
+</div>
+
+<!-- KPI Row -->
+<div class="kpi-row">
+    <div class="kpi-card">
+        <div class="kpi-icon blue"><i class="ri-user-3-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-value">{{ customers|length }}</span>
+            <span class="kpi-label">Total Customers</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon green"><i class="ri-building-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-value">{{ trn_count }}</span>
+            <span class="kpi-label">Customers with TRN</span>
+        </div>
+    </div>
+</div>
+
+<!-- Table Card -->
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">All Customers</h3>
+        <div class="table-toolbar">
+            <div class="search-box">
+                <i class="ri-search-line"></i>
+                <input type="text" id="customerSearch" placeholder="Search by name, phone, email..."
+                    oninput="filterCustomers(this.value)">
+            </div>
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table class="table" id="customersTable">
+            <thead>
+                <tr>
+                    <th data-i18n="th_name">Name</th>
+                    <th data-i18n="th_phone">Phone</th>
+                    <th data-i18n="th_email">Email</th>
+                    <th>TRN</th>
+                    <th>Total Purchases</th>
+                    <th data-i18n="actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cust in customers %}
+                <tr>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <div
+                                style="width:34px;height:34px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0;">
+                                {{ cust.name|first|upper }}
+                            </div>
+                            <span style="font-weight:600;">{{ cust.name }}</span>
+                        </div>
+                    </td>
+                    <td>{{ cust.phone|default:"—" }}</td>
+                    <td>{{ cust.email|default:"—" }}</td>
+                    <td>
+                        {% if cust.trn %}
+                        <span class="badge badge-info">{{ cust.trn }}</span>
+                        {% else %}
+                        <span style="color:var(--text-muted);">—</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if cust.total_purchases %}
+                        <span style="font-weight:600;">AED {{ cust.total_purchases|floatformat:2 }}</span>
+                        {% else %}
+                        <span style="color:var(--text-muted);">—</span>
+                        {% endif %}
+                    </td>
+                    <td class="table-actions">
+                        <a href="/customers/edit/{{ cust.id }}/" class="btn btn-warning btn-sm">
+                            <i class="ri-edit-line"></i> Edit
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">
+                        <div class="table-empty">
+                            <i class="ri-user-3-line"
+                                style="font-size:48px;color:var(--text-muted);margin-bottom:12px;"></i>
+                            <h4>No customers yet</h4>
+                            <p>Add your first customer to start tracking purchases.</p>
+                            <a href="/customers/add/" class="btn btn-primary" style="margin-top:12px;">
+                                <i class="ri-add-line"></i> Add Customer
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function filterCustomers(query) {
+        const q = query.toLowerCase();
+        document.querySelectorAll('#customersTable tbody tr').forEach(row => {
+            row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+        });
+    }
+</script>
+{% endblock %}

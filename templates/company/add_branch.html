@@ -1,0 +1,87 @@
+{% extends "base/base.html" %}
+
+{% block title %}Add Branch — Labezra{% endblock %}
+{% block page_title %}Add Branch{% endblock %}
+
+{% block breadcrumb %}
+<nav class="breadcrumb-nav">
+    <a href="/dashboard/">Dashboard</a>
+    <i class="ri-arrow-right-s-line"></i>
+    <a href="/branches/">Branches</a>
+    <i class="ri-arrow-right-s-line"></i>
+    <span>Add Branch</span>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title" data-i18n="add_branch">Add New Branch</h1>
+        <p class="page-subtitle" data-i18n="add_branch_sub">Create a new business location under your company</p>
+    </div>
+    <div class="page-actions">
+        <a href="/branches/" class="btn btn-outline">
+            <i class="ri-arrow-left-line"></i>
+            <span data-i18n="back">Back to Branches</span>
+        </a>
+    </div>
+</div>
+
+<div style="max-width:640px;">
+    <div class="card animate-slide-up">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="ri-store-2-line" style="color:var(--primary);margin-right:8px;"></i>
+                Branch Information
+            </h3>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="/branches/add/">
+                {% csrf_token %}
+
+                <div class="form-group" style="margin-bottom:20px;">
+                    <label class="form-label" for="name" data-i18n="branch_name">Branch Name <span style="color:var(--danger);">*</span></label>
+                    <input type="text" id="name" name="name" class="form-control"
+                        placeholder="e.g. Downtown Branch, Mall of Emirates"
+                        required autofocus>
+                    <small style="color:var(--text-muted);font-size:12px;margin-top:4px;display:block;">
+                        This name will appear on receipts and reports.
+                    </small>
+                </div>
+
+                <div class="form-group" style="margin-bottom:20px;">
+                    <label class="form-label" for="address" data-i18n="address">Address (Optional)</label>
+                    <textarea id="address" name="address" class="form-control" rows="3"
+                        placeholder="Street address, city, emirate..."></textarea>
+                </div>
+
+                <div class="form-group" style="margin-bottom:28px;">
+                    <label class="form-label" for="phone" data-i18n="phone">Phone Number (Optional)</label>
+                    <input type="tel" id="phone" name="phone" class="form-control"
+                        placeholder="+971 4 XXX XXXX">
+                </div>
+
+                <!-- Plan info -->
+                <div style="background:var(--bg-secondary);border-radius:10px;padding:14px 16px;margin-bottom:24px;display:flex;align-items:center;gap:12px;">
+                    <i class="ri-information-line" style="color:var(--primary);font-size:18px;flex-shrink:0;"></i>
+                    <span style="font-size:13px;color:var(--text-muted);">
+                        Your plan allows multiple branches.
+                        <a href="/upgrade/" style="color:var(--primary);font-weight:600;">Upgrade</a>
+                        to unlock more branches.
+                    </span>
+                </div>
+
+                <div style="display:flex;gap:12px;">
+                    <button type="submit" class="btn btn-primary" style="flex:1;">
+                        <i class="ri-add-circle-line"></i>
+                        <span data-i18n="create_branch">Create Branch</span>
+                    </button>
+                    <a href="/branches/" class="btn btn-outline">
+                        <span data-i18n="cancel">Cancel</span>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,181 @@
+{% extends "base/base.html" %}
+
+{% block title %}Run Payroll — Labezra{% endblock %}
+{% block page_title %}Run Payroll{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="/dashboard/">Home</a>
+    <i class="ri-arrow-right-s-line"></i>
+    <a href="/payroll/">Payroll</a>
+    <i class="ri-arrow-right-s-line"></i>
+    <span>Run Payroll</span>
+</nav>
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Run Payroll</h1>
+        <p class="page-subtitle">Process employee salaries for the selected period</p>
+    </div>
+    <div class="page-actions">
+        <a href="/payroll/" class="btn btn-secondary">
+            <i class="ri-arrow-left-line"></i> Back to Payroll
+        </a>
+    </div>
+</div>
+
+<form method="POST" action="" id="payrollForm">
+    {% csrf_token %}
+
+    <!-- Period Selection -->
+    <div class="card" style="margin-bottom:20px;">
+        <div class="card-header">
+            <h3 class="card-title"><i class="ri-calendar-2-line"
+                    style="color:var(--primary);margin-right:8px;"></i>Payroll Period</h3>
+        </div>
+        <div class="card-body">
+            <div class="form-grid-2" style="max-width:480px;">
+                <div class="form-group">
+                    <label class="form-label">Month <span class="required">*</span></label>
+                    <select name="month" class="form-control" required>
+                        <option value="1" {% if current_month == 1 %}selected{% endif %}>January</option>
+                        <option value="2" {% if current_month == 2 %}selected{% endif %}>February</option>
+                        <option value="3" {% if current_month == 3 %}selected{% endif %}>March</option>
+                        <option value="4" {% if current_month == 4 %}selected{% endif %}>April</option>
+                        <option value="5" {% if current_month == 5 %}selected{% endif %}>May</option>
+                        <option value="6" {% if current_month == 6 %}selected{% endif %}>June</option>
+                        <option value="7" {% if current_month == 7 %}selected{% endif %}>July</option>
+                        <option value="8" {% if current_month == 8 %}selected{% endif %}>August</option>
+                        <option value="9" {% if current_month == 9 %}selected{% endif %}>September</option>
+                        <option value="10" {% if current_month == 10 %}selected{% endif %}>October</option>
+                        <option value="11" {% if current_month == 11 %}selected{% endif %}>November</option>
+                        <option value="12" {% if current_month == 12 %}selected{% endif %}>December</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Year <span class="required">*</span></label>
+                    <select name="year" class="form-control" required>
+                        {% for yr in year_range %}
+                        <option value="{{ yr }}" {% if yr == current_year %}selected{% endif %}>{{ yr }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div
+                style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;max-width:620px;margin-top:4px;">
+                <i class="ri-information-line" style="color:#3B82F6;font-size:18px;flex-shrink:0;margin-top:1px;"></i>
+                <div style="font-size:13px;color:#1E40AF;">
+                    <strong>How payroll works:</strong> This will create payroll records for all active employees for
+                    the selected month/year using their base salary. You can adjust bonuses and deductions below before
+                    processing. Once submitted, records will be marked as <strong>Pending</strong> until marked as paid.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Employee Adjustments Table -->
+    <div class="card" style="margin-bottom:24px;">
+        <div class="card-header">
+            <h3 class="card-title"><i class="ri-team-line" style="color:var(--primary);margin-right:8px;"></i>Employee
+                Adjustments</h3>
+            <div style="font-size:13px;color:var(--text-muted);">Adjust bonuses and deductions per employee. Net pay is
+                calculated automatically.</div>
+        </div>
+        <div class="table-wrap">
+            <table class="table" id="payrollRunTable">
+                <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Position</th>
+                        <th>Base Salary (AED)</th>
+                        <th>Bonus (AED)</th>
+                        <th>Deduction (AED)</th>
+                        <th>Net Pay (AED)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for emp in employees %}
+                    <tr>
+                        <td>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <div
+                                    style="width:32px;height:32px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0;">
+                                    {{ emp.first_name|first|upper }}
+                                </div>
+                                <div>
+                                    <div style="font-weight:600;">{{ emp.get_full_name }}</div>
+                                </div>
+                            </div>
+                            <input type="hidden" name="employee_{{ emp.id }}_id" value="{{ emp.id }}">
+                        </td>
+                        <td>{{ emp.position }}</td>
+                        <td>
+                            <span class="salary-display" data-salary="{{ emp.salary }}">{{ emp.salary|floatformat:2
+                                }}</span>
+                            <input type="hidden" name="employee_{{ emp.id }}_salary" value="{{ emp.salary }}">
+                        </td>
+                        <td>
+                            <input type="number" name="employee_{{ emp.id }}_bonus" class="form-control bonus-input"
+                                value="0" min="0" step="0.01" style="width:120px;" data-row="{{ emp.id }}"
+                                oninput="recalcNet({{ emp.id }})">
+                        </td>
+                        <td>
+                            <input type="number" name="employee_{{ emp.id }}_deduction"
+                                class="form-control deduction-input" value="0" min="0" step="0.01" style="width:120px;"
+                                data-row="{{ emp.id }}" oninput="recalcNet({{ emp.id }})">
+                        </td>
+                        <td>
+                            <span id="net_{{ emp.id }}" style="font-weight:700;font-size:15px;color:var(--success);">
+                                {{ emp.salary|floatformat:2 }}
+                            </span>
+                            <input type="hidden" name="employee_{{ emp.id }}_net" id="net_input_{{ emp.id }}"
+                                value="{{ emp.salary }}">
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6">
+                            <div class="table-empty">
+                                <i class="ri-team-line"
+                                    style="font-size:40px;color:var(--text-muted);margin-bottom:8px;"></i>
+                                <h4>No active employees</h4>
+                                <p>Add employees first before running payroll.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Submit -->
+    {% if employees %}
+    <div style="display:flex;gap:12px;align-items:center;">
+        <button type="submit" class="btn btn-primary btn-lg"
+            onclick="return confirm('Process payroll for all employees? Payroll records will be created and set to Pending status. This action cannot be easily undone.')">
+            <i class="ri-play-circle-line"></i> Process Payroll
+        </button>
+        <a href="/payroll/" class="btn btn-secondary btn-lg">Cancel</a>
+    </div>
+    {% endif %}
+</form>
+
+<script>
+    function recalcNet(empId) {
+        const row = document.querySelector(`[name="employee_${empId}_salary"]`);
+        const salary = parseFloat(row ? row.value : 0) || 0;
+        const bonusInput = document.querySelector(`[name="employee_${empId}_bonus"]`);
+        const deductInput = document.querySelector(`[name="employee_${empId}_deduction"]`);
+        const bonus = parseFloat(bonusInput ? bonusInput.value : 0) || 0;
+        const deduction = parseFloat(deductInput ? deductInput.value : 0) || 0;
+        const net = salary + bonus - deduction;
+        const netDisplay = document.getElementById(`net_${empId}`);
+        const netInput = document.getElementById(`net_input_${empId}`);
+        if (netDisplay) netDisplay.textContent = net.toFixed(2);
+        if (netInput) netInput.value = net.toFixed(2);
+        netDisplay.style.color = net >= 0 ? 'var(--success)' : 'var(--danger)';
+    }
+</script>
+{% endblock %}

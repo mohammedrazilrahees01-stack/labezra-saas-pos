@@ -1,0 +1,112 @@
+{% extends "base/base.html" %}
+
+{% block title %}Add Cashier — Labezra{% endblock %}
+{% block page_title %}Add Cashier{% endblock %}
+
+{% block content %}
+<nav class="breadcrumb">
+    <a href="/dashboard/">Home</a>
+    <i class="ri-arrow-right-s-line"></i>
+    <a href="/cashiers/">Cashiers</a>
+    <i class="ri-arrow-right-s-line"></i>
+    <span>Add Cashier</span>
+</nav>
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Add Cashier</h1>
+        <p class="page-subtitle">Create a new cashier account for POS access</p>
+    </div>
+    <div class="page-actions">
+        <a href="/cashiers/" class="btn btn-secondary">
+            <i class="ri-arrow-left-line"></i> Back
+        </a>
+    </div>
+</div>
+
+<div class="card" style="max-width:680px;">
+    <div class="card-header">
+        <h3 class="card-title"><i class="ri-user-add-line" style="color:var(--primary);margin-right:8px;"></i>Cashier
+            Details</h3>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label class="form-label">Username <span class="required">*</span></label>
+                <input type="text" name="username" class="form-control" placeholder="Unique username for login" required
+                    autocomplete="off">
+                <span class="form-hint">Used to log in to the POS system.</span>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">First Name</label>
+                    <input type="text" name="first_name" class="form-control" placeholder="First name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Last Name</label>
+                    <input type="text" name="last_name" class="form-control" placeholder="Last name">
+                </div>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" placeholder="cashier@company.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="tel" name="phone" class="form-control" placeholder="+971 50 000 0000">
+                </div>
+            </div>
+
+            <hr style="margin:20px 0;border-color:var(--border-color);">
+            <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">
+                <i class="ri-lock-password-line"></i> Set a 4–6 digit PIN for quick POS login.
+            </p>
+
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">PIN <span class="required">*</span></label>
+                    <input type="password" name="pin" id="pin" class="form-control" placeholder="4–6 digits"
+                        maxlength="6" minlength="4" pattern="\d{4,6}" inputmode="numeric" required
+                        autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirm PIN <span class="required">*</span></label>
+                    <input type="password" name="pin_confirm" id="pin_confirm" class="form-control"
+                        placeholder="Re-enter PIN" maxlength="6" minlength="4" pattern="\d{4,6}" inputmode="numeric"
+                        required autocomplete="new-password">
+                </div>
+            </div>
+            <div id="pin-error"
+                style="color:var(--danger);font-size:13px;display:none;margin-top:-8px;margin-bottom:12px;">
+                <i class="ri-error-warning-line"></i> PINs do not match.
+            </div>
+
+            <div style="display:flex;gap:12px;margin-top:8px;">
+                <button type="submit" class="btn btn-primary" onclick="return validatePin()">
+                    <i class="ri-user-add-line"></i> Create Cashier
+                </button>
+                <a href="/cashiers/" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function validatePin() {
+        const pin = document.getElementById('pin').value;
+        const confirm = document.getElementById('pin_confirm').value;
+        const errEl = document.getElementById('pin-error');
+        if (pin !== confirm) {
+            errEl.style.display = 'block';
+            return false;
+        }
+        errEl.style.display = 'none';
+        return true;
+    }
+</script>
+{% endblock %}

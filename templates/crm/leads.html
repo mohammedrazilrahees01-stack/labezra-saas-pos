@@ -1,0 +1,212 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}CRM – Leads{% endblock %}
+{% block page_icon %}<i class="ri-user-received-line"></i>{% endblock %}
+{% block page_title %}Leads &amp; Prospects{% endblock %}
+
+{% block content %}
+<div class="page-container">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div>
+      <h2 class="page-heading">Leads &amp; Prospects</h2>
+      <p class="page-sub">Track and convert your sales pipeline</p>
+    </div>
+    <button class="btn btn-primary" onclick="openModal('addLeadModal')">
+      <i class="ri-add-line"></i> Add Lead
+    </button>
+  </div>
+
+  <!-- KPI Strip -->
+  <div class="kpi-row" style="margin-bottom:20px;">
+    <div class="kpi-card">
+      <div class="kpi-icon blue"><i class="ri-user-received-line"></i></div>
+      <div class="kpi-info">
+        <span class="kpi-label">New Leads</span>
+        <span class="kpi-value">0</span>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon orange"><i class="ri-phone-line"></i></div>
+      <div class="kpi-info">
+        <span class="kpi-label">Contacted</span>
+        <span class="kpi-value">0</span>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon green"><i class="ri-check-double-line"></i></div>
+      <div class="kpi-info">
+        <span class="kpi-label">Converted</span>
+        <span class="kpi-value">0</span>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon red"><i class="ri-close-circle-line"></i></div>
+      <div class="kpi-info">
+        <span class="kpi-label">Lost</span>
+        <span class="kpi-value">0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pipeline Board -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;">
+
+    <!-- New Leads Column -->
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div style="background:#00AEEF;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;">
+        <span style="color:#fff;font-weight:700;font-size:13px;"><i class="ri-user-add-line"></i> New Leads</span>
+        <span style="background:rgba(255,255,255,.25);color:#fff;border-radius:20px;padding:2px 8px;font-size:12px;font-weight:700;">0</span>
+      </div>
+      <div style="padding:12px;min-height:120px;">
+        <div style="text-align:center;padding:24px;color:var(--text-light);font-size:13px;">
+          <i class="ri-inbox-line" style="font-size:28px;display:block;margin-bottom:6px;"></i>
+          No leads in this stage
+        </div>
+      </div>
+    </div>
+
+    <!-- Contacted Column -->
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div style="background:#f59e0b;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;">
+        <span style="color:#fff;font-weight:700;font-size:13px;"><i class="ri-phone-line"></i> Contacted</span>
+        <span style="background:rgba(255,255,255,.25);color:#fff;border-radius:20px;padding:2px 8px;font-size:12px;font-weight:700;">0</span>
+      </div>
+      <div style="padding:12px;min-height:120px;">
+        <div style="text-align:center;padding:24px;color:var(--text-light);font-size:13px;">
+          <i class="ri-inbox-line" style="font-size:28px;display:block;margin-bottom:6px;"></i>
+          No leads in this stage
+        </div>
+      </div>
+    </div>
+
+    <!-- Converted Column -->
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div style="background:#10b981;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;">
+        <span style="color:#fff;font-weight:700;font-size:13px;"><i class="ri-check-double-line"></i> Converted</span>
+        <span style="background:rgba(255,255,255,.25);color:#fff;border-radius:20px;padding:2px 8px;font-size:12px;font-weight:700;">0</span>
+      </div>
+      <div style="padding:12px;min-height:120px;">
+        <div style="text-align:center;padding:24px;color:var(--text-light);font-size:13px;">
+          <i class="ri-inbox-line" style="font-size:28px;display:block;margin-bottom:6px;"></i>
+          No leads in this stage
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leads Table -->
+  <div class="card">
+    <div class="card-header">
+      <span><i class="ri-list-check-2"></i> All Leads</span>
+      <input type="text" id="leadSearch" class="form-control" placeholder="Search leads..." style="max-width:250px;" oninput="filterTable(this,'leadsTable')">
+    </div>
+    <div class="table-wrapper">
+      <table class="data-table" id="leadsTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Company</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Stage</th>
+            <th>Source</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="9" style="text-align:center;padding:40px;color:var(--text-light);">
+              <i class="ri-user-received-line" style="font-size:32px;display:block;margin-bottom:10px;opacity:.4;"></i>
+              No leads yet. <a href="#" onclick="openModal('addLeadModal')" style="color:var(--primary);">Add your first lead</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Add Lead Modal -->
+<div id="addLeadModal" class="modal-overlay" style="display:none;" onclick="if(event.target===this)closeModal('addLeadModal')">
+  <div class="modal-box" style="max-width:520px;">
+    <div class="modal-header">
+      <h3><i class="ri-user-add-line"></i> Add New Lead</h3>
+      <button class="modal-close" onclick="closeModal('addLeadModal')"><i class="ri-close-line"></i></button>
+    </div>
+    <form class="modal-body" method="POST" action="#">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="add_lead">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group">
+          <label>Full Name <span style="color:#ef4444;">*</span></label>
+          <input type="text" name="name" class="form-control" placeholder="Lead name" required>
+        </div>
+        <div class="form-group">
+          <label>Company</label>
+          <input type="text" name="company" class="form-control" placeholder="Company name">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" class="form-control" placeholder="email@company.com">
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" name="phone" class="form-control" placeholder="+971 50 000 0000">
+        </div>
+        <div class="form-group">
+          <label>Stage</label>
+          <select name="stage" class="form-control">
+            <option value="new">New Lead</option>
+            <option value="contacted">Contacted</option>
+            <option value="qualified">Qualified</option>
+            <option value="proposal">Proposal Sent</option>
+            <option value="converted">Converted</option>
+            <option value="lost">Lost</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Source</label>
+          <select name="source" class="form-control">
+            <option value="walk_in">Walk-in</option>
+            <option value="referral">Referral</option>
+            <option value="website">Website</option>
+            <option value="social">Social Media</option>
+            <option value="event">Event</option>
+            <option value="cold_call">Cold Call</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:8px;">
+        <label>Notes</label>
+        <textarea name="notes" class="form-control" rows="3" placeholder="Additional notes..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeModal('addLeadModal')">Cancel</button>
+        <button type="submit" class="btn btn-primary"><i class="ri-save-line"></i> Save Lead</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function filterTable(input, tableId) {
+  var q = input.value.toLowerCase();
+  var rows = document.querySelectorAll('#' + tableId + ' tbody tr');
+  rows.forEach(function(row) {
+    row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+function openModal(id) {
+  var m = document.getElementById(id);
+  if (m) { m.style.display = 'flex'; }
+}
+function closeModal(id) {
+  var m = document.getElementById(id);
+  if (m) { m.style.display = 'none'; }
+}
+</script>
+{% endblock %}

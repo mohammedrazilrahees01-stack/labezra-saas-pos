@@ -1,0 +1,37 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block page_title %}Journal Entries{% endblock %}
+{% block page_icon %}<i class="ri-file-list-line"></i>{% endblock %}
+{% block content %}
+<div style="padding:24px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+    <div>
+      <h2 style="font-size:20px;font-weight:700">Journal Entries</h2>
+      <p style="font-size:13px;color:var(--text-muted)">Financial Year 2024-2025</p>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-outline" onclick="window.print()"><i class="ri-printer-line"></i> Print</button>
+      <button class="btn btn-primary"><i class="ri-download-2-line"></i> Export PDF</button>
+    </div>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <div style="padding:16px 20px;background:var(--bg-secondary);border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:center">
+      <select class="form-control" style="width:auto;font-size:13px">
+        <option>March 2025</option><option>February 2025</option><option>January 2025</option>
+      </select>
+      <button class="btn btn-primary" style="font-size:13px">Apply</button>
+    </div>
+    <table style="width:100%;border-collapse:collapse">
+      <thead><tr style="background:var(--bg-secondary)">
+        <th style="padding:12px 16px;text-align:left;font-size:12px;color:var(--text-muted)">Account #</th>
+        <th style="padding:12px 16px;text-align:left;font-size:12px;color:var(--text-muted)">Account Name</th>
+        <th style="padding:12px 16px;text-align:right;font-size:12px;color:var(--text-muted)">Balance</th>
+        <th style="padding:12px 16px;text-align:left;font-size:12px;color:var(--text-muted)">Type</th>
+      </tr></thead>
+      <tbody>
+<tr><td colspan="4" style="padding:40px;text-align:center;color:var(--text-muted)">No entries for selected period. Data will appear here as transactions are recorded.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

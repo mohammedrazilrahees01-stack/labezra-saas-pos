@@ -1,0 +1,112 @@
+{% extends "base/base.html" %}
+
+{% block title %}Cashiers — Labezra{% endblock %}
+{% block page_title %}Cashiers{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Cashiers</h1>
+        <p class="page-subtitle">Manage cashier accounts and POS access</p>
+    </div>
+    <div class="page-actions">
+        <a href="/cashiers/add/" class="btn btn-primary">
+            <i class="ri-add-line"></i> Add Cashier
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">All Cashiers</h3>
+        <div class="table-toolbar">
+            <div class="search-box">
+                <i class="ri-search-line"></i>
+                <input type="text" id="cashierSearch" placeholder="Search cashiers..."
+                    oninput="filterTable(this.value)">
+            </div>
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table class="table" id="cashiersTable">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Full Name</th>
+                    <th data-i18n="th_email">Email</th>
+                    <th data-i18n="th_status">Status</th>
+                    <th>Last Login</th>
+                    <th>PIN</th>
+                    <th data-i18n="actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cashier in cashiers %}
+                <tr>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <div
+                                style="width:32px;height:32px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0;">
+                                {{ cashier.username|first|upper }}
+                            </div>
+                            <span style="font-weight:600;">{{ cashier.username }}</span>
+                        </div>
+                    </td>
+                    <td>{{ cashier.get_full_name }}</td>
+                    <td>{{ cashier.email }}</td>
+                    <td>
+                        {% if cashier.is_active %}
+                        <span class="badge badge-success" data-i18n="status_active">Active</span>
+                        {% else %}
+                        <span class="badge badge-gray" data-i18n="status_inactive">Inactive</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if cashier.last_login %}
+                        {{ cashier.last_login|date:"d M Y, H:i" }}
+                        {% else %}
+                        <span style="color:var(--text-muted);">Never</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span style="letter-spacing:3px;color:var(--text-muted);font-size:16px;">●●●●</span>
+                    </td>
+                    <td class="table-actions">
+                        <a href="/cashiers/edit/{{ cashier.id }}/" class="btn btn-warning btn-sm">
+                            <i class="ri-edit-line"></i> Edit
+                        </a>
+                        <a href="/cashiers/reset-pin/{{ cashier.id }}/" class="btn btn-outline btn-sm">
+                            <i class="ri-lock-password-line"></i> Reset PIN
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">
+                        <div class="table-empty">
+                            <i class="ri-user-star-line"
+                                style="font-size:48px;color:var(--text-muted);margin-bottom:12px;"></i>
+                            <h4>No cashiers yet</h4>
+                            <p>Create cashier accounts for your POS operators.</p>
+                            <a href="/cashiers/add/" class="btn btn-primary" style="margin-top:12px;">
+                                <i class="ri-add-line"></i> Add Cashier
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function filterTable(query) {
+        const q = query.toLowerCase();
+        document.querySelectorAll('#cashiersTable tbody tr').forEach(row => {
+            row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+        });
+    }
+</script>
+{% endblock %}

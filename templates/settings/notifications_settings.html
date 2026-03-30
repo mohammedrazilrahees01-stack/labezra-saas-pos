@@ -1,0 +1,25 @@
+{% extends "base/base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% block page_title %}Notification Settings{% endblock %}
+{% block page_icon %}<i class="ri-notification-3-line"></i>{% endblock %}
+{% block content %}
+<div style="padding:24px;max-width:700px">
+  <form method="POST" action="" style="display:flex;flex-direction:column;gap:16px">
+    {% csrf_token %}
+    <div class="card" style="padding:24px">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:16px">Alert Preferences</h3>
+      {% for item in "Low stock alerts|Product expiry warnings|Daily sales summary|New customer registered|Employee attendance alerts|Payment received|Invoice overdue"|split:"|" %}
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)">
+        <span style="font-size:13px;font-weight:500">{{ item }}</span>
+        <label style="position:relative;display:inline-block;width:44px;height:24px">
+          <input type="checkbox" checked style="opacity:0;width:0;height:0">
+          <span style="position:absolute;cursor:pointer;inset:0;background:#00AEEF;border-radius:24px;transition:.3s"></span>
+        </label>
+      </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary" style="margin-top:16px"><i class="ri-save-line"></i> Save Preferences</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

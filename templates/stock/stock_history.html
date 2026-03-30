@@ -1,0 +1,110 @@
+{% extends "base/base.html" %}
+{% block title %}Stock History — Labezra{% endblock %}
+{% block page_title %}Stock History{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+    <h2>Stock History</h2>
+</div>
+
+<!-- Filter Bar -->
+<div class="card" style="margin-bottom:1.5rem;">
+    <form method="get" action="" style="display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-end;padding:0.25rem 0;">
+        <div class="form-group" style="margin:0;flex:1;min-width:160px;">
+            <label for="date_from">From Date</label>
+            <input type="date" id="date_from" name="date_from" class="form-control" value="{{ request.GET.date_from }}">
+        </div>
+        <div class="form-group" style="margin:0;flex:1;min-width:160px;">
+            <label for="date_to">To Date</label>
+            <input type="date" id="date_to" name="date_to" class="form-control" value="{{ request.GET.date_to }}">
+        </div>
+        <div class="form-group" style="margin:0;flex:2;min-width:200px;">
+            <label for="product_search">Product Search</label>
+            <div class="search-box">
+                <i class="ri-search-line"></i>
+                <input type="text" id="product_search" name="product" class="form-control"
+                    placeholder="Search by product name..." value="{{ request.GET.product }}">
+            </div>
+        </div>
+        <div style="display:flex;gap:0.5rem;">
+            <button type="submit" class="btn btn-primary"><i class="ri-filter-3-line"></i> Filter</button>
+            <a href="/inventory/stock/history/" class="btn btn-secondary">Reset</a>
+        </div>
+    </form>
+</div>
+
+<!-- KPI Row -->
+<div class="kpi-row">
+    <div class="kpi-card">
+        <div class="kpi-icon blue"><i class="ri-history-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-label">Total Adjustments</span>
+            <span class="kpi-value">{{ total_adjustments|default:history|length }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon green"><i class="ri-arrow-up-circle-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-label">Total Added</span>
+            <span class="kpi-value">{{ total_added|default:"0" }}</span>
+        </div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon red"><i class="ri-arrow-down-circle-line"></i></div>
+        <div class="kpi-info">
+            <span class="kpi-label">Total Removed</span>
+            <span class="kpi-value">{{ total_removed|default:"0" }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- Table Card -->
+<div class="card">
+    <div class="card-header">
+        <span class="card-title">Stock Adjustments</span>
+        <span class="text-muted" style="font-size:0.875rem;">{{ history|length }} record{{ history|length|pluralize
+            }}</span>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th data-i18n="th_date">Date</th>
+                <th data-i18n="th_product">Product</th>
+                <th>Type</th>
+                <th data-i18n="th_quantity">Quantity</th>
+                <th>Notes</th>
+                <th data-i18n="th_user">User</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in history %}
+            <tr>
+                <td>{{ entry.date }}</td>
+                <td>{{ entry.product }}</td>
+                <td>
+                    {% if entry.type == 'in' or entry.type == 'In' %}
+                    <span class="badge badge-success"><i class="ri-arrow-up-line"></i> In</span>
+                    {% else %}
+                    <span class="badge badge-danger"><i class="ri-arrow-down-line"></i> Out</span>
+                    {% endif %}
+                </td>
+                <td>{{ entry.quantity }}</td>
+                <td>{{ entry.notes|default:"—" }}</td>
+                <td>{{ entry.user|default:"—" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">
+                    <div class="empty-state">
+                        <i class="ri-history-line"></i>
+                        <h3>No stock history found</h3>
+                        <p>Stock adjustments will appear here once recorded.</p>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base/base_auth.html" %}
+{% block title %}Login — Labezra ERP{% endblock %}
+
+{% block auth_content %}
+<div class="auth-form-title">Welcome back</div>
+<div class="auth-form-sub">Sign in to your Labezra ERP account</div>
+
+<form method="POST" action="">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}">
+
+    <div class="form-group">
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Enter your username" required autofocus>
+    </div>
+
+    <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Enter your password" required>
+            <div style="text-align:right;margin-top:6px;">
+                <a href="/accounts/forgot-password/" style="font-size:12px;color:#00AEEF;text-decoration:none;">Forgot Password?</a>
+            </div>
+    </div>
+
+    <button type="submit" class="btn-auth">
+        <i class="ri-login-box-line" style="margin-right:6px;"></i> Sign In
+    </button>
+</form>
+
+<div class="auth-link">
+    Don't have an account? <a href="/register/">Register here</a>
+</div>
+<div class="auth-link" style="margin-top:8px;">
+    <a href="/cashier-login/">Cashier Login</a>
+</div>
+{% endblock %}

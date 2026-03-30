@@ -1,0 +1,124 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block page_title %}Tasks{% endblock %}
+{% block page_icon %}<i class="ri-checkbox-multiple-line"></i>{% endblock %}
+
+{% block breadcrumb %}
+<nav style="padding:10px 24px;font-size:13px;color:#6b7280;background:#f8fafc;border-bottom:1px solid #e5e7eb;">
+    <a href="/dashboard/" style="color:#00AEEF;text-decoration:none;">Dashboard</a>
+    <span style="margin:0 6px;">/</span>
+    <a href="/projects/" style="color:#00AEEF;text-decoration:none;">Projects</a>
+    <span style="margin:0 6px;">/</span>
+    <span style="color:#1A1D27;font-weight:600;">Tasks</span>
+</nav>
+{% endblock %}
+
+{% block content %}
+{% if messages %}
+{% for msg in messages %}<div class="alert alert-{{ msg.tags }}" style="margin-bottom:16px;">{{ msg }}</div>{% endfor %}
+{% endif %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Tasks</h1>
+        <p class="page-subtitle">Manage project tasks, assignees and deadlines</p>
+    </div>
+</div>
+
+<div class="kpi-row" style="margin-bottom:1.5rem;">
+    <div class="kpi-card"><div class="kpi-icon" style="background:rgba(243,156,18,.15);color:#F39C12;"><i class="ri-checkbox-blank-circle-line"></i></div><div class="kpi-content"><span class="kpi-label">To Do</span><span class="kpi-value">{{ todo_count }}</span></div></div>
+    <div class="kpi-card"><div class="kpi-icon" style="background:rgba(0,174,239,.15);color:#00AEEF;"><i class="ri-loader-line"></i></div><div class="kpi-content"><span class="kpi-label">In Progress</span><span class="kpi-value">{{ in_progress_count }}</span></div></div>
+    <div class="kpi-card"><div class="kpi-icon" style="background:rgba(39,174,96,.15);color:#27AE60;"><i class="ri-checkbox-circle-line"></i></div><div class="kpi-content"><span class="kpi-label">Done</span><span class="kpi-value">{{ done_count }}</span></div></div>
+</div>
+
+<div class="card">
+    <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border,#e5e7eb);">
+        <h3 style="margin:0;font-size:15px;font-weight:700;">All Tasks</h3>
+        <button class="btn btn-primary" onclick="document.getElementById('addTaskModal').style.display='flex'">
+            <i class="ri-add-line"></i> New Task
+        </button>
+    </div>
+    <div class="card-body" style="padding:0;">
+        {% if tasks %}
+        <table class="table">
+            <thead><tr><th>Title</th><th>Project</th><th>Status</th><th>Priority</th><th>Due Date</th></tr></thead>
+            <tbody>
+                {% for t in tasks %}
+                <tr>
+                    <td><strong>{{ t.title }}</strong></td>
+                    <td>{{ t.project.name|default:"—" }}</td>
+                    <td><span class="badge">{{ t.get_status_display }}</span></td>
+                    <td>{{ t.get_priority_display }}</td>
+                    <td>{{ t.due_date|date:"d M Y"|default:"—" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon"><i class="ri-checkbox-multiple-line"></i></div>
+            <h3>No tasks yet</h3>
+            <p>Get started by creating your first task.</p>
+            <button class="btn btn-primary" onclick="document.getElementById('addTaskModal').style.display='flex'">
+                <i class="ri-add-line"></i> New Task
+            </button>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Add Task Modal -->
+<div id="addTaskModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9000;align-items:center;justify-content:center;padding:20px;">
+    <div style="background:#fff;border-radius:16px;padding:28px;width:100%;max-width:480px;box-shadow:0 24px 60px rgba(0,0,0,.25);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+            <h3 style="margin:0;font-size:1.1rem;font-weight:700;"><i class="ri-checkbox-multiple-line" style="color:#00AEEF;margin-right:8px;"></i>New Task</h3>
+            <button onclick="document.getElementById('addTaskModal').style.display='none'" style="background:none;border:none;font-size:20px;cursor:pointer;color:#64748b;">&times;</button>
+        </div>
+        <form method="POST" action="/projects/tasks/">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label">Task Title <span style="color:red;">*</span></label>
+                <input type="text" name="title" class="form-control" placeholder="Enter task title" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea name="description" class="form-control" rows="2" placeholder="Task description..."></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Project</label>
+                <select name="project_id" class="form-control">
+                    <option value="">— No Project —</option>
+                    {% for p in projects %}<option value="{{ p.id }}">{{ p.name }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select name="status" class="form-control">
+                        <option value="todo">To Do</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="review">In Review</option>
+                        <option value="done">Done</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Priority</label>
+                    <select name="priority" class="form-control">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Due Date</label>
+                <input type="date" name="due_date" class="form-control">
+            </div>
+            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
+                <button type="button" class="btn btn-outline" onclick="document.getElementById('addTaskModal').style.display='none'">Cancel</button>
+                <button type="submit" class="btn btn-primary"><i class="ri-save-line"></i> Create Task</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

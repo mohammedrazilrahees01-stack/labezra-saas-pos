@@ -1,0 +1,142 @@
+<style>
+    .calc-widget {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        width: 260px;
+        background: #1A1D27;
+        border-radius: 16px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        z-index: 1100;
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .calc-widget.open {
+        display: flex;
+    }
+
+    .calc-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        background: #13151E;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        cursor: grab;
+        user-select: none;
+    }
+    .calc-header:active {
+        cursor: grabbing;
+    }
+
+    .calc-header span {
+        font-size: 12px;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.6);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    .calc-header button {
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        font-size: 17px;
+        display: flex;
+        align-items: center;
+    }
+
+    .calc-header button:hover {
+        color: #fff;
+    }
+
+    #calcDisplay {
+        width: 100%;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: #fff;
+        font-size: 22px;
+        font-weight: 300;
+        text-align: right;
+        padding: 14px 16px 10px;
+        font-family: 'Courier New', monospace;
+    }
+
+    .calc-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .calc-btn {
+        padding: 14px 0;
+        background: #1A1D27;
+        border: none;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.12s;
+    }
+
+    .calc-btn:hover {
+        background: #252836;
+    }
+
+    .calc-btn.op {
+        color: #00AEEF;
+    }
+
+    .calc-btn.eq {
+        background: #00AEEF;
+        color: #fff;
+        grid-column: span 2;
+    }
+
+    .calc-btn.eq:hover {
+        background: #0090C7;
+    }
+
+    .calc-btn.clear {
+        color: #ef4444;
+    }
+</style>
+
+<div class="calc-widget" id="calcWidget">
+    <div class="calc-header">
+        <span><i class="ri-calculator-line"></i> Calculator</span>
+        <button id="calcClose"><i class="ri-close-line"></i></button>
+    </div>
+    <input type="text" id="calcDisplay" placeholder="0" readonly>
+    <div class="calc-grid">
+        <button class="calc-btn clear" data-val="C">C</button>
+        <button class="calc-btn op" data-val="⌫">⌫</button>
+        <button class="calc-btn op" data-val="%">%</button>
+        <button class="calc-btn op" data-val="/">/</button>
+
+        <button class="calc-btn" data-val="7">7</button>
+        <button class="calc-btn" data-val="8">8</button>
+        <button class="calc-btn" data-val="9">9</button>
+        <button class="calc-btn op" data-val="*">×</button>
+
+        <button class="calc-btn" data-val="4">4</button>
+        <button class="calc-btn" data-val="5">5</button>
+        <button class="calc-btn" data-val="6">6</button>
+        <button class="calc-btn op" data-val="-">−</button>
+
+        <button class="calc-btn" data-val="1">1</button>
+        <button class="calc-btn" data-val="2">2</button>
+        <button class="calc-btn" data-val="3">3</button>
+        <button class="calc-btn op" data-val="+">+</button>
+
+        <button class="calc-btn" data-val="0">0</button>
+        <button class="calc-btn" data-val=".">.</button>
+        <button class="calc-btn eq" data-val="=">=</button>
+    </div>
+</div>

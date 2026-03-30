@@ -1,0 +1,174 @@
+{% extends "base/base.html" %}
+
+{% block title %}Company Settings — Labezra{% endblock %}
+{% block page_title %}Company Settings{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Company Settings</h1>
+        <p class="page-subtitle">Configure your company information and preferences</p>
+    </div>
+</div>
+
+<form method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="form-grid-2" style="align-items:start;">
+
+        <!-- Left: Company Information -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><i class="ri-building-2-line"
+                        style="color:var(--primary);margin-right:8px;"></i>Company Information</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="form-label">Company Name <span class="required">*</span></label>
+                    <input type="text" name="company_name" class="form-control" value="{{ company.name }}" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">TRN (Tax Registration Number)</label>
+                    <input type="text" name="trn" class="form-control" value="{{ company.trn }}"
+                        placeholder="100XXXXXXXXX3">
+                    <span class="form-hint">Required for UAE VAT invoicing.</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Trade License Number</label>
+                    <input type="text" name="trade_license" class="form-control" value="{{ company.trade_license }}"
+                        placeholder="CN-XXXXXXX">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Country</label>
+                    <select name="country" class="form-control">
+                        <option value="UAE" {% if company.country == "UAE" %}selected{% endif %}>United Arab Emirates
+                        </option>
+                        <option value="Saudi Arabia" {% if company.country == "Saudi Arabia" %}selected{% endif %}>Saudi
+                            Arabia</option>
+                        <option value="Other" {% if company.country == "Other" %}selected{% endif %}>Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="tel" name="phone" class="form-control" value="{{ company.phone }}"
+                        placeholder="+971 4 000 0000">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" value="{{ company.email }}"
+                        placeholder="info@company.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Website</label>
+                    <input type="url" name="website" class="form-control" value="{{ company.website }}"
+                        placeholder="https://www.company.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Address</label>
+                    <textarea name="address" class="form-control" rows="3"
+                        placeholder="Full business address...">{{ company.address }}</textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Invoice Settings -->
+        <div>
+            <div class="card" style="margin-bottom:20px;">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="ri-file-list-3-line"
+                            style="color:var(--primary);margin-right:8px;"></i>Invoice Settings</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label">Invoice Prefix</label>
+                        <input type="text" name="invoice_prefix" class="form-control"
+                            value="{{ company.invoice_prefix|default:'INV' }}" placeholder="INV">
+                        <span class="form-hint">e.g. INV → INV-0001</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Starting Invoice Number</label>
+                        <input type="number" name="invoice_start" class="form-control"
+                            value="{{ company.invoice_start|default:'1' }}" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Default Currency</label>
+                        <select name="default_currency" class="form-control">
+                            <option value="AED" {% if company.default_currency == "AED" or notcompany.default_currency%}selected{% endif %}>AED — UAE Dirham</option>
+                            <option value="SAR" {% if company.default_currency == "SAR" %}selected{% endif %}>SAR — Saudi
+                                Riyal</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">VAT Rate (%)</label>
+                        <input type="number" name="vat_rate" class="form-control"
+                            value="{{ company.vat_rate|default:'5' }}" min="0" max="100" step="0.01">
+                        <span class="form-hint">Standard UAE VAT is 5%.</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tax Year Start</label>
+                        <select name="tax_year" class="form-control">
+                            <option value="January" {% if company.tax_year == "January" %}selected{% endif %}>January
+                            </option>
+                            <option value="April" {% if company.tax_year == "April" %}selected{% endif %}>April</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label style="display:flex;align-items:center;gap:10px;cursor:pointer;">
+                            <input type="checkbox" name="show_vat_on_receipt" {% if company.show_vat_on_receipt %}checked{% endif %}
+                                style="width:16px;height:16px;accent-color:var(--primary);">
+                            <span class="form-label" style="margin:0;">Display VAT % on receipts</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logo Upload -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="ri-image-line"
+                            style="color:var(--primary);margin-right:8px;"></i>Company Logo</h3>
+                </div>
+                <div class="card-body">
+                    {% if company.logo %}
+                    <div style="margin-bottom:16px;">
+                        <p style="font-size:13px;color:var(--text-muted);margin-bottom:8px;">Current Logo:</p>
+                        <img src="{{ company.logo.url }}" alt="Company Logo"
+                            style="max-height:80px;max-width:200px;object-fit:contain;border:1px solid var(--border-color);border-radius:8px;padding:8px;background:#fff;">
+                    </div>
+                    {% endif %}
+                    <div class="form-group">
+                        <label class="form-label">Upload New Logo</label>
+                        <input type="file" name="logo" class="form-control" accept="image/*"
+                            onchange="previewLogo(this)">
+                        <span class="form-hint">Recommended: PNG with transparent background, min 200×80px.</span>
+                    </div>
+                    <div id="logoPreviewWrap" style="display:none;margin-top:12px;">
+                        <p style="font-size:13px;color:var(--text-muted);margin-bottom:8px;">Preview:</p>
+                        <img id="logoPreview" src="" alt="Logo Preview"
+                            style="max-height:80px;max-width:200px;object-fit:contain;border:1px solid var(--border-color);border-radius:8px;padding:8px;background:#fff;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top:24px;display:flex;gap:12px;">
+        <button type="submit" class="btn btn-primary btn-lg">
+            <i class="ri-save-line"></i> Save Settings
+        </button>
+    </div>
+</form>
+
+<script>
+    function previewLogo(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                document.getElementById('logoPreview').src = e.target.result;
+                document.getElementById('logoPreviewWrap').style.display = 'block';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+{% endblock %}

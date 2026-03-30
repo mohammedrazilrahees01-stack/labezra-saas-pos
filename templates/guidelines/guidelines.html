@@ -1,0 +1,310 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Guidelines & How-to-Use — Labezra ERP{% endblock %}
+{% block page_icon %}<i class="ri-book-open-line"></i>{% endblock %}
+{% block page_title %}Platform Guidelines{% endblock %}
+
+{% block content %}
+<div class="guide-layout">
+    <!-- Left sidebar: TOC -->
+    <div class="guide-toc" id="guideToc">
+        <div class="guide-toc-title">Table of Contents</div>
+        <nav class="guide-nav">
+            <a href="#getting-started" class="guide-nav-link active" data-section="getting-started"><i class="ri-rocket-line"></i> Getting Started</a>
+            <a href="#pos" class="guide-nav-link" data-section="pos"><i class="ri-store-2-line"></i> POS System</a>
+            <a href="#inventory" class="guide-nav-link" data-section="inventory"><i class="ri-box-3-line"></i> Inventory</a>
+            <a href="#customers" class="guide-nav-link" data-section="customers"><i class="ri-group-line"></i> Customers</a>
+            <a href="#employees" class="guide-nav-link" data-section="employees"><i class="ri-team-line"></i> Employees</a>
+            <a href="#reports" class="guide-nav-link" data-section="reports"><i class="ri-bar-chart-line"></i> Reports</a>
+            <a href="#vat" class="guide-nav-link" data-section="vat"><i class="ri-government-line"></i> VAT & UAE Compliance</a>
+            <a href="#notifications" class="guide-nav-link" data-section="notifications"><i class="ri-notification-3-line"></i> Notifications</a>
+            <a href="#subscription" class="guide-nav-link" data-section="subscription"><i class="ri-vip-crown-line"></i> Subscription Plans</a>
+<a href="#shortcuts" class="guide-nav-link" data-section="shortcuts"><i class="ri-keyboard-line"></i> Keyboard Shortcuts</a>
+        </nav>
+    </div>
+
+    <!-- Right: Content -->
+    <div class="guide-content" id="guideContent">
+
+        <div class="guide-hero">
+            <h1>Labezra ERP Platform Guide</h1>
+            <p>Complete documentation for the UAE's most advanced POS & ERP system. Built for restaurants, retail, pharmacies, and all business types.</p>
+            <div class="guide-tags">
+                <span class="guide-tag">🇦🇪 UAE Compliant</span>
+                <span class="guide-tag">🏛️ FTA Approved</span>
+                <span class="guide-tag">🤖 AI Powered</span>
+                
+            </div>
+        </div>
+
+        <!-- GETTING STARTED -->
+        <section id="getting-started" class="guide-section">
+            <h2><i class="ri-rocket-line"></i> Getting Started</h2>
+            <div class="guide-steps">
+                <div class="guide-step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        <h4>Register Your Business</h4>
+                        <p>Go to <strong>/register/</strong> and select your business category (Restaurant, Retail, Pharmacy, Salon, Grocery, Electronics, Service, or Custom). The platform loads only the modules your business needs — no clutter.</p>
+                    </div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        <h4>Set Up Your Company Profile</h4>
+                        <p>Go to <strong>Settings → Company Settings</strong>. Add your TRN number, logo, address, and VAT details. These appear on every FTA-compliant invoice you generate.</p>
+                    </div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <h4>Add Your Products & Services</h4>
+                        <p>Go to <strong>Inventory → Add Product</strong>. Set name, price, barcode, stock quantity, and low-stock threshold. The system alerts you automatically before you run out.</p>
+                    </div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-num">4</div>
+                    <div class="step-body">
+                        <h4>Create Your First Sale</h4>
+                        <p>Open the <strong>POS</strong> screen (shortcut: <kbd>Alt+P</kbd>). Scan or click products, select a customer, choose payment method, and click Charge. Receipt is generated instantly with full VAT breakdown.</p>
+                    </div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-num">5</div>
+                    <div class="step-body">
+                        <h4>Invite Your Team</h4>
+                        <p>Go to <strong>Employees → Add Employee</strong>. Assign roles (Cashier, Manager, Admin) with RBAC permissions. Each employee gets their own secure login with audit trail.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- POS SYSTEM -->
+        <section id="pos" class="guide-section">
+            <h2><i class="ri-store-2-line"></i> POS System</h2>
+            <div class="guide-info-box">
+                <i class="ri-information-line"></i>
+                <div><strong>Offline First:</strong> The POS works 100% without internet. All sales are stored locally and sync automatically when connection is restored — no data loss, ever.</div>
+            </div>
+            <div class="guide-cards">
+                
+        </section>
+
+        <!-- SUBSCRIPTION PLANS -->
+        <section id="subscription" class="guide-section">
+            <h2><i class="ri-vip-crown-line"></i> Subscription Plans</h2>
+            <div class="plans-grid">
+                <div class="plan-card">
+                    <div class="plan-name">Free</div>
+                    <div class="plan-price">AED 0</div>
+                    <ul class="plan-features">
+                        <li>✅ 1 Branch</li>
+                        <li>✅ Up to 3 Cashiers</li>
+                        <li>✅ Basic POS</li>
+                        <li>✅ Inventory Management</li>
+                        <li>✅ Basic Reports</li>
+                        
+                        
+                        <li>❌ Advanced Analytics</li>
+                    </ul>
+                    <a href="/upgrade/" class="btn btn-outline btn-sm" style="margin-top:auto;">Current Plan</a>
+                </div>
+                <div class="plan-card featured">
+                    <div class="plan-badge">Most Popular</div>
+                    <div class="plan-name">Pro</div>
+                    <div class="plan-price">AED 75<span>/month</span></div>
+                    <div class="plan-annual">or AED 735/year (save 20%)</div>
+                    <ul class="plan-features">
+                        <li>✅ Unlimited Branches</li>
+                        <li>✅ Unlimited Cashiers</li>
+                        <li>✅ AI Analytics & Forecasting</li>
+                        
+                        <li>✅ Customer CLV Tracking</li>
+                        <li>✅ FTA VAT Reports</li>
+                        <li>✅ Advanced Reports (PDF/Excel)</li>
+                        <li>✅ Priority Support</li>
+                    </ul>
+                    <a href="/upgrade/" class="btn btn-primary btn-sm" style="margin-top:auto;">Upgrade Now</a>
+                </div>
+                <div class="plan-card">
+                    <div class="plan-name">Enterprise</div>
+                    <div class="plan-price">Custom</div>
+                    <ul class="plan-features">
+                        <li>✅ Everything in Pro</li>
+                        <li>✅ Dedicated Account Manager</li>
+                        <li>✅ Custom Integrations</li>
+                        <li>✅ SLA Guarantee</li>
+                        <li>✅ White Label Option</li>
+                        <li>✅ Merchant Loan Access</li>
+                        <li>✅ Full API Access</li>
+                        <li>✅ Government Deployment</li>
+                    </ul>
+                    <a href="https://wa.me/971569956676" target="_blank" class="btn btn-outline btn-sm" style="margin-top:auto;">Contact Sales</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- WHATSAPP COMMERCE -->
+
+        <!-- AI FEATURES -->
+
+        <!-- KEYBOARD SHORTCUTS -->
+        <section id="shortcuts" class="guide-section">
+            <h2><i class="ri-keyboard-line"></i> Keyboard Shortcuts</h2>
+            <div class="shortcuts-table">
+                <div class="shortcut-row"><kbd>Ctrl+K</kbd><span>Open Global Search</span></div>
+                <div class="shortcut-row"><kbd>Alt+P</kbd><span>Open POS Screen</span></div>
+                <div class="shortcut-row"><kbd>Alt+D</kbd><span>Go to Dashboard</span></div>
+                <div class="shortcut-row"><kbd>Alt+I</kbd><span>New Invoice</span></div>
+                <div class="shortcut-row"><kbd>Alt+C</kbd><span>Open Customers</span></div>
+                <div class="shortcut-row"><kbd>Alt+R</kbd><span>Open Reports</span></div>
+                <div class="shortcut-row"><kbd>Alt+N</kbd><span>New Product / Add Item</span></div>
+                <div class="shortcut-row"><kbd>?</kbd><span>Show All Shortcuts Help</span></div>
+                <div class="shortcut-row"><kbd>ESC</kbd><span>Close Any Overlay / Modal</span></div>
+            </div>
+        </section>
+
+        <div class="guide-contact">
+            <h3>Need Help?</h3>
+            <p>Our team is available 24/7 via WhatsApp</p>
+            <a href="https://wa.me/971569956676" target="_blank" class="btn btn-primary">
+                <i class="ri-whatsapp-line"></i> Chat on WhatsApp — +971 56 995 6676
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+.guide-layout { display: grid; grid-template-columns: 220px 1fr; gap: 24px; align-items: start; }
+.guide-toc { background: var(--card-bg,#fff); border-radius: 16px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,.06); position: sticky; top: 80px; max-height: calc(100vh - 100px); overflow-y: auto; }
+.guide-toc-title { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing:.5px; margin-bottom: 12px; }
+.guide-nav { display: flex; flex-direction: column; gap: 2px; }
+.guide-nav-link { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; color: #64748b; font-size: 13px; text-decoration: none; transition: all .2s; }
+.guide-nav-link:hover { background: rgba(0,174,239,.06); color: #00AEEF; }
+.guide-nav-link.active { background: rgba(0,174,239,.12); color: #00AEEF; font-weight: 600; border-left: 3px solid #00AEEF; padding-left: 7px; }
+.guide-nav-link i { font-size: 14px; flex-shrink: 0; }
+.guide-content { display: flex; flex-direction: column; gap: 32px; }
+.guide-hero { background: linear-gradient(135deg, #0f1929, #1a2d4a); border-radius: 20px; padding: 36px; color: #fff; }
+.guide-hero h1 { font-size: 26px; font-weight: 800; margin-bottom: 10px; }
+.guide-hero p { color: rgba(255,255,255,.7); font-size: 15px; line-height: 1.6; }
+.guide-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.guide-tag { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); border-radius: 20px; padding: 4px 12px; font-size: 12px; }
+.guide-section { background: var(--card-bg,#fff); border-radius: 16px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,.06); scroll-margin-top: 90px; }
+.guide-section h2 { font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+.guide-section h2 i { color: #00AEEF; }
+.guide-steps { display: flex; flex-direction: column; gap: 16px; }
+.guide-step { display: flex; gap: 16px; align-items: flex-start; }
+.step-num { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg,#00AEEF,#0070B8); color:#fff; font-weight:700; font-size:14px; display:flex;align-items:center;justify-content:center; flex-shrink:0; }
+.step-body h4 { font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 4px; }
+.step-body p { font-size: 13px; color: #64748b; line-height: 1.6; }
+.step-body kbd { background: #1e293b; color: #fff; padding: 1px 6px; border-radius: 4px; font-family: monospace; font-size: 11px; }
+.guide-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.guide-card { background: #f8fafc; border-radius: 12px; padding: 16px; transition: box-shadow .2s; }
+.guide-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+.guide-card-icon { font-size: 24px; color: #00AEEF; margin-bottom: 8px; display: block; }
+.guide-card h4 { font-size: 13px; font-weight: 700; color: #1e293b; margin-bottom: 4px; }
+.guide-card p { font-size: 12px; color: #64748b; line-height: 1.5; }
+.guide-info-box { display: flex; gap: 12px; padding: 14px 16px; border-radius: 10px; background: rgba(0,174,239,.06); border-left: 3px solid #00AEEF; margin-bottom: 12px; font-size: 13px; line-height: 1.6; color: #374151; }
+.guide-info-box.warning { background: rgba(245,158,11,.06); border-left-color: #f59e0b; }
+.guide-info-box i { font-size: 18px; color: #00AEEF; flex-shrink: 0; margin-top: 2px; }
+.guide-info-box.warning i { color: #f59e0b; }
+.guide-list { padding-left: 18px; }
+.guide-list li { font-size: 13px; color: #374151; margin-bottom: 8px; line-height: 1.6; }
+.guide-compliance-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.compliance-item { display: flex; gap: 12px; background: #f8fafc; padding: 14px; border-radius: 10px; }
+.compliance-check { font-size: 20px; flex-shrink: 0; }
+.compliance-item strong { font-size: 13px; color: #1e293b; display: block; margin-bottom: 2px; }
+.compliance-item p { font-size: 12px; color: #64748b; margin: 0; }
+.plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.plan-card { background: #f8fafc; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; position: relative; border: 2px solid transparent; min-height: 360px; }
+.plan-card.featured { border-color: #00AEEF; background: rgba(0,174,239,.04); }
+.plan-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #00AEEF; color: #fff; font-size: 10px; font-weight: 700; padding: 3px 12px; border-radius: 20px; white-space: nowrap; }
+.plan-name { font-size: 16px; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
+.plan-price { font-size: 28px; font-weight: 800; color: #00AEEF; margin-bottom: 4px; }
+.plan-price span { font-size: 14px; color: #64748b; }
+.plan-annual { font-size: 11px; color: #64748b; margin-bottom: 16px; }
+.plan-features { list-style: none; padding: 0; flex: 1; margin-bottom: 16px; }
+.plan-features li { font-size: 12px; padding: 5px 0; border-bottom: 1px solid rgba(0,0,0,.05); }
+.shortcuts-table { display: grid; gap: 8px; }
+.shortcut-row { display: flex; align-items: center; gap: 16px; padding: 10px 14px; background: #f8fafc; border-radius: 8px; font-size: 13px; }
+.shortcut-row kbd { background: #1e293b; color: #fff; padding: 3px 8px; border-radius: 6px; font-family: monospace; font-size: 12px; min-width: 80px; text-align: center; }
+.guide-contact { background: linear-gradient(135deg,#00AEEF,#0070B8); border-radius: 16px; padding: 28px; text-align: center; color: #fff; }
+.guide-contact h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+.guide-contact p { opacity: .8; margin-bottom: 16px; }
+@media (max-width: 900px) {
+    .guide-layout { grid-template-columns: 1fr; }
+    .guide-toc { display: none; }
+    .guide-cards { grid-template-columns: 1fr; }
+    .plans-grid { grid-template-columns: 1fr; }
+    .guide-compliance-grid { grid-template-columns: 1fr; }
+}
+/* Dark mode */
+[data-theme="dark"] .guide-section,
+[data-theme="dark"] .guide-toc { background: #1e293b; }
+[data-theme="dark"] .guide-section h2 { color: #f1f5f9; }
+[data-theme="dark"] .step-body h4,
+[data-theme="dark"] .guide-card h4,
+[data-theme="dark"] .plan-name { color: #f1f5f9; }
+[data-theme="dark"] .guide-card,
+[data-theme="dark"] .compliance-item,
+[data-theme="dark"] .plan-card,
+[data-theme="dark"] .shortcut-row { background: #0f1929; }
+[data-theme="dark"] .guide-info-box { color: #cbd5e1; }
+</style>
+
+<script>
+(function() {
+    // Scroll spy — updates active TOC link as user scrolls
+    var sections = document.querySelectorAll('.guide-section[id]');
+    var navLinks = document.querySelectorAll('.guide-nav-link[data-section]');
+
+    function onScroll() {
+        var scrollY = window.scrollY || window.pageYOffset;
+        var offset = 120; // account for sticky header height
+        var currentId = null;
+
+        sections.forEach(function(section) {
+            var top = section.getBoundingClientRect().top + scrollY - offset;
+            if (scrollY >= top) {
+                currentId = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(function(link) {
+            link.classList.remove('active');
+            if (link.getAttribute('data-section') === currentId) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+    // Throttle scroll for performance
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+        if (!ticking) {
+            window.requestAnimationFrame(function() {
+                onScroll();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
+
+    // Run once on load to set initial active state
+    onScroll();
+
+    // Smooth scroll when clicking TOC links
+    navLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            var targetId = link.getAttribute('data-section');
+            var target = document.getElementById(targetId);
+            if (target) {
+                var top = target.getBoundingClientRect().top + window.scrollY - 90;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+            }
+        });
+    });
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}Create Invoice - Labezra{% endblock %}
+{% block page_icon %}<i class="ri-file-add-line"></i>{% endblock %}
+{% block page_title %}Create Invoice{% endblock %}
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-header">
+    <div>
+      <h2 class="page-heading">Create Invoice</h2>
+      <p class="page-subheading">Fill in the details to generate a new invoice</p>
+    </div>
+    <div class="header-actions">
+      <a href="/sales/invoices/" class="btn btn-outline"><i class="ri-arrow-left-line"></i> Back</a>
+    </div>
+  </div>
+  <form method="POST">
+    {% csrf_token %}
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px;">
+      <div>
+        <div class="card" style="padding:20px;margin-bottom:20px;">
+          <h4 style="margin-bottom:16px;">Invoice Details</h4>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="form-group">
+              <label class="form-label">Customer</label>
+              <select class="form-control"><option>Select customer...</option><option>Ahmed Al Mansoori</option><option>Sara Al Hashimi</option><option>Mohammed Khalid</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Invoice Number</label>
+              <input type="text" class="form-control" value="INV-0043" readonly>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Invoice Date</label>
+              <input type="date" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Due Date</label>
+              <input type="date" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label">TRN Number</label>
+              <input type="text" class="form-control" placeholder="100234567890003">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Payment Terms</label>
+              <select class="form-control"><option>Net 30</option><option>Net 15</option><option>Due on Receipt</option><option>Net 60</option></select>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="padding:20px;margin-bottom:20px;">
+          <h4 style="margin-bottom:16px;">Line Items</h4>
+          <table class="table">
+            <thead>
+              <tr><th>Product</th><th>Qty</th><th>Unit Price</th><th>Discount %</th><th>VAT</th><th>Total</th><th></th></tr>
+            </thead>
+            <tbody id="lineItems">
+              <tr>
+                <td><select class="form-control"><option>Select product...</option><option>iPhone 15 Pro</option><option>Samsung S24</option><option>AirPods Pro</option></select></td>
+                <td><input type="number" class="form-control" value="1" style="width:70px;"></td>
+                <td><input type="number" class="form-control" value="3500.00" style="width:110px;"></td>
+                <td><input type="number" class="form-control" value="0" style="width:80px;"></td>
+                <td><span>AED 175.00</span></td>
+                <td><strong>AED 3,675.00</strong></td>
+                <td><button type="button" class="btn btn-sm btn-outline" style="color:var(--danger);"><i class="ri-delete-bin-line"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" class="btn btn-outline" style="margin-top:10px;"><i class="ri-add-line"></i> Add Line Item</button>
+        </div>
+        <div class="card" style="padding:20px;">
+          <label class="form-label">Notes</label>
+          <textarea class="form-control" rows="3" placeholder="Additional notes or payment instructions..."></textarea>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="padding:20px;margin-bottom:20px;">
+          <h4 style="margin-bottom:16px;">Totals</h4>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;justify-content:space-between;"><span>Subtotal</span><span>AED 3,500.00</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>Discount</span><span>- AED 0.00</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>VAT (5%)</span><span>AED 175.00</span></div>
+            <hr>
+            <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:700;"><span>Grand Total</span><span>AED 3,675.00</span></div>
+          </div>
+        </div>
+        <div class="card" style="padding:20px;">
+          <button type="submit" name="action" value="draft" class="btn btn-outline" style="width:100%;margin-bottom:10px;"><i class="ri-save-line"></i> Save Draft</button>
+          <button type="submit" name="action" value="send" class="btn btn-primary" style="width:100%;"><i class="ri-send-plane-line"></i> Send Invoice</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}
