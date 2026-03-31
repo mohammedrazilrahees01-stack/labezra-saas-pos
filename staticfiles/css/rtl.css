@@ -1,0 +1,317 @@
+/* ═══════════════════════════════════════════════════════════════
+   LABEZRA ERP — RTL (Arabic) Layout Override
+   Applied when body.rtl or html[dir="rtl"] is set
+   Mirrors ALL directional properties: margins, paddings, floats,
+   borders, transforms, text-align, flexbox, sidebar position
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Arabic font stack ── */
+html[dir="rtl"] {
+    font-family: 'Segoe UI', 'Tahoma', 'Arial', 'Cairo', sans-serif;
+}
+
+/* ── Sidebar — move to right side ── */
+html[dir="rtl"] .sidebar {
+    left: auto;
+    right: 0;
+    border-right: none;
+    border-left: 1px solid rgba(255,255,255,0.08);
+}
+
+html[dir="rtl"] .main {
+    margin-left: 0;
+    margin-right: var(--sb-width, 240px);
+}
+
+html[dir="rtl"] .sidebar.collapsed ~ .main,
+html[dir="rtl"] body.sidebar-collapsed .main,
+html[dir="rtl"] .main.sb-expanded {
+    margin-left: 0;
+    margin-right: var(--sb-collapsed, 64px);
+}
+
+/* Mobile RTL sidebar */
+@media (max-width: 768px) {
+    html[dir="rtl"] .sidebar {
+        transform: translateX(100%);
+        right: 0;
+        left: auto;
+    }
+    html[dir="rtl"] .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+    html[dir="rtl"] .main {
+        margin-right: 0 !important;
+    }
+}
+
+/* ── Sidebar active indicator — flip border side ── */
+html[dir="rtl"] .sb-link.active,
+html[dir="rtl"] .sb-dropdown.open > .sb-dropdown-toggle,
+html[dir="rtl"] .sb-dropdown.has-active > .sb-dropdown-toggle {
+    border-left: none;
+    border-right: 3px solid var(--sb-accent, #00AEEF);
+}
+
+html[dir="rtl"] .sb-link,
+html[dir="rtl"] .sb-dropdown-toggle {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+html[dir="rtl"] .sb-chevron {
+    transform: rotate(180deg);
+}
+html[dir="rtl"] .sb-dropdown.open > .sb-dropdown-toggle .sb-chevron {
+    transform: rotate(0deg) !important;
+}
+
+html[dir="rtl"] .sb-submenu a {
+    padding-left: 16px;
+    padding-right: 44px;
+    border-left: none;
+    border-right: 3px solid transparent;
+    flex-direction: row-reverse;
+}
+html[dir="rtl"] .sb-submenu a.active {
+    border-left: none;
+    border-right-color: var(--sb-accent, #00AEEF);
+}
+
+html[dir="rtl"] .sb-collapse-btn {
+    right: auto;
+    left: 0;
+    border-radius: 0 8px 8px 0;
+    transform: none;
+}
+
+/* ── Topbar ── */
+html[dir="rtl"] .topbar {
+    flex-direction: row-reverse;
+}
+html[dir="rtl"] .topbar-left {
+    flex-direction: row-reverse;
+}
+html[dir="rtl"] .topbar-right {
+    flex-direction: row-reverse;
+}
+
+/* ── Profile & Notification dropdowns — appear on left ── */
+html[dir="rtl"] .profile-dropdown,
+html[dir="rtl"] .notification-dropdown {
+    right: auto;
+    left: 0;
+}
+
+/* ── Main content ── */
+html[dir="rtl"] .content {
+    direction: rtl;
+}
+
+/* ── Cards ── */
+html[dir="rtl"] .card-header {
+    flex-direction: row-reverse;
+}
+html[dir="rtl"] .kpi-card {
+    flex-direction: row-reverse;
+}
+html[dir="rtl"] .kpi-icon {
+    margin-right: 0;
+    margin-left: 12px;
+}
+
+/* ── KPI full row ── */
+html[dir="rtl"] .kpi-info {
+    text-align: right;
+}
+
+/* ── Quick Actions ── */
+html[dir="rtl"] .section-title {
+    flex-direction: row-reverse;
+}
+
+/* ── Tables ── */
+html[dir="rtl"] table {
+    direction: rtl;
+}
+html[dir="rtl"] th,
+html[dir="rtl"] td {
+    text-align: right;
+}
+html[dir="rtl"] th:last-child,
+html[dir="rtl"] td:last-child {
+    text-align: left;
+}
+
+/* ── Forms ── */
+html[dir="rtl"] .form-group label {
+    text-align: right;
+    display: block;
+}
+html[dir="rtl"] input[type="text"],
+html[dir="rtl"] input[type="email"],
+html[dir="rtl"] input[type="number"],
+html[dir="rtl"] input[type="tel"],
+html[dir="rtl"] input[type="password"],
+html[dir="rtl"] input[type="search"],
+html[dir="rtl"] select,
+html[dir="rtl"] textarea {
+    text-align: right;
+    direction: rtl;
+}
+
+/* ── Alerts ── */
+html[dir="rtl"] .alert {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+html[dir="rtl"] .alert-close {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+/* ── Badges ── */
+html[dir="rtl"] .badge {
+    direction: ltr; /* keep badge text LTR */
+}
+
+/* ── Toast notifications ── */
+html[dir="rtl"] #toastContainer {
+    right: auto;
+    left: 24px;
+}
+html[dir="rtl"] .toast {
+    flex-direction: row-reverse;
+    text-align: right;
+    border-left: none;
+    border-right: 4px solid #00AEEF;
+}
+html[dir="rtl"] .toast-success { border-right-color: #16A34A; }
+html[dir="rtl"] .toast-error { border-right-color: #DC2626; }
+html[dir="rtl"] .toast-warning { border-right-color: #D97706; }
+
+/* ── FAB ── */
+html[dir="rtl"] .fab-container {
+    right: auto;
+    left: 32px;
+}
+html[dir="rtl"] .fab-item {
+    flex-direction: row-reverse;
+}
+
+/* ── Search Overlay ── */
+html[dir="rtl"] .search-input-wrap {
+    flex-direction: row-reverse;
+}
+html[dir="rtl"] .search-input {
+    text-align: right;
+    direction: rtl;
+}
+html[dir="rtl"] .search-result-item {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+/* ── Shortcuts panel ── */
+html[dir="rtl"] .shortcuts-header {
+    flex-direction: row-reverse;
+}
+html[dir="rtl"] .shortcut-item {
+    flex-direction: row-reverse;
+}
+
+/* ── Page-specific: Receipt ── */
+html[dir="rtl"] .receipt-header {
+    text-align: right;
+}
+html[dir="rtl"] .receipt-row {
+    flex-direction: row-reverse;
+}
+html[dir="rtl"] .receipt-total-row {
+    flex-direction: row-reverse;
+}
+
+/* ── Breadcrumbs ── */
+html[dir="rtl"] .breadcrumb {
+    flex-direction: row-reverse;
+}
+html[dir="rtl"] .breadcrumb-sep {
+    transform: rotate(180deg);
+}
+
+/* ── Filter pills ── */
+html[dir="rtl"] .dashboard-filters {
+    flex-direction: row-reverse;
+}
+
+/* ── Pagination ── */
+html[dir="rtl"] .pagination {
+    flex-direction: row-reverse;
+}
+
+/* ── Modals ── */
+html[dir="rtl"] .modal-header {
+    flex-direction: row-reverse;
+}
+html[dir="rtl"] .modal-body {
+    text-align: right;
+    direction: rtl;
+}
+html[dir="rtl"] .modal-footer {
+    flex-direction: row-reverse;
+}
+
+/* ── POS Screen ── */
+html[dir="rtl"] .pos-layout {
+    flex-direction: row-reverse;
+}
+html[dir="rtl"] .pos-left {
+    border-right: none;
+    border-left: 1px solid #e5e7eb;
+}
+html[dir="rtl"] .cart-item {
+    flex-direction: row-reverse;
+}
+html[dir="rtl"] .product-card {
+    text-align: right;
+}
+
+/* ── Numbers stay LTR (AED amounts, dates) ── */
+html[dir="rtl"] .kpi-value,
+html[dir="rtl"] .amount,
+html[dir="rtl"] .price,
+html[dir="rtl"] .total,
+html[dir="rtl"] .counter-val {
+    direction: ltr;
+    display: inline-block;
+}
+
+/* ── Section labels ── */
+html[dir="rtl"] .sb-section-label {
+    text-align: right;
+    padding-right: 16px;
+    padding-left: 0;
+}
+
+/* ── Animation entry — RTL flip ── */
+html[dir="rtl"] .animate-slide-left {
+    animation-name: slideInRight;
+}
+html[dir="rtl"] .animate-slide-right {
+    animation-name: slideInLeft;
+}
+
+/* ── Mobile RTL fixes ── */
+@media (max-width: 768px) {
+    html[dir="rtl"] .topbar {
+        padding: 0 12px;
+    }
+    html[dir="rtl"] #toastContainer {
+        left: 12px;
+        right: auto;
+    }
+    html[dir="rtl"] .fab-container {
+        left: 20px;
+        right: auto;
+    }
+}

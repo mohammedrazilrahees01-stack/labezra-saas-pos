@@ -4,30 +4,16 @@ services:
     env: python
     region: oregon
     plan: free
-
-    buildCommand: >
-    pip install --upgrade pip &&
-    pip install "setuptools<70" "wheel" &&
-    pip install --no-build-isolation --only-binary=:all: Pillow==9.5.0 &&
-    pip install -r requirements.txt &&
-    python manage.py collectstatic --noinput &&
-    python manage.py migrate --noinput
-
-    startCommand: >
-      gunicorn core.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120
-
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate --noinput"
+    startCommand: "gunicorn core.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120"
     envVars:
       - key: DEBUG
-        value: "false"
-
+        value: "False"
       - key: DJANGO_SECRET_KEY
         generateValue: true
-
       - key: ALLOWED_HOSTS
-        value: "labezra-pos.onrender.com"
-
+        value: "*.onrender.com,localhost"
       - key: CSRF_TRUSTED_ORIGINS
-        value: "https://labezra-pos.onrender.com"
-
+        value: "https://*.onrender.com"
       - key: PYTHON_VERSION
         value: "3.11.0"
