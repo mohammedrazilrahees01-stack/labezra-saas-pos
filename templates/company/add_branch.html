@@ -7,7 +7,7 @@
 <nav class="breadcrumb-nav">
     <a href="/dashboard/">Dashboard</a>
     <i class="ri-arrow-right-s-line"></i>
-    <a href="/branches/">Branches</a>
+    <a href="/settings/branches/">Branches</a>
     <i class="ri-arrow-right-s-line"></i>
     <span>Add Branch</span>
 </nav>
@@ -20,7 +20,7 @@
         <p class="page-subtitle" data-i18n="add_branch_sub">Create a new business location under your company</p>
     </div>
     <div class="page-actions">
-        <a href="/branches/" class="btn btn-outline">
+        <a href="/settings/branches/" class="btn btn-outline">
             <i class="ri-arrow-left-line"></i>
             <span data-i18n="back">Back to Branches</span>
         </a>
@@ -36,7 +36,7 @@
             </h3>
         </div>
         <div class="card-body">
-            <form method="POST" action="/branches/add/">
+            <form method="POST" action="/settings/branches/add/">
                 {% csrf_token %}
 
                 <div class="form-group" style="margin-bottom:20px;">
@@ -76,7 +76,7 @@
                         <i class="ri-add-circle-line"></i>
                         <span data-i18n="create_branch">Create Branch</span>
                     </button>
-                    <a href="/branches/" class="btn btn-outline">
+                    <a href="/settings/branches/" class="btn btn-outline">
                         <span data-i18n="cancel">Cancel</span>
                     </a>
                 </div>

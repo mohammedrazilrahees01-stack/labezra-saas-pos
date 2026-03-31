@@ -10,7 +10,7 @@
         <p class="page-subtitle">Manage your business locations</p>
     </div>
     <div class="page-actions">
-        <a href="/branches/add/" class="btn btn-primary">
+        <a href="/settings/branches/add/" class="btn btn-primary">
             <i class="ri-add-line"></i> Add Branch
         </a>
     </div>
@@ -82,10 +82,10 @@
                         {% endif %}
                     </td>
                     <td class="table-actions">
-                        <a href="/branches/edit/{{ branch.id }}/" class="btn btn-warning btn-sm">
+                        <a href="/settings/branches/edit/{{ branch.id }}/" class="btn btn-warning btn-sm">
                             <i class="ri-edit-line"></i> Edit
                         </a>
-                        <a href="/branches/delete/{{ branch.id }}/" class="btn btn-danger btn-sm"
+                        <a href="/settings/branches/delete/{{ branch.id }}/" class="btn btn-danger btn-sm"
                             onclick="return confirm('Delete this branch? This cannot be undone.')">
                             <i class="ri-delete-bin-line"></i>
                         </a>
@@ -99,7 +99,7 @@
                                 style="font-size:48px;color:var(--text-muted);margin-bottom:12px;"></i>
                             <h4>No branches yet</h4>
                             <p>Add your first branch or location to get started.</p>
-                            <a href="/branches/add/" class="btn btn-primary" style="margin-top:12px;">
+                            <a href="/settings/branches/add/" class="btn btn-primary" style="margin-top:12px;">
                                 <i class="ri-add-line"></i> Add Branch
                             </a>
                         </div>

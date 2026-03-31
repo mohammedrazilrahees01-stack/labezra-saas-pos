@@ -136,7 +136,7 @@ urlpatterns = [
     # ==============================
     # BRANCHES EXTRAS (STUB)
     # ==============================
-    path("settings/branches/warehouses/", lambda r: render(r, 'branches/warehouses.html'), name="branch_warehouses"),
+    path("settings/settings/branches/warehouses/", lambda r: render(r, 'branches/warehouses.html'), name="branch_warehouses"),
 
     # ==============================
     # PROJECTS MODULE (STUB)

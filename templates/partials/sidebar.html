@@ -834,20 +834,20 @@
         <!-- ===== BRANCHES & COMPANY ===== -->
         <div class="sb-section-label">Branches &amp; Company</div>
 
-        <div class="sb-dropdown {% if '/branches/' in request.path %}open has-active{% endif %}" id="ddBranches">
+        <div class="sb-dropdown {% if '/settings/branches/' in request.path %}open has-active{% endif %}" id="ddBranches">
             <div class="sb-dropdown-toggle" onclick="sbToggle('ddBranches')">
                 <i class="ri-building-4-line sb-icon"></i>
                 <span class="sb-label" data-i18n="nav_branches">Branches</span>
                 <i class="ri-arrow-down-s-line sb-chevron"></i>
             </div>
             <div class="sb-submenu">
-                <a href="/branches/" class="{% if request.path == '/branches/' %}active{% endif %}">
+                <a href="/settings/branches/" class="{% if request.path == '/settings/branches/' %}active{% endif %}">
                     <i class="ri-list-check"></i><span data-i18n="nav_branches">Branch List</span>
                 </a>
-                <a href="/branches/add/" class="{% if '/branches/add/' in request.path %}active{% endif %}">
+                <a href="/settings/branches/add/" class="{% if '/settings/branches/add/' in request.path %}active{% endif %}">
                     <i class="ri-add-box-line"></i><span>Add Branch</span>
                 </a>
-                <a href="/branches/warehouses/" class="{% if '/branches/warehouses/' in request.path %}active{% endif %}">
+                <a href="/settings/branches/warehouses/" class="{% if '/settings/branches/warehouses/' in request.path %}active{% endif %}">
                     <i class="ri-building-3-line"></i><span>Warehouses</span>
                 </a>
             </div>

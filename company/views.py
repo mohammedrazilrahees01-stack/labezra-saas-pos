@@ -313,7 +313,7 @@ def branches(request):
                 "Branch limit reached for your plan. Please upgrade."
             )
 
-            return redirect("/branches/")
+            return redirect("/settings/branches/")
 
         name = request.POST.get("name")
 
@@ -351,7 +351,7 @@ def add_branch(request):
 
         if plan and branch_count >= plan.branch_limit:
             messages.error(request, "Branch limit reached for your current plan. Please upgrade.")
-            return redirect("/branches/")
+            return redirect("/settings/branches/")
 
         name    = request.POST.get("name", "").strip()
         address = request.POST.get("address", "").strip()
@@ -360,7 +360,7 @@ def add_branch(request):
         if name:
             Branch.objects.create(company=company, name=name)
             messages.success(request, f"Branch '{name}' created successfully.")
-            return redirect("/branches/")
+            return redirect("/settings/branches/")
         else:
             messages.error(request, "Branch name is required.")
 

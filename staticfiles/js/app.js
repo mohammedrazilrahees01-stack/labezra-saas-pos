@@ -289,7 +289,7 @@ function initTableSearch(inputId, rowSelector, cellSelector) {
         { title: 'Shift Report', url: '/pos/shift-report/', icon: 'ri-time-line', group: 'Reports' },
         { title: 'Cashier Analytics', url: '/pos/cashier-analytics/', icon: 'ri-user-chart-line', group: 'Reports' },
         { title: 'VAT Return', url: '/pos/monthly-report/', icon: 'ri-government-line', group: 'Reports' },
-        { title: 'Branches', url: '/branches/', icon: 'ri-building-4-line', group: 'Pages' },
+        { title: 'Branches', url: '/settings/branches/', icon: 'ri-building-4-line', group: 'Pages' },
         { title: 'Company Settings', url: '/settings/company/', icon: 'ri-building-line', group: 'Settings' },
         { title: 'My Profile', url: '/profile/', icon: 'ri-user-3-line', group: 'Settings' },
         { title: 'Suppliers', url: '/inventory/suppliers/', icon: 'ri-store-2-line', group: 'Pages' },
