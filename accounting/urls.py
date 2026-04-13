@@ -5,6 +5,8 @@ app_name = "accounting"
 
 urlpatterns = [
 
+    path("", views.business_invoices, name="accounting_home"),
+
     # =====================================
     # BUSINESS INVOICES
     # =====================================

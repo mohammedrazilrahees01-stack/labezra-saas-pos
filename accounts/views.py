@@ -44,6 +44,9 @@ def login_view(request):
             })
 
         if not user.company:
+            if user.is_superuser or user.is_staff:
+                login(request, user)
+                return redirect("/dashboard/")
             return render(request, "auth/login.html", {
                 "error": "Account is not linked to a company. Contact support.",
                 "next": next_url
