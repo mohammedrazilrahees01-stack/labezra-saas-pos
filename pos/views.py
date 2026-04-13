@@ -38,7 +38,7 @@ def pos_screen(request):
             return render(request, "pos/pos.html", {
                 "blocker": True,
                 "blocker_message": "No branch found. You need to create a Branch before using the POS.",
-                "blocker_link": "/settings/settings/branches/",
+                "blocker_link": "/settings/branches/",
                 "blocker_link_label": "Create Branch",
                 "categories": [],
                 "products": [],
