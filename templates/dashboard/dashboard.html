@@ -88,7 +88,7 @@
             <div class="qa-icon"><i class="ri-computer-line"></i></div>
             <span data-i18n="qa_open_pos">Open POS</span>
         </a>
-        <a href="/sales/invoices/create/" class="qa-btn">
+        <a href="/pos/receipt/create/" class="qa-btn">
             <div class="qa-icon"><i class="ri-file-add-line"></i></div>
             <span data-i18n="qa_new_invoice">New Invoice</span>
         </a>
@@ -176,7 +176,7 @@
     <div class="card">
         <div class="card-header">
             <span class="card-title" data-i18n="lbl_recent_invoices">Recent Invoices</span>
-            <a href="/sales/invoices/" class="btn btn-sm btn-outline" data-i18n="btn_view_all">View All</a>
+            <a href="/pos/receipt/" class="btn btn-sm btn-outline" data-i18n="btn_view_all">View All</a>
         </div>
         <table class="table">
             <thead>
@@ -191,7 +191,7 @@
             <tbody>
                 {% for invoice in recent_invoices %}
                 <tr class="table-row-animate">
-                    <td><a href="/sales/invoices/{{ invoice.id }}/" class="text-primary">#{{ invoice.id }}</a></td>
+                    <td><a href="/pos/receipt/{{ invoice.id }}/" class="text-primary">#{{ invoice.id }}</a></td>
                     <td>{{ invoice.customer }}</td>
                     <td>{{ invoice.date }}</td>
                     <td>AED {{ invoice.total }}</td>

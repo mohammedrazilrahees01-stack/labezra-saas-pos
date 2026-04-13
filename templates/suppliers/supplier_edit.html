@@ -7,7 +7,7 @@
 <nav class="breadcrumb">
     <a href="/">Home</a>
     <i class="ri-arrow-right-s-line"></i>
-    <a href="/inventory/supplier/">Suppliers</a>
+    <a href="/inventory/suppliers/">Suppliers</a>
     <i class="ri-arrow-right-s-line"></i>
     <span>Edit Supplier</span>
 </nav>
@@ -15,7 +15,7 @@
 <!-- Page Header -->
 <div class="page-header">
     <h2>Edit Supplier</h2>
-    <a href="/inventory/supplier/" class="btn btn-secondary"><i class="ri-arrow-left-line"></i> Back</a>
+    <a href="/inventory/suppliers/" class="btn btn-secondary"><i class="ri-arrow-left-line"></i> Back</a>
 </div>
 
 <div style="max-width:720px;">
@@ -54,7 +54,7 @@
             </div>
             <div class="form-group" style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.5rem;">
                 <button type="submit" class="btn btn-primary"><i class="ri-save-line"></i> Update Supplier</button>
-                <a href="/inventory/supplier/" class="btn btn-secondary">Cancel</a>
+                <a href="/inventory/suppliers/" class="btn btn-secondary">Cancel</a>
                 <button type="button" class="btn btn-danger" style="margin-left:auto;"
                     onclick="if(confirm('Are you sure you want to delete this supplier?')) { document.getElementById('deleteSupplierForm').submit(); }">
                     <i class="ri-delete-bin-line"></i> Delete
@@ -65,7 +65,7 @@
 </div>
 
 <!-- Hidden delete form -->
-<form id="deleteSupplierForm" method="post" action="/inventory/supplier/delete/{{ supplier.id }}/"
+<form id="deleteSupplierForm" method="post" action="/inventory/suppliers/delete/{{ supplier.id }}/"
     style="display:none;">
     {% csrf_token %}
 </form>

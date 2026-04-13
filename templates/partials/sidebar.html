@@ -572,7 +572,7 @@
                 <a href="/sales/orders/" class="{% if '/sales/orders/' in request.path %}active{% endif %}">
                     <i class="ri-shopping-bag-line"></i><span>Sales Orders</span>
                 </a>
-                <a href="/sales/invoices/" class="{% if '/sales/invoices/' in request.path %}active{% endif %}">
+                <a href="/pos/receipt/" class="{% if '/pos/receipt/' in request.path %}active{% endif %}">
                     <i class="ri-file-list-3-line"></i><span>Invoices</span>
                 </a>
                 <a href="/sales/proforma/" class="{% if '/sales/proforma/' in request.path %}active{% endif %}">
@@ -686,7 +686,7 @@
                 <a href="/inventory/suppliers/" class="{% if request.path == '/inventory/suppliers/' %}active{% endif %}">
                     <i class="ri-list-check"></i><span data-i18n="nav_suppliers">Supplier List</span>
                 </a>
-                <a href="/inventory/supplier/add/" class="{% if '/supplier/add/' in request.path %}active{% endif %}">
+                <a href="/inventory/suppliers/add/" class="{% if '/supplier/add/' in request.path %}active{% endif %}">
                     <i class="ri-add-box-line"></i><span data-i18n="btn_add_supplier">Add Supplier</span>
                 </a>
             </div>

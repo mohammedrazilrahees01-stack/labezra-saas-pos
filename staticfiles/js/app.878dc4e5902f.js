@@ -410,7 +410,7 @@ function initTableSearch(inputId, rowSelector, cellSelector) {
         // Alt+I — New Invoice
         if (e.altKey && e.key === 'i') {
             e.preventDefault();
-            window.location.href = '/sales/invoices/create/';
+            window.location.href = '/pos/receipt/create/';
         }
     });
 

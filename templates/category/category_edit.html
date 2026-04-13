@@ -48,7 +48,7 @@
 </div>
 
 <!-- Hidden delete form -->
-<form id="deleteCatForm" method="post" action="/inventory/categories/delete/{{ category.id }}/" style="display:none;">
+<form id="deleteCatForm" method="post" action="/inventory/category/delete/{{ category.id }}/" style="display:none;">
     {% csrf_token %}
 </form>
 {% endblock %}
