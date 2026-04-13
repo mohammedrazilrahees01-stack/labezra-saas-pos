@@ -11,8 +11,8 @@ urlpatterns = [
     path("settings/company/", views.company_settings, name="company_settings"),
 
     # BRANCH MANAGEMENT
-    path("settings/settings/branches/", views.branches, name="branches"),
-    path("settings/settings/branches/add/", views.add_branch, name="add_branch"),
+    path("settings/branches/", views.branches, name="branches"),
+    path("settings/branches/add/", views.add_branch, name="add_branch"),
     path("settings/switch-branch/<int:id>/", views.switch_branch, name="switch_branch"),
 
     # CASHIERS
