@@ -62,13 +62,7 @@
                             <a href="/pos/?held={{ bill.id }}" class="btn btn-primary btn-sm">
                                 <i class="ri-play-circle-line"></i> Recall
                             </a>
-                            <form method="POST" action="/pos/held/{{ bill.id }}/delete/" style="display:inline;"
-                                onsubmit="return confirm('Delete this held bill?');">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="ri-delete-bin-line"></i>
-                                </button>
-                            </form>
+                            <!-- Delete hidden -->
                         </td>
                     </tr>
                     {% endfor %}
