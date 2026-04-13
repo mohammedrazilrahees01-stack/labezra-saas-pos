@@ -92,7 +92,7 @@
                         </td>
                         <td>
                             {% if not notif.is_read %}
-                            <form method="POST" action="/notifications/{{ notif.id }}/mark-read/"
+                            <form method="POST" action="/notifications/mark-read/{{ notif.id }}/"
                                 style="display:inline;">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-outline btn-sm">
