@@ -54,6 +54,7 @@ urlpatterns = [
     path("expenses/", include("expenses.urls")),
     path("payroll/", include("payroll.urls")),
     path("accounting/", include("accounting.urls")),
+    path("accounting/business-invoices/", lambda r: redirect("/pos/invoices/"), name="business_invoices_redirect"),
 
     # ==============================
     # ACTIVITY LOG

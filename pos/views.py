@@ -1152,3 +1152,16 @@ def sync_offline_transactions(request):
             continue
 
     return JsonResponse({'synced': synced, 'status': 'ok'})
+
+
+# ==========================================
+# DELETE HELD BILL
+# ==========================================
+
+@login_required
+def delete_held_bill(request, id):
+    company = request.user.company
+    bill = Invoice.objects.get(id=id, company=company, is_hold=True)
+    bill.delete()
+    messages.success(request, "Held bill deleted.")
+    return redirect("/pos/held-bills/")

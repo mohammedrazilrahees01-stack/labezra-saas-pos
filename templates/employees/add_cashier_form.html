@@ -1,0 +1,32 @@
+{% extends "base/base.html" %}
+{% block title %}Add Cashier — Labezra{% endblock %}
+{% block page_title %}Add Cashier{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width:500px;">
+    <div class="card-header"><h3 class="card-title">Add New Cashier</h3></div>
+    <div class="card-body" style="padding:24px;">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" required placeholder="cashier01">
+            </div>
+            <div class="form-group">
+                <label>First Name</label>
+                <input type="text" name="first_name" placeholder="John">
+            </div>
+            <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" name="last_name" placeholder="Doe">
+            </div>
+            <div class="form-group">
+                <label>Password / PIN</label>
+                <input type="password" name="password" required minlength="4" placeholder="Enter PIN">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">Create Cashier</button>
+            <a href="/cashiers/" class="btn btn-secondary" style="width:100%;margin-top:8px;">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

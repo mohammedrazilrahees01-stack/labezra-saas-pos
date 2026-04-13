@@ -13,10 +13,15 @@ urlpatterns = [
     # BRANCH MANAGEMENT
     path("settings/branches/", views.branches, name="branches"),
     path("settings/branches/add/", views.add_branch, name="add_branch"),
+    path("settings/branches/edit/<int:id>/", views.edit_branch, name="edit_branch"),
+    path("settings/branches/delete/<int:id>/", views.delete_branch, name="delete_branch"),
     path("settings/switch-branch/<int:id>/", views.switch_branch, name="switch_branch"),
 
     # CASHIERS
     path("cashiers/", views.cashiers, name="cashiers"),
+    path("cashiers/add/", views.add_cashier_page, name="add_cashier_page"),
+    path("cashiers/edit/<int:id>/", views.edit_cashier, name="edit_cashier"),
+    path("cashiers/reset-pin/<int:id>/", views.reset_cashier_pin, name="reset_cashier_pin"),
 
     # SUBSCRIPTION
     path("upgrade/", views.upgrade, name="upgrade"),

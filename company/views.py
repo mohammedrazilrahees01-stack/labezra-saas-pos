@@ -721,3 +721,111 @@ def admin_panel(request):
         "all_companies":        all_companies,
         "plans":                plans,
     })
+
+
+# ==========================================
+# EDIT BRANCH
+# ==========================================
+
+@login_required
+def edit_branch(request, id):
+    company = request.user.company
+    branch = Branch.objects.get(id=id, company=company)
+
+    if request.method == "POST":
+        branch.name = request.POST.get("name", branch.name)
+        branch.location = request.POST.get("location", branch.location)
+        branch.phone = request.POST.get("phone", "")
+        branch.manager = request.POST.get("manager", "")
+        branch.is_active = request.POST.get("is_active") == "on"
+        branch.save()
+        messages.success(request, f"Branch '{branch.name}' updated.")
+        return redirect("/settings/branches/")
+
+    return render(request, "company/edit_branch.html", {"branch": branch})
+
+
+# ==========================================
+# DELETE BRANCH
+# ==========================================
+
+@login_required
+def delete_branch(request, id):
+    company = request.user.company
+    branch = Branch.objects.get(id=id, company=company)
+    name = branch.name
+    branch.delete()
+    messages.success(request, f"Branch '{name}' deleted.")
+    return redirect("/settings/branches/")
+
+
+# ==========================================
+# ADD CASHIER (from cashiers page)
+# ==========================================
+
+@login_required
+def add_cashier_page(request):
+    company = request.user.company
+
+    if request.method == "POST":
+        username = request.POST.get("username", "").strip()
+        password = request.POST.get("password", "")
+        first_name = request.POST.get("first_name", "")
+        last_name = request.POST.get("last_name", "")
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists.")
+            return redirect("/cashiers/add/")
+
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            first_name=first_name,
+            last_name=last_name,
+            role="CASHIER",
+            company=company,
+            branch=request.user.branch,
+        )
+        messages.success(request, f"Cashier '{username}' created.")
+        return redirect("/cashiers/")
+
+    return render(request, "employees/add_cashier_form.html")
+
+
+# ==========================================
+# EDIT CASHIER
+# ==========================================
+
+@login_required
+def edit_cashier(request, id):
+    company = request.user.company
+    cashier = User.objects.get(id=id, company=company, role="CASHIER")
+
+    if request.method == "POST":
+        cashier.first_name = request.POST.get("first_name", "")
+        cashier.last_name = request.POST.get("last_name", "")
+        cashier.is_active = request.POST.get("is_active") == "on"
+        cashier.save()
+        messages.success(request, f"Cashier '{cashier.username}' updated.")
+        return redirect("/cashiers/")
+
+    return render(request, "employees/edit_cashier.html", {"cashier": cashier})
+
+
+# ==========================================
+# RESET CASHIER PIN
+# ==========================================
+
+@login_required
+def reset_cashier_pin(request, id):
+    company = request.user.company
+    cashier = User.objects.get(id=id, company=company, role="CASHIER")
+
+    if request.method == "POST":
+        new_pin = request.POST.get("new_pin", "1234")
+        cashier.set_password(new_pin)
+        cashier.save()
+        messages.success(request, f"PIN reset for '{cashier.username}'.")
+        return redirect("/cashiers/")
+
+    return render(request, "employees/reset_cashier_pin.html", {"cashier": cashier})

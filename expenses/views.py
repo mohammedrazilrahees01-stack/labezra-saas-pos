@@ -34,3 +34,25 @@ def expenses(request):
     return render(request, "expenses/expenses.html", {
         "expenses": data
     })
+
+# ==========================================
+# EXPORT EXPENSES CSV
+# ==========================================
+
+@login_required
+def export_expenses_csv(request):
+    import csv
+    from django.http import HttpResponse
+
+    company = request.user.company
+    expenses = Expense.objects.filter(company=company)
+
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="expenses.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(["Title", "Amount", "Date"])
+    for e in expenses:
+        writer.writerow([e.title, e.amount, e.date])
+
+    return response

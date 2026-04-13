@@ -26,6 +26,9 @@ urlpatterns = [
     # PURCHASES
     path("purchases/", views.purchases, name="purchases"),
     path("purchase/add/", views.add_purchase, name="add_purchase"),
+    path("purchases/edit/<int:id>/", views.edit_purchase, name="edit_purchase"),
+    path("purchases/delete/<int:id>/", views.delete_purchase, name="delete_purchase"),
+    path("export/csv/", views.export_products_csv, name="export_products_csv"),
 
     # STOCK HISTORY
     path("stock-history/", views.stock_history, name="stock_history"),

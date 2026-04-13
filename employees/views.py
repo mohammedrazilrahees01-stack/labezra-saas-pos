@@ -67,3 +67,26 @@ def delete_employee(request, id):
     employee.delete()
 
     return redirect("/employees/")
+
+# ==========================================
+# EXPORT EMPLOYEES CSV
+# ==========================================
+
+@login_required
+def export_employees_csv(request):
+    import csv
+    from django.http import HttpResponse
+
+    company = request.user.company
+    from .models import Employee
+    employees = Employee.objects.filter(company=company)
+
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="employees.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(["Name", "Position", "Salary"])
+    for e in employees:
+        writer.writerow([e.name, e.position, e.salary])
+
+    return response

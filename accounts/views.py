@@ -383,3 +383,33 @@ def reset_password(request):
         return render(request, "auth/reset_password.html", {"success": True})
 
     return render(request, "auth/reset_password.html", {"token": token})
+
+
+# =====================================================
+# CHANGE PASSWORD
+# =====================================================
+
+@login_required
+def change_password(request):
+    error = None
+    success = None
+
+    if request.method == "POST":
+        current = request.POST.get("current_password", "")
+        new1 = request.POST.get("new_password", "")
+        new2 = request.POST.get("confirm_password", "")
+
+        if not request.user.check_password(current):
+            error = "Current password is incorrect."
+        elif new1 != new2:
+            error = "New passwords do not match."
+        elif len(new1) < 8:
+            error = "Password must be at least 8 characters."
+        else:
+            request.user.set_password(new1)
+            request.user.save()
+            from django.contrib.auth import update_session_auth_hash
+            update_session_auth_hash(request, request.user)
+            success = "Password changed successfully."
+
+    return render(request, "settings/change_password.html", {"error": error, "success": success})

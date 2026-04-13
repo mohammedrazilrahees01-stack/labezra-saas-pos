@@ -15,6 +15,7 @@ urlpatterns = [
     # HOLD BILL SYSTEM
     path("hold-bill/", views.hold_bill, name="hold_bill"),
     path("held-bills/", views.held_bills, name="held_bills"),
+    path("held/<int:id>/delete/", views.delete_held_bill, name="delete_held_bill"),
     path("recall/<int:id>/", views.recall_bill, name="recall_bill"),
 
     # CHECKOUT

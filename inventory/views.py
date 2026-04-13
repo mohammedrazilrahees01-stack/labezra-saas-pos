@@ -377,3 +377,66 @@ def stock_history(request):
     return render(request, "stock/stock_history.html", {
         "history": history
     })
+
+
+# ==========================================
+# EDIT PURCHASE
+# ==========================================
+
+@login_required
+def edit_purchase(request, id):
+    company = request.user.company
+    purchase = Purchase.objects.get(id=id, company=company)
+
+    if request.method == "POST":
+        supplier_id = request.POST.get("supplier")
+        product_id = request.POST.get("product")
+        purchase.supplier_id = supplier_id if supplier_id else None
+        purchase.product_id = product_id if product_id else None
+        purchase.qty = int(request.POST.get("qty", 0))
+        purchase.cost_price = request.POST.get("cost_price", 0)
+        purchase.save()
+        messages.success(request, "Purchase updated.")
+        return redirect("/inventory/purchases/")
+
+    suppliers = Supplier.objects.filter(company=company)
+    products = Product.objects.filter(company=company)
+    return render(request, "purchases/purchase_edit.html", {
+        "purchase": purchase, "suppliers": suppliers, "products": products
+    })
+
+
+# ==========================================
+# DELETE PURCHASE
+# ==========================================
+
+@login_required
+def delete_purchase(request, id):
+    company = request.user.company
+    purchase = Purchase.objects.get(id=id, company=company)
+    purchase.delete()
+    messages.success(request, "Purchase deleted.")
+    return redirect("/inventory/purchases/")
+
+
+# ==========================================
+# EXPORT PRODUCTS CSV
+# ==========================================
+
+@login_required
+def export_products_csv(request):
+    import csv
+    from django.http import HttpResponse
+
+    company = request.user.company
+    products = Product.objects.filter(company=company)
+
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="products.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(["Name", "Category", "Barcode", "Price", "Stock", "Low Stock"])
+    for p in products:
+        writer.writerow([p.name, p.category.name if p.category else "", p.barcode or "", p.price, p.stock, p.low_stock])
+
+    return response

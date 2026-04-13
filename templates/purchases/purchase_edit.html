@@ -1,0 +1,42 @@
+{% extends "base/base.html" %}
+{% block title %}Edit Purchase — Labezra{% endblock %}
+{% block page_title %}Edit Purchase{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width:600px;">
+    <div class="card-header"><h3 class="card-title">Edit Purchase #{{ purchase.id }}</h3></div>
+    <div class="card-body" style="padding:24px;">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Supplier</label>
+                <select name="supplier">
+                    <option value="">— Select —</option>
+                    {% for s in suppliers %}
+                    <option value="{{ s.id }}" {% if purchase.supplier_id == s.id %}selected{% endif %}>{{ s.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Product</label>
+                <select name="product">
+                    <option value="">— Select —</option>
+                    {% for p in products %}
+                    <option value="{{ p.id }}" {% if purchase.product_id == p.id %}selected{% endif %}>{{ p.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Quantity</label>
+                <input type="number" name="qty" value="{{ purchase.qty }}" min="0">
+            </div>
+            <div class="form-group">
+                <label>Cost Price</label>
+                <input type="number" name="cost_price" value="{{ purchase.cost_price }}" step="0.01" min="0">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">Save Changes</button>
+            <a href="/inventory/purchases/" class="btn btn-secondary" style="width:100%;margin-top:8px;">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

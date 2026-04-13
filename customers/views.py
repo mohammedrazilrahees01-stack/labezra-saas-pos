@@ -67,3 +67,25 @@ def delete_customer(request, id):
     customer.delete()
 
     return redirect("/customers/")
+
+# ==========================================
+# EXPORT CUSTOMERS CSV
+# ==========================================
+
+@login_required
+def export_customers_csv(request):
+    import csv
+    from django.http import HttpResponse
+
+    company = request.user.company
+    customers = Customer.objects.filter(company=company)
+
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = 'attachment; filename="customers.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(["Name", "Phone", "Email", "TRN"])
+    for c in customers:
+        writer.writerow([c.name, c.phone, c.email, c.trn])
+
+    return response
